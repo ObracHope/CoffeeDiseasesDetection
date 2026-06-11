@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="user_roles">
+        <item>@string/role_farmer</item>
+        <item>@string/role_admin</item>
+    </string-array>
+    <string-array name="challenge_categories">
+        <item>Technical</item>
+        <item>App Issue</item>
+        <item>Detection Problem</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="phone_country_codes">
+        <item>+255 (Tanzania)</item>
+        <item>+254 (Kenya)</item>
+        <item>+256 (Uganda)</item>
+        <item>+250 (Rwanda)</item>
+        <item>+257 (Burundi)</item>
+        <item>+1 (USA)</item>
+        <item>+44 (UK)</item>
+        <item>+255</item>
+    </string-array>
+    <string-array name="phone_country_digits">
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>10</item>
+        <item>10</item>
+        <item>9</item>
+    </string-array>
+</resources>
+

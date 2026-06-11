@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "940060503195",
+    "project_id": "coffee-diseases-detection",
+    "storage_bucket": "coffee-diseases-detection.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940060503195:android:c84701cd18568c1d716a3e",
+        "android_client_info": {
+          "package_name": "com.example.coffeediseasesdetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940060503195-70h758vcoskb5hl4696e5nuf9shc1d6b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coffeediseasesdetection",
+            "certificate_hash": "4efc3e52137cb0ec668f1b66d6fb9236e9a5d25c"
+          }
+        },
+        {
+          "client_id": "940060503195-d8k79gsti0e7cnb5s0cuv0ij262tnrjp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZrUOw7RiTztWCitPRQu0JpJ1Fua8rzqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940060503195-d8k79gsti0e7cnb5s0cuv0ij262tnrjp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

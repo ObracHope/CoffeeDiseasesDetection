@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_parchment"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/bg_header_curved">
+
+            <ImageView
+                android:id="@+id/ivBackButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:contentDescription="Back"
+                android:padding="6dp"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/statistics"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- Period Tabs -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabPeriod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-20dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@android:color/white"
+            app:tabBackground="@android:color/white"
+            app:tabSelectedTextColor="#33691E"
+            app:tabTextColor="#666666"
+            app:tabIndicatorColor="#33691E"
+            app:tabMode="fixed"
+            app:tabGravity="fill" />
+
+        <!-- Summary Stats Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:weightSum="3">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="#33691E"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/farmers_accessed"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tvFarmersAccessed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="#558B2F"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/images_uploaded"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tvImagesCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="#4E342E"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/diseases_found"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tvDiseasesFound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- Bar Chart: Most Common Diseases -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/most_common_diseases"
+                    android:textColor="#33691E"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChartDiseases"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Line Chart: Monthly Detection Trend -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monthly_trend"
+                    android:textColor="#33691E"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartTrend"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Top Diseases Text (kept for accessibility) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top diseases this period:"
+                    android:textColor="#33691E"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvTopDiseases"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="14sp"
+                    android:textColor="#333333" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

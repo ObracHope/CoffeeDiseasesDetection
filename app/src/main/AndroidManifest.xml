@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".CoffeeApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/coff_round"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/coff_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CoffeeDiseasesDetection">
+
+        <activity
+            android:name=".DiseaseResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CoffeeDiseasesDetection" />
+        <activity
+            android:name=".FarmerDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CaptureLeafActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SymptomSelectionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".TreatmentGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TreatmentDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CoffeeDiseasesDetection"/>
+        <activity
+            android:name=".CoffeeCareGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HelpTipsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminReportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminScansListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminGeoMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminActivityLogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminInternationalSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminMessagesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminManageFarmersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReportChallengeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateProfile"
+            android:exported="false"
+            android:theme="@style/Theme.CoffeeDiseasesDetection" />
+        <activity
+            android:name=".AdminChallengesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminStatisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminReviewImagesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDiseaseDatabaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminRecommendationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FarmerAnalyticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AnalyticsScansListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminRegisterUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CoffeeDiseasesDetection" />
+
+        <activity
+            android:name=".LandingActivity"
+            android:configChanges="locale|layoutDirection"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.coffeediseasesdetection.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <receiver android:name=".ScanReminderReceiver" android:enabled="true" android:exported="false" />
+        <receiver android:name=".TreatmentReminderReceiver" android:enabled="true" android:exported="false" />
+        <activity android:name=".ScanDetailActivity" android:exported="false" />
+        <service
+            android:name=".CoffeeMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".FarmerChallengesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

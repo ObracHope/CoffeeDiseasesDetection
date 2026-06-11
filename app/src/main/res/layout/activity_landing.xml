@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/coffee"
+    tools:context=".LandingActivity">
+
+    <!-- Dark Overlay for better background contrast -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Main Content Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:gravity="center_horizontal">
+
+            <!-- Logo -->
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_logo_coffee"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="@string/content_logo"
+                app:tint="@color/primaryGreen"/>
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvWelcomeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/tvWelcomeSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/landing_welcome_subtitle"
+                android:textSize="15sp"
+                android:textColor="#444444"
+                android:gravity="center"
+                android:layout_marginBottom="32dp"
+                android:lineHeight="22sp"/>
+
+            <!-- Login Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLandingLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/login"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"
+                app:cornerRadius="18dp"
+                android:backgroundTint="@color/primaryGreen"/>
+
+            <!-- Register Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLandingRegister"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/btn_register"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@color/primaryGreen"
+                app:cornerRadius="18dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/primaryGreen"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="60dp"
+                android:layout_height="3dp"
+                android:background="@color/primaryGreen"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Language Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_language"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLangEn"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="@string/english"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/primaryGreen"
+                    android:textColor="@color/primaryGreen"/>
+
+                <Space
+                    android:layout_width="12dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLangSw"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="@string/kiswahili"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/primaryGreen"
+                    android:textColor="@color/primaryGreen"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/backgroundCream">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/manage_farmers"
+            android:textColor="@color/primaryGreen"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAddUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_user"
+            app:backgroundTint="@color/primaryGreen"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <!-- Add User Section (shown when + is tapped) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardAddUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_user"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNameAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/register_firstname"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/etEmailAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/etPasswordAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:padding="12dp" />
+
+            <Spinner
+                android:id="@+id/spinnerRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/add_user"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/primaryGreen"
+                app:icon="@drawable/ic_add"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Users List -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="@string/users_list"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerUsers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

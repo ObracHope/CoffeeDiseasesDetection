@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_admin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminDashboardActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_parchment"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/bg_header_curved">
+
+                <ImageView
+                    android:id="@+id/ivMenuAdmin"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/settings"
+                    android:src="@drawable/ic_menu_custom"
+                    app:tint="@android:color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvNotificationBadge"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_notification_badge"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:text="3" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/settings"
+                        android:src="@drawable/ic_settings_custom"
+                        app:tint="@android:color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivAdminProfile"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/placeholder_user"
+                        app:civ_border_color="@android:color/white"
+                        app:civ_border_width="2dp" />
+
+                    <TextView
+                        android:id="@+id/tvAdminName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Admin Name"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/admin_dashboard"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="-40dp">
+
+            <!-- Stat 1 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#33691E"
+                app:cardElevation="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_farmers"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"/>
+                    <TextView
+                        android:id="@+id/tvTotalFarmers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1200"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Stat 2 -->
+             <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#558B2F"
+                app:cardElevation="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/images_uploaded"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"/>
+                    <TextView
+                        android:id="@+id/tvImagesUploaded"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="850"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Stat 3 -->
+             <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#689F38"
+                app:cardElevation="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/diseases_detected"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"/>
+                    <TextView
+                        android:id="@+id/tvDiseasesDetected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="640"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Stat 4 -->
+             <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#5D4037"
+                app:cardElevation="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reports_count"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"/>
+                    <TextView
+                        android:id="@+id/tvReportsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="320"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- Vertical Action List -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Scan Coffee Leaf (Admin can do farmer tasks) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardScanLeaf"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#2E7D32"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="24dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_camera_custom"
+                        app:tint="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="@string/capture_coffee_leaf"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Upload Image (Admin can do farmer tasks) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardUploadImage"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#558B2F"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="24dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_upload_custom"
+                        app:tint="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="@string/upload_image"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Manage Farmers -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardManageFarmers"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#4E342E"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="24dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_farmers_group"
+                        app:tint="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="@string/manage_farmers"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.navigation.NavigationView
+    android:id="@+id/nav_drawer_admin"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    app:menu="@menu/drawer_menu_admin" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

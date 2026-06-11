@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_parchment"
+    tools:context=".HelpTipsActivity">
+
+    <!-- Top Curved Banner -->
+    <View
+        android:id="@+id/topBanner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_header_curved"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button Icon -->
+    <ImageView
+        android:id="@+id/ivBackButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle"
+        app:tint="@color/white"
+        android:contentDescription="Back" />
+
+    <!-- Screen Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Help &amp; Tips"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Main Content Area in a ScrollView -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBanner">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvTipsContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="6dp"
+                android:text="Here you can show help &amp; tips for coffee farmers. This section will contain valuable information about preventing diseases, proper harvesting techniques, and other best practices to ensure a healthy coffee crop."
+                android:textColor="@color/primary_text_color"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

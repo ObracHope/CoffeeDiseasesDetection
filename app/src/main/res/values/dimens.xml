@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dashboard_horizontal_margin">16dp</dimen>
+    <dimen name="dashboard_section_gap">14dp</dimen>
+    <dimen name="dashboard_stats_top">8dp</dimen>
+    <dimen name="dashboard_stats_radius">16dp</dimen>
+    <dimen name="dashboard_card_elevation">4dp</dimen>
+    <dimen name="dashboard_card_radius">14dp</dimen>
+    <dimen name="dashboard_stat_value_size">22sp</dimen>
+    <dimen name="dashboard_stat_label_size">11sp</dimen>
+    <dimen name="dashboard_action_height">130dp</dimen>
+    <dimen name="dashboard_tip_card_width">172dp</dimen>
+    <dimen name="dashboard_tip_image_height">148dp</dimen>
+</resources>

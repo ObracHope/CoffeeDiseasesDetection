@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvChallengeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvChallengeCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvChallengeDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tvChallengeReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/primaryGreen"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvChallengeStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:id="@+id/tvChallengeDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

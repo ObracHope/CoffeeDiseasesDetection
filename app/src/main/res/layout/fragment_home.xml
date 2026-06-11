@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingBottom="12dp">
+
+        <View
+            android:id="@+id/heroEllipseShadow"
+            android:layout_width="0dp"
+            android:layout_height="88dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_hero_ellipse_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.92" />
+
+        <TextView
+            android:id="@+id/tvWelcomeName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:textColor="#1A1A1A"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Habari, Farmer!" />
+
+        <TextView
+            android:id="@+id/tvHomeTagline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="6dp"
+            android:letterSpacing="0.01"
+            android:text="@string/dashboard_tagline_short"
+            android:textColor="#2E7D32"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWelcomeName" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardStats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="18dp"
+            android:translationZ="10dp"
+            app:cardBackgroundColor="#E8F1E9"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHomeTagline"
+            app:strokeColor="#B2DFDB"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="22dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvTotalScans"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="#2E7D32"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/stat_scans"
+                        android:textColor="#757575"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="44dp"
+                    android:background="#E0E0E0" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/status_healthy"
+                        android:textColor="#2E7D32"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/stat_status"
+                        android:textColor="#757575"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="44dp"
+                    android:background="#E0E0E0" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvRiskLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/risk_low"
+                        android:textColor="#1976D2"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/stat_risk"
+                        android:textColor="#757575"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/actionButtonsRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardStats">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnHomeCapture"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:translationZ="6dp"
+                app:cardBackgroundColor="#2E7D32"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/btnHomeUpload"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.47"
+                app:strokeWidth="0dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <FrameLayout
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/bg_action_icon_circle">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/scan_coffee"
+                                android:src="@drawable/ic_camera_custom"
+                                app:tint="@color/white" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="@string/scan_coffee"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnHomeUpload"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:translationZ="6dp"
+                app:cardBackgroundColor="#5D4037"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnHomeCapture"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.47"
+                app:strokeWidth="0dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <FrameLayout
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/bg_action_icon_circle">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/upload_photo"
+                                android:src="@drawable/ic_upload_custom"
+                                app:tint="@color/white" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="@string/upload_photo"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvCareTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/coffee_care_title"
+            android:textColor="#1A1A1A"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tvSeeAll"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/actionButtonsRow" />
+
+        <TextView
+            android:id="@+id/tvSeeAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:text="@string/see_all"
+            android:textColor="#2E7D32"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvCareTitle"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCoffeeTips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCareTitle"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_coffee_tip" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

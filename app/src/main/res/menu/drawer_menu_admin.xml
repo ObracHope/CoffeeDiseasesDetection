@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_admin_scan"
+            android:icon="@drawable/ic_camera_custom"
+            android:title="@string/capture_coffee_leaf" />
+        <item
+            android:id="@+id/nav_admin_upload"
+            android:icon="@drawable/ic_upload_custom"
+            android:title="@string/upload_image" />
+        <item
+            android:id="@+id/nav_admin_manage_farmers"
+            android:icon="@drawable/ic_farmers_group"
+            android:title="@string/manage_farmers" />
+        <item
+            android:id="@+id/nav_admin_register_user"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="@string/add_user" />
+        <item
+            android:id="@+id/nav_admin_statistics"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="@string/statistics" />
+        <item
+            android:id="@+id/nav_admin_reports"
+            android:icon="@drawable/ic_report_custom"
+            android:title="@string/nav_reports" />
+        <item
+            android:id="@+id/nav_admin_scan_records"
+            android:icon="@drawable/ic_history_custom"
+            android:title="@string/admin_scan_records" />
+        <item
+            android:id="@+id/nav_admin_geo_map"
+            android:icon="@drawable/ic_reports"
+            android:title="@string/admin_farmer_map" />
+        <item
+            android:id="@+id/nav_admin_review_images"
+            android:icon="@drawable/ic_review_images"
+            android:title="@string/review_images" />
+        <item
+            android:id="@+id/nav_admin_challenges"
+            android:icon="@android:drawable/ic_dialog_alert"
+            android:title="@string/view_challenges" />
+        <item
+            android:id="@+id/nav_admin_messages"
+            android:icon="@drawable/ic_notification_custom"
+            android:title="@string/admin_messages" />
+        <item
+            android:id="@+id/nav_admin_notifications"
+            android:icon="@drawable/ic_notification_custom"
+            android:title="@string/notifications" />
+        <item
+            android:id="@+id/nav_admin_activity_log"
+            android:icon="@drawable/ic_database_custom"
+            android:title="@string/admin_activity_log" />
+        <item
+            android:id="@+id/nav_admin_disease_database"
+            android:icon="@drawable/ic_database_custom"
+            android:title="@string/disease_database" />
+        <item
+            android:id="@+id/nav_admin_recommendations"
+            android:icon="@drawable/ic_report_custom"
+            android:title="@string/recommendations" />
+        <item
+            android:id="@+id/nav_admin_settings"
+            android:icon="@drawable/ic_settings_custom"
+            android:title="@string/admin_intl_settings" />
+    </group>
+    <item
+        android:id="@+id/nav_admin_logout"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/logout" />
+</menu>

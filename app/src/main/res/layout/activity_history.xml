@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_parchment"
+    tools:context=".HistoryActivity">
+
+    <!-- Top Curved Banner -->
+    <View
+        android:id="@+id/topBanner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_header_curved"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Back Button Icon -->
+    <ImageView
+        android:id="@+id/ivBackButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_back_arrow"
+        app:tint="@color/white"
+        android:contentDescription="Back"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+
+    <!-- Screen Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/scan_history_title"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Search Bar -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/history_search_hint"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:layout_constraintTop_toBottomOf="@id/topBanner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_search_rounded"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvEmptyList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/no_data_yet"
+        android:textColor="@color/textMedium"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchLayout" />
+
+    <!-- List of History Items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/searchLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        tools:listitem="@layout/item_history" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

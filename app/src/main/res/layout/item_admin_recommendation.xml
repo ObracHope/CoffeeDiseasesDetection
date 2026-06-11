@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRecDiseaseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#33691E"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rec_label_medicine"
+                android:textColor="#3E2723"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRecMedicine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textColor="#5D4037" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rec_label_prevention"
+                android:textColor="#3E2723"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRecPrevention"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textColor="#5D4037" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/treatment_label"
+                android:textColor="#3E2723"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRecTreatment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#5D4037" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

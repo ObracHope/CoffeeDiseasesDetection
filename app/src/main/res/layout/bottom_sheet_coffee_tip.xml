@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="24dp">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="#BDBDBD" />
+
+    <ImageView
+        android:id="@+id/ivSheetImage"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/coffee_care_title"
+        android:src="@drawable/coffee_leaf_sample" />
+
+    <TextView
+        android:id="@+id/tvSheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/textDark"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/sheet_about"
+        android:textColor="@color/primaryGreen"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvSheetDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/textMedium"
+        android:textSize="15sp"
+        android:lineSpacingExtra="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/sheet_symptoms"
+        android:textColor="@color/primaryGreen"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvSheetSymptoms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/textMedium"
+        android:textSize="15sp"
+        android:lineSpacingExtra="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/sheet_treatment_care"
+        android:textColor="@color/primaryGreen"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvSheetTreatment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:paddingHorizontal="20dp"
+        android:textColor="#1B5E20"
+        android:textSize="15sp"
+        android:lineSpacingExtra="4dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSheetClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/close"
+        app:cornerRadius="12dp"
+        android:backgroundTint="@color/primaryGreen" />
+
+</LinearLayout>

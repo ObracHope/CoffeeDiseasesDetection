@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".DiseaseResultActivity">
+
+    <!-- 1. Background Image Section -->
+    <ImageView
+        android:id="@+id/ivResultImage"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/coffee_leaf_sample"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Gradient Overlay for smooth transition -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/bg_gradient_bottom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 2. Back Button -->
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bg_circle_transparent"
+        android:padding="12dp"
+        android:src="@drawable/ic_back_arrow"
+        app:tint="@color/white" />
+
+
+    <!-- 3. Bottom Sheet for Disease Details -->
+    <LinearLayout
+        android:id="@+id/bottom_sheet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="450dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <!-- Handle for dragging -->
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Content inside BottomSheet -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="24dp">
+
+            <!-- Three-step detection summary -->
+            <TextView
+                android:id="@+id/tvStep1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryGreen"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Hatua 1: Hii ni picha ya kahawa" />
+
+            <TextView
+                android:id="@+id/tvStep2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/primaryBrown"
+                android:textSize="15sp"
+                tools:text="Hatua 2: Kahawa iliyo na ugonjwa" />
+
+            <TextView
+                android:id="@+id/tvStep3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#424242"
+                android:textSize="14sp"
+                tools:text="Hatua 3: Ugonjwa — Coffee Leaf Rust" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="#EEEEEE" />
+
+            <!-- Title and Confidence Score -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvDiseaseName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/confidence_layout"
+                    android:text="Coffee Leaf Rust"
+                    android:textColor="@color/primaryBrown"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/confidence_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progressConfidence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:progress="87"
+                        app:indicatorColor="@color/primaryGreen"
+                        app:trackColor="#E0E0E0" />
+
+                    <TextView
+                        android:id="@+id/tvConfidence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="87%"
+                        android:textColor="@color/primaryGreen"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="#EEEEEE" />
+
+            <!-- Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description_label"
+                android:textColor="@color/primaryBrown"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDiseaseDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="This is a fungal disease that causes yellow-orange powdery spots on the undersides of coffee leaves."
+                android:textColor="#424242"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <!-- Recommended Actions -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recommended_actions"
+                android:textColor="@color/primaryBrown"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewTreatment"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/primaryGreen"
+                android:text="View Treatment Guide"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_treatment" />
+
+        </LinearLayout>
+        <!-- HII NDIO TAG ULIYOKUWA UMESAHAU KUFUNGA -->
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

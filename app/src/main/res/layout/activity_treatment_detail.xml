@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/bg_header_curved">
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_previous"
+                app:tint="@android:color/white"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/treatment_guide"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="16dp">
+                <ImageView
+                    android:id="@+id/ivTreatmentImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/coffee_care_title"
+                    android:src="@drawable/coffee_leaf_sample" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Title Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="#F1F8E9"
+                android:layout_marginBottom="24dp">
+                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/tvTreatmentTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Disease Name"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#3E2723"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Description Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_the_disease"
+                android:textColor="#3E2723"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                android:layout_marginBottom="20dp"
+                app:cardElevation="2dp">
+                <TextView
+                    android:id="@+id/tvTreatmentDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Description will appear here."
+                    android:textColor="#5D4037"
+                    android:lineSpacingExtra="4dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Symptoms Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/visible_symptoms"
+                android:textColor="#3E2723"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                android:layout_marginBottom="20dp"
+                app:cardElevation="2dp">
+                <TextView
+                    android:id="@+id/tvTreatmentSymptoms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Symptoms will appear here."
+                    android:textColor="#5D4037"
+                    android:lineSpacingExtra="4dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ai_recommendations"
+                android:textColor="#3E2723"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="2dp">
+                <TextView
+                    android:id="@+id/tvAiRecommendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textColor="#1B5E20"
+                    android:lineSpacingExtra="4dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/label_medicine_used"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMedicineUsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_medicine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveTreatment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_save_treatment"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Treatment Steps Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recommended_treatment"
+                android:textColor="#3E2723"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                android:layout_marginBottom="20dp"
+                app:cardElevation="2dp">
+                <TextView
+                    android:id="@+id/tvTreatmentSteps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Treatment steps will appear here."
+                    android:textColor="#1B5E20"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="4dp"/>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="188dp"
+    android:viewportWidth="360"
+    android:viewportHeight="188">
+    <!-- Dark base (greeting zone) -->
+    <path
+        android:fillColor="#1B3022"
+        android:pathData="M0,0h360v188h-360z" />
+    <!-- Bright green top toolbar band -->
+    <path
+        android:fillColor="#52B788"
+        android:pathData="M0,0h360v66h-360z" />
+    <path
+        android:fillAlpha="0.85"
+        android:fillColor="#74C69D"
+        android:pathData="M0,0h360v58c0,0 -40,18 -180,18S0,58 0,58z" />
+    <!-- Layered waves at bottom -->
+    <path
+        android:fillColor="#1B3022"
+        android:pathData="M0,132c0,0 -58,52 -180,52S0,132 0,132c0,0 58,36 180,36S360,168 360,132V188H0z" />
+    <path
+        android:fillAlpha="0.9"
+        android:fillColor="#2D6A4F"
+        android:pathData="M0,142c0,0 -48,40 -180,40S0,142 0,142c0,0 48,28 180,28S360,170 360,142V188H0z" />
+</vector>

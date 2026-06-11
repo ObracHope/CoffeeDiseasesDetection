@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_parchment">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/bg_header_curved">
+         <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_media_previous"
+            app:tint="@android:color/white"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disease Reports"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/btnExportReport"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/export"
+            android:src="@android:drawable/ic_menu_share"
+            app:tint="@android:color/white" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvReportSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:lineSpacingExtra="4dp"
+                android:textColor="#3E2723"
+                android:textSize="14sp" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChartReports"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExportReportMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#4E342E"
+                android:text="@string/export" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenAnalytics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics"
+                android:backgroundTint="#33691E" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

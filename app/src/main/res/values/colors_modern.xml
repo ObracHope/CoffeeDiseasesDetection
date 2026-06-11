@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Glassmorphism Colors -->
+    <color name="glass_white">#4DFFFFFF</color> <!-- 30% White -->
+    <color name="glass_white_dark">#26FFFFFF</color> <!-- 15% White -->
+    <color name="glass_border">#80FFFFFF</color> <!-- 50% White -->
+    <color name="glass_border_dark">#40FFFFFF</color> <!-- 25% White -->
+
+    <!-- Secondary Accents -->
+    <color name="premium_gold">#FFD700</color>
+    <color name="coffee_cream">#FFF8E1</color>
+    <color name="coffee_deep">#3E2723</color>
+
+    <!-- Shadow / Elevation Colors -->
+    <color name="smooth_shadow">#1A000000</color>
+
+    <!-- Material 3 States -->
+    <color name="input_background">#F5F5F5</color>
+</resources>

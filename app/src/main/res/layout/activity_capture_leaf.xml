@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundCream"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/capture_coffee_leaf"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryGreen"
+        android:paddingBottom="16dp" />
+
+    <ImageView
+        android:id="@+id/imgPreview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_card_rounded" />
+
+    <Button
+        android:id="@+id/btnGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_from_gallery"
+        android:backgroundTint="@color/accentYellow"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnRetake"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Piga Picha Nyingine"
+        android:backgroundTint="@color/primaryBrown"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnDetect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Detect Disease"
+        android:backgroundTint="@color/primaryGreen"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Piga picha ya jani la kahawa"
+        android:textSize="14sp"
+        android:textColor="@color/textDark"
+        android:gravity="center"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/capture_with_camera"
+        android:backgroundTint="@color/primaryGreen"
+        android:textAllCaps="false"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

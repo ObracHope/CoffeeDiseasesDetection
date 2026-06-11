@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/bg_parchment">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Your Profile"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryBrown"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvProfileHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_photo_only"
+        android:textSize="13sp"
+        android:textColor="@color/textMedium"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Profile Photo -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:id="@+id/ivProfilePhoto"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person_custom"
+            android:background="@drawable/bg_circle"
+            android:clipToOutline="true"
+            android:contentDescription="Profile photo" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_camera_custom"
+            android:background="@drawable/bg_circle"
+            android:padding="6dp"
+            android:contentDescription="Change photo"
+            app:tint="#33691E" />
+    </FrameLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnChangePhoto"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/change_photo"
+        android:textColor="@color/primaryGreen"
+        android:layout_marginBottom="16dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:inputType="textPersonName"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:inputType="textPersonName"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:enabled="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location (no GPS — region / district / ward only)"
+        android:textSize="13sp"
+        android:textColor="@color/primaryBrown"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etRegion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Region (e.g. Kilimanjaro)"
+            android:inputType="textCapWords"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDistrict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="District / Wilaya"
+            android:inputType="textCapWords"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etWard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ward (optional)"
+            android:inputType="textCapWords"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Save Profile"
+            app:cornerRadius="12dp"
+            android:backgroundTint="@color/primaryGreen"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/white"/>
+    </FrameLayout>
+
+</LinearLayout>
+</ScrollView>

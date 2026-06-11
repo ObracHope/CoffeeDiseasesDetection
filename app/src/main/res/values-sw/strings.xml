@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coffee Disease Detection</string>
+
+    <!-- Landing -->
+    <string name="landing_welcome_title">Linda Mazao Yako ya Kahawa</string>
+    <string name="landing_welcome_subtitle">Gundua magonjwa mapema na Linda Mazao ya Kahawa. Pakia au skana picha za majani ya kahawa kupata matokeo ya papo hapo.</string>
+    <string name="landing_login">Ingia</string>
+    <string name="landing_register">Huna Akaunti? Jisajili</string>
+    <string name="landing_logn">Tayari una Akaunti? Ingia</string>
+    <string name="no_account_register">Huna akaunti? Jisajili</string>
+    <string name="content_logo">Logo ya App</string>
+
+    <!-- Login -->
+    <string name="login_subtitle">Gundua na ulinde zao lako la kahawa</string>
+    <string name="hint_email">Barua Pepe</string>
+    <string name="hint_email_or_username">Barua Pepe au Jina la mtumiaji</string>
+    <string name="login_identifier_required">Ingiza barua pepe au jina la mtumiaji</string>
+    <string name="login_password_required">Ingiza nenosiri</string>
+    <string name="login_failed_generic">Kuingia kumeshindwa. Jaribu tena.</string>
+    <string name="admin_google_login_blocked">Akaunti za admin haziingii kupitia Google. Tumia barua pepe/jina la mtumiaji na nenosiri.</string>
+    <string name="google_sign_in_failed">Kuingia kwa Google kumeshindwa. Jaribu tena.</string>
+    <string name="hint_password">Nenosiri</string>
+    <string name="btn_login">Ingia</string>
+    <string name="btn_register">Jisajili</string>
+    <string name="login_tagline">Gundua na ulinde zao lako la kahawa</string>
+
+    <!-- Farmer dashboard -->
+    <string name="welcome_farmer">Karibu, Mkulima!</string>
+    <string name="capture_leaf">Piga Picha Jani</string>
+    <string name="upload_image">Pakia Picha</string>
+    <string name="detect_disease">Gundua Ugonjwa</string>
+    <string name="disease_history">Historia ya Magonjwa</string>
+    <string name="treatment_guide">Mwongozo wa Matibabu</string>
+    <string name="farming_tips">Mbinu za Kilimo</string>
+    <string name="coffee_care_title">Mwongozo wa Utunzaji wa Kahawa</string>
+    <string name="report_challenge">Maoni</string>
+    <string name="challenge_title">Mada</string>
+    <string name="challenge_description">Tafadhali shiriki mawazo, mapendekezo, au wasiwasi wako</string>
+    <string name="submit_challenge">Tuma Maoni</string>
+    <string name="challenge_submitted">Maoni yametumwa kwa mafanikio</string>
+    <string name="view_challenges">Maoni ya Watumiaji</string>
+    <string name="statistics">Takwimu</string>
+    <string name="daily">Kila Siku</string>
+    <string name="weekly">Kila Wiki</string>
+    <string name="monthly">Kila Mwezi</string>
+    <string name="change_photo">Badilisha Picha</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Nyumbani</string>
+    <string name="nav_scan">Skani</string>
+    <string name="nav_history">Historia</string>
+    <string name="nav_profile">Wasifu</string>
+
+    <!-- Admin -->
+    <string name="admin_dashboard">Dashibodi ya Admin</string>
+    <string name="manage_farmers">Dhibiti Wakulima</string>
+    <string name="add_user">Ongeza Mtumiaji</string>
+    <string name="users_list">Watumiaji</string>
+    <string name="user_added">Mtumiaji ameongezwa. Tafadhali ingia tena.</string>
+    <string name="settings">Mipangilio</string>
+    <string name="notifications">Arifa</string>
+    <string name="no_notifications">Hakuna arifa bado</string>
+    <string name="settings_language">Lugha / Language</string>
+    <string name="settings_theme">Muonekano</string>
+    <string name="settings_light">Mwangaza</string>
+    <string name="settings_dark">Giza</string>
+    <string name="settings_change_password">Badilisha Nenosiri</string>
+    <string name="password_changed">Nenosiri limebadilishwa</string>
+    <string name="total_farmers">Jumla ya Wakulima</string>
+    <string name="images_uploaded">Picha Zilizopakiwa</string>
+    <string name="diseases_detected">Magonjwa Yaliyogundulika</string>
+    <string name="reports_count">Ripoti</string>
+    <string name="notification_settings">Mipangilio ya Arifa</string>
+    <string name="msg_notifications">Arifa za Mlipuko wa Magonjwa</string>
+    <string name="grp_notifications">Ripoti za Matokeo ya Utambuzi</string>
+    <string name="status_notifications_header">Mbinu za Kilimo cha Kahawa</string>
+    <string name="show_notifications_label">Onyesha arifa</string>
+    <string name="sound_label">Sauti</string>
+    <string name="reaction_notifications_label">Arifa za majibu</string>
+
+    <!-- Result / treatment -->
+    <string name="disease_detected">Ugonjwa Umegundulika</string>
+    <string name="view_treatment">Angalia Matibabu</string>
+    <string name="retake_photo">Piga Picha Tena</string>
+    <string name="share">Shiriki</string>
+
+    <!-- Register -->
+    <string name="register_title">Fungua Akaunti</string>
+    <string name="register_firstname">Jina la kwanza</string>
+    <string name="register_lastname">Jina la ukoo</string>
+    <string name="register_gender">Jinsia</string>
+    <string name="register_phone">Namba ya simu</string>
+    <string name="register_repeat_password">Rudia nenosiri</string>
+    <string name="register_agree_terms">Ninakubaliana na vigezo na masharti</string>
+    <string name="register_create_account">Fungua Akaunti</string>
+    <string name="passwords_do_not_match">Nenosiri hazifanani</string>
+    <string name="registration_success">Umejisajili kwa mafanikio</string>
+    <string name="forgot_password">Umesahau Nenosiri?</string>
+
+    <!-- Generic -->
+    <string name="required">Inahitajika</string>
+    <string name="login_failed">Ingia imeshindikana</string>
+    <string name="wrong_credentials">Barua pepe au nenosiri si sahihi.</string>
+    <string name="failed_load_role">Imeshindwa kupata jukumu la mtumiaji</string>
+    <string name="edit">Hariri</string>
+    <string name="role_farmer">Mkulima</string>
+    <string name="role_admin">Admin</string>
+    <string name="btn_back">Nyuma</string>
+
+    <!-- Common -->
+    <string name="signing_in">Inaingia...</string>
+    <string name="login">INGIA</string>
+    <string name="processing">Inashughulikia...</string>
+    <string name="none">Hakuna</string>
+    <string name="unknown">Haijulikani</string>
+    <string name="default_ringtone">Chaguo-msingi</string>
+    <string name="habari_greeting">Habari, </string>
+    <string name="kiswahili">Kiswahili</string>
+    <string name="english">English</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_hello">Habari,</string>
+    <string name="dashboard_welcome_back">Karibu tena,</string>
+    <string name="dashboard_tagline">Tukulime kahawa bora pamoja 🌱</string>
+    <string name="dashboard_tagline_short">Linda Kahawa Yako, Ongeza Faida</string>
+    <string name="see_all">Angalia Zote</string>
+    <string name="upload_image_label">Pakia Picha</string>
+    <string name="coffee_scan_desc">Skani kahawa yako kwa uchambuzi wa papo hapo</string>
+    <string name="upload_image_desc">Pakia picha kwa tathmini</string>
+    <string name="activity_overview">Muhtasari wa Shughuli Zako</string>
+    <string name="score_label">Alama</string>
+    <string name="risk_level_label">Hatari</string>
+    <string name="stat_scans">Skani</string>
+    <string name="stat_status">Hali</string>
+    <string name="stat_risk">Hatari</string>
+    <string name="risk_low">Chini</string>
+    <string name="risk_medium">Wastani</string>
+    <string name="risk_high">Juu</string>
+    <string name="status_healthy_label">Afya</string>
+    <string name="tap_learn_more">Gusa kujifunza zaidi</string>
+    <string name="coffee_scan_label">Skani Kahawa</string>
+    <string name="capture_coffee_leaf">Piga Picha Jani la Kahawa</string>
+    <string name="analyzing_please_wait">Inachambua picha ya jani, tafadhali subiri…</string>
+    <string name="detecting_disease">Inagundua ugonjwa…</string>
+
+    <!-- Detection steps -->
+    <string name="step1_coffee_yes">Hatua 1: Hii ni picha ya kahawa</string>
+    <string name="step1_coffee_no">Hatua 1: Hii si picha ya kahawa</string>
+    <string name="step2_healthy">Hatua 2: Kahawa yenye afya (hakuna ugonjwa)</string>
+    <string name="step2_diseased">Hatua 2: Kahawa iliyo na ugonjwa</string>
+    <string name="step2_uncertain">Hatua 2: Kahawa — afya au ugonjwa haijulikani</string>
+    <string name="step3_no_disease">Hatua 3: Hakuna ugonjwa uliogunduliwa</string>
+    <string name="step3_uncertain">Hatua 3: Ugonjwa haujulikani — jaribu picha nyingine</string>
+    <string name="step3_disease">Hatua 3: Ugonjwa — %1$s</string>
+    <string name="not_coffee_title">Samahani hii si picha ya kahawa</string>
+    <string name="not_coffee_desc">Hii sio picha ya kahawa. Tafadhali tumia picha ya jani, maua, au beri za kahawa.</string>
+    <string name="not_coffee_symptoms">Tumia picha za mmea wa kahawa pekee.</string>
+    <string name="not_coffee_treatment">Epuka uso, ardhi, au vitu vingine. Piga picha kwa mwanga mzuri.</string>
+    <string name="uncertain_result_title">Matokeo Yasiyo wazi</string>
+    <string name="uncertain_desc">Hii inaonekana ni kahawa, lakini hatujaweza kuthibitisha afya au ugonjwa gani.</string>
+    <string name="uncertain_symptoms">Piga picha tena: jani moja, mwanga mzuri, karibu.</string>
+    <string name="uncertain_treatment">Jaribu tena baada ya sekunde chache.</string>
+    <string name="error_title">Hitilafu</string>
+    <string name="description_label">Maelezo</string>
+    <string name="recommended_actions">Hatua Zinazopendekezwa</string>
+    <string name="btn_try_again">Jaribu Tena</string>
+    <string name="btn_retake_photo">Piga Picha Tena</string>
+    <string name="btn_view_care">Angalia Utunzaji</string>
+    <string name="btn_view_treatment">Angalia Matibabu</string>
+    <string name="featured_badge">ILICHAGULIWA</string>
+    <string name="tap_learn_more_arrow">Gusa kujifunza zaidi →</string>
+
+    <!-- Disease names & details -->
+    <string name="disease_healthy_name">Kahawa yenye Afya</string>
+    <string name="disease_rust_name">Kutu ya Majani ya Kahawa</string>
+    <string name="disease_berry_name">Ugonjwa wa Beri ya Kahawa</string>
+    <string name="disease_wilt_name">Mnyauko wa Kahawa</string>
+    <string name="disease_leaf_miner_name">Mdudu Mchimbaji</string>
+    <string name="disease_root_rot_name">Oza ya Mizizi</string>
+    <string name="disease_healthy_desc">Mmea wa kahawa uko katika hali nzuri ya afya.</string>
+    <string name="disease_rust_desc">Kutu ya majani ni ugonjwa wa fangasi unaoharibu majani.</string>
+    <string name="disease_berry_desc">Ugonjwa wa beri huathiri matunda ya kahawa moja kwa moja.</string>
+    <string name="disease_wilt_desc">Mnyauko wa kahawa husababisha mmea kukauka na kufa.</string>
+    <string name="disease_leaf_miner_desc">Mdudu mchimbaji huharibu tishu za ndani ya jani.</string>
+    <string name="disease_root_rot_desc">Oza ya mizizi husababishwa na unyevu mwingi au fangasi wa udongo.</string>
+    <string name="disease_healthy_symptoms">Majani ya kijani kibichi, hakuna madoa, mmea una nguvu.</string>
+    <string name="disease_rust_symptoms">Madoa ya njano/machungwa chini ya jani.</string>
+    <string name="disease_berry_symptoms">Madoa meusi kwenye beri; beri zinaweza kukauka.</string>
+    <string name="disease_wilt_symptoms">Majani kunyauka haraka; mmea unakunja.</string>
+    <string name="disease_leaf_miner_symptoms">Mistari meupe zenye umbo la zigzag kwenye jani.</string>
+    <string name="disease_root_rot_symptoms">Majani kugeuka njano licha ya maji; mmea kudumaa.</string>
+    <string name="disease_healthy_treatment">Endelea utunzaji bora: pumua, mbolea, na ukaguzi wa kila siku.</string>
+    <string name="disease_rust_treatment">Tumia dawa za fangasi za shaba, ondoa majani yaliyoathirika.</string>
+    <string name="disease_berry_treatment">Ondoa matunda yaliyoathirika; tumia fungicide wakati wa kutoa maua.</string>
+    <string name="disease_wilt_treatment">Ng\'oa mimea iliyoathirika; boresha mifereji ya maji.</string>
+    <string name="disease_leaf_miner_treatment">Tumia dawa za wadudu; ondoa majani yaliyoathirika sana.</string>
+    <string name="disease_root_rot_treatment">Boresha mifereji; tumia fungicide ya udongo.</string>
+
+    <!-- Coffee care tips -->
+    <string name="tip_healthy_title">Kahawa yenye Afya</string>
+    <string name="tip_healthy_desc">Mmea wa kahawa unaonekana mzima. Majani ni ya kijani kibichi.</string>
+    <string name="tip_healthy_symptoms">Majani safi bila madoa au rangi isiyo ya kawaida.</string>
+    <string name="tip_healthy_treatment">Endelea utunzaji wa kawaida: pumua, mbolea, na maji ya kutosha.</string>
+    <string name="tip_rust_title">Kutu ya Majani ya Kahawa</string>
+    <string name="tip_rust_desc">Kutu ya majani ni ugonjwa mbaya wa fangasi unaoharibu majani ya kahawa.</string>
+    <string name="tip_rust_symptoms">Madoa ya unga wa njano/machungwa chini ya jani.</string>
+    <string name="tip_rust_treatment">Tumia dawa za fangasi zenye shaba na ondoa majani yaliyoathirika.</string>
+    <string name="tip_berry_title">Ugonjwa wa Beri ya Kahawa</string>
+    <string name="tip_berry_desc">Ugonjwa wa beri huashambulia beri za kahawa moja kwa moja.</string>
+    <string name="tip_berry_symptoms">Madoa meusi yaliyozama kwenye beri za kijani.</string>
+    <string name="tip_berry_treatment">Tumia fungicide wakati wa kutoa maua na ukuaji wa beri.</string>
+    <string name="tip_wilt_title">Mnyauko wa Kahawa</string>
+    <string name="tip_wilt_desc">Mnyauko wa kahawa huua mmea mzima kwa muda mfupi.</string>
+    <string name="tip_wilt_symptoms">Matawi kunyauka ghafla; mmea kukauka kutoka juu.</string>
+    <string name="tip_wilt_treatment">Ng\'oa na choma mimea iliyoathirika ili kuzuia kuenea.</string>
+    <string name="tip_leaf_miner_title">Mdudu Mchimbaji</string>
+    <string name="tip_leaf_miner_desc">Mdudu mchimbaji huchimba ndani ya jani na kuharibu tishu.</string>
+    <string name="tip_leaf_miner_symptoms">Mistari meupe zenye umbo la zigzag kwenye jani.</string>
+    <string name="tip_leaf_miner_treatment">Tumia dawa za wadudu na ondoa majani yaliyoathirika.</string>
+    <string name="tip_root_rot_title">Oza ya Mizizi</string>
+    <string name="tip_root_rot_desc">Oza ya mizizi husababishwa na fangasi wa udongo na unyevu mwingi.</string>
+    <string name="tip_root_rot_symptoms">Majani kugeuka njano na mmea kudumaa licha ya maji.</string>
+    <string name="tip_root_rot_treatment">Boresha mifereji ya maji na tumia fungicide ya udongo.</string>
+
+    <!-- Settings & profile -->
+    <string name="settings_subtitle">Dhibiti mapendeleo na mipangilio ya akaunti</string>
+    <string name="settings_language_hint">Chagua lugha unayopendelea</string>
+    <string name="settings_theme_hint">Chagua mwanga au giza</string>
+    <string name="theme_light_mode">Mwanga</string>
+    <string name="theme_dark_mode">Giza</string>
+    <string name="logout_account">Toka kwenye Akaunti</string>
+    <string name="logged_out_success">Umetoka kwa mafanikio</string>
+    <string name="logout_confirm_title">Toka</string>
+    <string name="logout_confirm_message">Una uhakika unataka kutoka?</string>
+    <string name="yes">Ndiyo</string>
+    <string name="no">Hapana</string>
+    <string name="camera_permission_denied">Ruhusa ya kamera imekataliwa</string>
+    <string name="data_safe_message">Data yako iko salama nasi. Tunalinda taarifa na faragha yako.</string>
+    <string name="profile_stay_informed">Endelea Kujua, Panda Bora</string>
+    <string name="profile_tagline">Kahawa yenye afya, mustakabali bora.</string>
+    <string name="nav_feedback">Maoni</string>
+    <string name="settings_notifications">Arifa</string>
+    <string name="settings_account_session">Kipindi cha Akaunti</string>
+    <string name="settings_account_session_hint">Dhibiti kipindi cha akaunti yako</string>
+    <string name="my_analytics">Takwimu Zangu</string>
+    <string name="uncertain_result">⚠ Matokeo Yasiyo wazi</string>
+    <string name="instruction_capture_leaf">Piga picha ya jani la kahawa</string>
+    <string name="instruction_photo_captured">Picha imechukuliwa. Bonyeza Gundua Ugonjwa</string>
+    <string name="instruction_image_selected">Picha imechaguliwa. Bonyeza Gundua Ugonjwa</string>
+    <string name="file_error">Kosa la faili: %1$s</string>
+    <string name="image_load_error">Imeshindwa kupakia picha: %1$s</string>
+    <string name="image_load_failed">Imeshindwa kupakia picha</string>
+    <string name="error_with_message">Kosa: %1$s</string>
+    <string name="capture_failed">Kupiga picha kumeshindwa</string>
+    <string name="process_image_failed">Imeshindwa kuchakata picha</string>
+    <string name="permissions_not_granted">Ruhusa hazijatolewa</string>
+    <string name="update_profile_photo">Sasisha Picha ya Wasifu</string>
+    <string name="take_photo">Piga Picha</string>
+    <string name="choose_from_gallery">Chagua kutoka Ghala</string>
+    <string name="updating_photo">Inasasisha picha…</string>
+    <string name="profile_photo_updated">Picha ya wasifu imesasishwa</string>
+    <string name="failed_save_url">Imeshindwa kuhifadhi kiungo cha picha</string>
+    <string name="upload_failed">Upakiaji umeshindwa: %1$s</string>
+    <string name="notification_permission_denied">Ruhusa ya arifa imekataliwa</string>
+    <string name="fill_all_fields">Tafadhali jaza sehemu zote</string>
+    <string name="please_login_first">Tafadhali ingia kwanza</string>
+    <string name="submitting_report">Inatuma ripoti…</string>
+    <string name="submission_failed">Utumaji umeshindwa: %1$s</string>
+    <string name="challenge_status">Hali: %1$s</string>
+    <string name="admin_reply">Jibu la admin: %1$s</string>
+    <string name="symptom_rust_hint">Inaonekana Kutu ya Majani. Angalia Mwongozo wa Matibabu.</string>
+    <string name="symptom_wilt_hint">Inaonekana Mnyauko. Tenganisha mmea ulioathirika.</string>
+    <string name="symptom_unclear_hint">Dalili hazijulikani. Piga picha wazi kwa uchambuzi wa AI.</string>
+    <string name="risk_level_low">Hatari ya Chini</string>
+    <string name="recent_activity">Shughuli za Hivi Karibuni</string>
+    <string name="quick_actions">Vitendo vya Haraka</string>
+    <string name="coffee_care_description">Skani au pakia picha za majani ya kahawa kugundua magonjwa. Tumia Historia na Mwongozo wa Matibabu kutoka menyu.</string>
+    <string name="sheet_about">Maelezo</string>
+    <string name="sheet_symptoms">Dalili</string>
+    <string name="sheet_treatment_care">Matibabu / Utunzaji</string>
+    <string name="close">Funga</string>
+    <string name="about_the_disease">Kuhusu Ugonjwa</string>
+    <string name="visible_symptoms">Dalili Zinazoonekana</string>
+    <string name="recommended_treatment">Matibabu Yanayopendekezwa</string>
+    <string name="tap_for_details">Gusa kwa maelezo zaidi</string>
+    <string name="view_treatment_guide">Angalia Mwongozo wa Matibabu</string>
+    <string name="google_sign_in_divider">—— ingia kwa ——</string>
+    <string name="continue_with_google">Endelea na Google</string>
+</resources>

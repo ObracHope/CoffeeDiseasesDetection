@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#558B2F"
+    tools:context=".RegisterActivity">
+
+    <!-- Blur Overlay removed for solid color background as requested -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="24dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="15dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/register_title"
+                    android:textColor="#2E1A0F"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <Space android:layout_width="match_parent" android:layout_height="24dp" />
+
+                <!-- First Name -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_firstname"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:startIconDrawable="@android:drawable/ic_menu_edit">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <!-- Last Name -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_lastname"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <!-- Email -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:startIconDrawable="@android:drawable/ic_dialog_email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmailRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <!-- Gender Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:text="@string/register_gender"
+                    android:textColor="#5D4037"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/rgGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male" />
+
+                    <RadioButton
+                        android:id="@+id/rbFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="Female" />
+                </RadioGroup>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <!-- Phone Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerCountryCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_card_rounded"
+                        android:minWidth="100dp" />
+
+                    <Space android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Phone Number"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:text="@string/register_location_section"
+                    android:textColor="#5D4037"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRegion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Region (e.g. Kilimanjaro)"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="District / Wilaya"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etWard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ward (optional)"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <!-- Password -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_password"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:endIconMode="password_toggle"
+                    app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPasswordRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <!-- Repeat Password -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_repeat_password"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRepeatPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/cbAgree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/register_agree_terms"
+                    android:textColor="#3E2723"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCreateAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/primaryGreen"
+                    android:text="@string/register_create_account"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:elevation="4dp" />
+
+                <!-- Separator -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="------ or register with ------"
+                    android:textColor="#888888"
+                    android:textSize="14sp" />
+
+                <!-- Google Register Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGoogleRegister"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Continue with Google"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_google_logo"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    app:iconTint="@null"
+                    app:strokeColor="#DDDDDD"
+                    app:strokeWidth="1dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tvLoginLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:text="@string/landing_logn"
+                    android:textColor="@color/primaryBrown"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/primaryGreen" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundCream"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryGreen"
+            android:paddingBottom="24dp" />
+
+        <!-- Language -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_language"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvLanguageStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english"
+                    android:layout_marginEnd="12dp"
+                    android:textColor="#555555" />
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:trackDecorationTint="#AEC6E3"
+                    app:thumbTint="#003366" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Theme Mode -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_theme"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvThemeStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_light"
+                    android:layout_marginEnd="12dp"
+                    android:textColor="#555555" />
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:trackDecorationTint="#AEC6E3"
+                    app:thumbTint="#003366" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Change Password -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_change_password"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/btnChangePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_change_password"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/primaryGreen"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Notifications -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notifications"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/btnNotifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notifications"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/primaryBrown"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Admin: Manage Users (visible only for admin) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardManageUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_farmers"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/btnManageUsers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_farmers"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/primaryBrown"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Logout Section -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_account_session"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="@string/logout_account"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="#D32F2F"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

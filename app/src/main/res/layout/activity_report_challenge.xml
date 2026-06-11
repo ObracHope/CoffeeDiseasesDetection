@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_parchment"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Your Feedback"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etChallengeTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/challenge_title_hint"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/challenge_category_label"
+                    android:textColor="#444444"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_border_gray"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_border_gray"
+                    android:gravity="top"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/ic_report_custom"
+                        app:tint="#444444" />
+
+                    <EditText
+                        android:id="@+id/etChallengeDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="top|start"
+                        android:hint="@string/challenge_description"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="8dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnSubmitChallenge"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#8ba4c1"
+                    android:text="@string/submit_challenge"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnViewMyChallenges"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/primaryGreen"
+                    android:text="View My Challenges"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

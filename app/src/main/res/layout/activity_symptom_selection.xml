@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundCream"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_symptoms"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryGreen"
+        android:paddingBottom="16dp" />
+
+    <CheckBox
+        android:id="@+id/cbYellowSpots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/symptom_yellow_spots" />
+
+    <CheckBox
+        android:id="@+id/cbBrownSpots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/symptom_brown_spots" />
+
+    <CheckBox
+        android:id="@+id/cbWiltedLeaves"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/symptom_wilted_leaves" />
+
+    <CheckBox
+        android:id="@+id/cbRottingBerries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/symptom_rotting_berries" />
+
+    <CheckBox
+        android:id="@+id/cbWhiteFuzzy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/symptom_white_fuzzy" />
+
+    <Button
+        android:id="@+id/btnAnalyzeSymptoms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/analyze_symptoms"
+        android:backgroundTint="#2E7D32"
+        android:textAllCaps="false"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
+

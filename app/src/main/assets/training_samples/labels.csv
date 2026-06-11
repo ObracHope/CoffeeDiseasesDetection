@@ -1,0 +1,11 @@
+path,label
+safe/healthy_leaf_1.jpg,healthy
+safe/healthy_berries_1.jpg,healthy
+safe/healthy_plantation_1.jpg,healthy
+safe/healthy_flowers_1.jpg,healthy
+unsafe/rust_leaf_1.jpg,coffee_leaf_rust
+unsafe/cercospora_leaf_1.jpg,cercospora_leaf_spot
+unsafe/cercospora_fruit_1.jpg,cercospora_fruit_spot
+unsafe/sooty_mold_1.jpg,sooty_mold
+unsafe/anthracnose_1.jpg,anthracnose
+unsafe/berry_disease_1.jpg,coffee_berry_disease

@@ -1,0 +1,17 @@
+{
+  "classes": [
+    "Coffee",
+    "NotCoffee"
+  ],
+  "coffee_index": 0,
+  "not_coffee_index": 1,
+  "image_size": [
+    224,
+    224
+  ],
+  "input_range": "0-255 float (model has internal Rescaling 1/255)",
+  "val_accuracy": 0.9968833327293396,
+  "tflite": "training\\output\\coffee_gate.tflite",
+  "source": "coffee_gate_best.keras",
+  "note": "Exported from best checkpoint"
+}

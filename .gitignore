@@ -1,0 +1,49 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Node / Firebase
+node_modules/
+functions/node_modules/
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+*.local
+
+# Training data (large — see training/README.md)
+dataset/
+seed_images/
+training/binary_staging/
+training/synthetic_dataset/
+
+# Keras checkpoints (TFLite copies live in app/src/main/assets/)
+training/output/*.keras
+training/output/best_model.keras
+
+# Build outputs
+app/build/
+
+# Misc
+auth_test.json
+NO
+*.7z

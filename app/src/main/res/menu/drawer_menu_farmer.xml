@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_disease_history"
+        android:icon="@drawable/ic_history_custom"
+        android:title="@string/disease_history" />
+    <item android:id="@+id/nav_treatment_guide"
+        android:icon="@drawable/ic_treatment_custom"
+        android:title="@string/treatment_guide" />
+    <item android:id="@+id/nav_report_challenge"
+        android:icon="@drawable/ic_report_custom"
+        android:title="@string/report_challenge" />
+    <item android:id="@+id/nav_my_analytics"
+        android:icon="@drawable/ic_analytics_custom"
+        android:title="@string/my_analytics" />
+    <item android:id="@+id/nav_notifications"
+        android:icon="@drawable/ic_notification_custom"
+        android:title="@string/btn_notification_center" />
+    <item android:id="@+id/nav_farming_tips"
+        android:icon="@drawable/ic_tips_custom"
+        android:title="@string/farming_tips" />
+    <item android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings_custom"
+        android:title="@string/settings" />
+
+</menu>

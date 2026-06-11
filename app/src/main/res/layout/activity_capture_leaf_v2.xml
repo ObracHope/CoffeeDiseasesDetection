@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_parchment">
+
+    <!-- Top Curved Banner -->
+    <View
+        android:id="@+id/topBanner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_header_curved"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button Icon -->
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="Back"
+        android:padding="10dp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle"
+        app:tint="@color/white" />
+
+    <!-- Screen Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Capture Leaf"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Image Preview Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardPreview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/tvInstruction"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBanner">
+
+        <ImageView
+            android:id="@+id/ivImagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F5F5F5"
+            android:contentDescription="Image Preview"
+            android:scaleType="fitCenter" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Piga picha ya jani la kahawa"
+        android:textColor="@color/primaryBrown"
+        app:layout_constraintBottom_toTopOf="@id/btnCapture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Capture Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:minHeight="60dp"
+        android:text="Capture"
+        app:icon="@drawable/ic_camera_custom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Retake Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRetake"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:minHeight="60dp"
+        android:text="Retake"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btnDetect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Detect Disease Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDetect"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="32dp"
+        android:minHeight="60dp"
+        android:text="Detect Disease"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
