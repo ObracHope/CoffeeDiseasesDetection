@@ -44,6 +44,7 @@ public class AdminDashboardActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_admin_dashboard_modern);
+        verifyAdminRole();
         mDatabase = FirebaseDatabase.getInstance(AuthHelper.RTDB_URL).getReference();
 
         ivProfile = findViewById(R.id.ivAdminProfile);
@@ -56,11 +57,19 @@ public class AdminDashboardActivity extends BaseActivity {
             menuBtn.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         }
 
+        View searchBtn = findViewById(R.id.btnHeaderSearch);
+        if (searchBtn != null) {
+            searchBtn.setOnClickListener(v -> {
+                if (drawerLayout != null) drawerLayout.closeDrawers();
+                startActivity(new Intent(this, AdminGlobalSearchActivity.class));
+            });
+        }
+
         View notifBtn = findViewById(R.id.btnHeaderNotification);
         if (notifBtn != null) {
             notifBtn.setOnClickListener(v -> {
                 if (drawerLayout != null) drawerLayout.closeDrawers();
-                startActivity(new Intent(this, NotificationsActivity.class));
+                startActivity(new Intent(this, AdminBroadcastNotificationsActivity.class));
             });
         }
 
@@ -138,7 +147,8 @@ public class AdminDashboardActivity extends BaseActivity {
         else if (id == R.id.nav_admin_review_images) intent = new Intent(this, AdminReviewImagesActivity.class);
         else if (id == R.id.nav_admin_activity_log) intent = new Intent(this, AdminActivityLogActivity.class);
         else if (id == R.id.nav_admin_messages) intent = new Intent(this, AdminMessagesActivity.class);
-        else if (id == R.id.nav_admin_notifications) intent = new Intent(this, NotificationsActivity.class);
+        else if (id == R.id.nav_admin_notifications) intent = new Intent(this, AdminBroadcastNotificationsActivity.class);
+        else if (id == R.id.nav_admin_roles) intent = new Intent(this, AdminRolesActivity.class);
         else if (id == R.id.nav_admin_disease_database) intent = new Intent(this, AdminDiseaseDatabaseActivity.class);
         else if (id == R.id.nav_admin_recommendations) intent = new Intent(this, AdminRecommendationsActivity.class);
         else if (id == R.id.nav_admin_settings) intent = new Intent(this, AdminInternationalSettingsActivity.class);
@@ -195,6 +205,28 @@ public class AdminDashboardActivity extends BaseActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    private void verifyAdminRole() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+        AuthHelper.fetchUserRole(user.getUid(), new AuthHelper.RoleCallback() {
+            @Override
+            public void onRole(String role) {
+                if (isFinishing()) return;
+                if (!AuthHelper.isAdminRole(role)) {
+                    android.widget.Toast.makeText(AdminDashboardActivity.this,
+                            R.string.admin_access_denied, android.widget.Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(AdminDashboardActivity.this, FarmerDashboardActivity.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Allow access if profile fetch fails — data hub will use RTDB fallback
             }
         });
     }

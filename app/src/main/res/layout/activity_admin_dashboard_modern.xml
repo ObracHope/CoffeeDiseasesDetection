@@ -46,6 +46,19 @@
             app:strokeColor="@color/white"
             app:strokeWidth="2dp"/>
 
+        <!-- Global Search -->
+        <ImageView
+            android:id="@+id/btnHeaderSearch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/admin_global_search"
+            android:padding="12dp"
+            android:src="@android:drawable/ic_menu_search"
+            app:layout_constraintEnd_toStartOf="@id/btnHeaderNotification"
+            app:layout_constraintTop_toTopOf="@id/ivAdminProfile"
+            app:tint="@color/white" />
+
         <!-- Notification Bell with Badge -->
         <FrameLayout
             android:id="@+id/btnHeaderNotification"

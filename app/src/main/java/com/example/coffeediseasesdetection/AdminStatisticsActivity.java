@@ -2,6 +2,7 @@ package com.example.coffeediseasesdetection;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -71,6 +72,27 @@ public class AdminStatisticsActivity extends BaseActivity {
         });
         tabPeriod.selectTab(tabPeriod.getTabAt(0));
         loadStats();
+        setupClickableCards();
+    }
+
+    private void setupClickableCards() {
+        View cardFarmers = findViewById(R.id.cardFarmersAccessed);
+        if (cardFarmers != null) {
+            cardFarmers.setOnClickListener(v ->
+                    startActivity(new android.content.Intent(this, AdminManageFarmersActivity.class)));
+        }
+        View cardImages = findViewById(R.id.cardImagesCount);
+        if (cardImages != null) {
+            cardImages.setOnClickListener(v ->
+                    startActivity(new android.content.Intent(this, AdminScansListActivity.class)));
+        }
+        View cardDiseases = findViewById(R.id.cardDiseasesFound);
+        if (cardDiseases != null) {
+            cardDiseases.setOnClickListener(v -> {
+                android.content.Intent i = new android.content.Intent(this, AdminScansListActivity.class);
+                startActivity(i);
+            });
+        }
     }
 
     private void setupBarChart() {

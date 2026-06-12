@@ -1,7 +1,9 @@
 package com.example.coffeediseasesdetection;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,8 +33,10 @@ public class AdminManageFarmersActivity extends BaseActivity {
 
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
-    private List<Map<String, Object>> usersList = new ArrayList<>();
+    private final List<Map<String, Object>> usersList = new ArrayList<>();
+    private final List<Map<String, Object>> filteredList = new ArrayList<>();
     private ManageUsersAdapter adapter;
+    private String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +72,20 @@ public class AdminManageFarmersActivity extends BaseActivity {
         spinnerRole.setAdapter(roleAdapter);
 
         recyclerUsers.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ManageUsersAdapter(usersList, this::removeUser, this::showEditUserDialog);
+        adapter = new ManageUsersAdapter(filteredList, this::removeUser, this::showEditUserDialog);
         recyclerUsers.setAdapter(adapter);
+
+        TextInputEditText etSearch = findViewById(R.id.etSearchFarmers);
+        if (etSearch != null) {
+            etSearch.addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+                @Override public void onTextChanged(CharSequence s, int a, int b, int c) {
+                    searchQuery = s != null ? s.toString().trim().toLowerCase(java.util.Locale.US) : "";
+                    applyFilter();
+                }
+                @Override public void afterTextChanged(Editable s) {}
+            });
+        }
 
         loadUsers();
 
@@ -130,8 +147,27 @@ public class AdminManageFarmersActivity extends BaseActivity {
                         m.put("_id", doc.getId());
                         usersList.add(m);
                     }
-                    adapter.notifyDataSetChanged();
+                    applyFilter();
                 });
+    }
+
+    private void applyFilter() {
+        filteredList.clear();
+        for (Map<String, Object> u : usersList) {
+            if (searchQuery.isEmpty() || matchesUser(u, searchQuery)) {
+                filteredList.add(u);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private static boolean matchesUser(Map<String, Object> u, String q) {
+        String[] keys = {"name", "firstName", "lastName", "email", "phone", "username", "region"};
+        for (String k : keys) {
+            Object v = u.get(k);
+            if (v != null && String.valueOf(v).toLowerCase(java.util.Locale.US).contains(q)) return true;
+        }
+        return false;
     }
 
     private void removeUser(String userId, String docId) {

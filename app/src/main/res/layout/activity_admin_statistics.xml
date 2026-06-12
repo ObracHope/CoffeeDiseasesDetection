@@ -64,10 +64,13 @@
             android:weightSum="3">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardFarmersAccessed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="#33691E"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
@@ -98,10 +101,13 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardImagesCount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="#558B2F"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
@@ -132,10 +138,13 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardDiseasesFound"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="#4E342E"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">

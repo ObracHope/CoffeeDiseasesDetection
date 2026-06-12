@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.osmdroid.config.Configuration;
+
 public class CoffeeApp extends Application {
 
     private static final String TAG = "CoffeeApp";
@@ -33,10 +35,20 @@ public class CoffeeApp extends Application {
             }
             LocaleHelper.applyAppLocale(this);
             ThemeHelper.applySavedTheme(this);
+            initOsmdroid(this);
             initFirebasePersistence(this);
             scheduleBackgroundWork();
         } catch (Exception e) {
             Log.e(TAG, "Application init failed", e);
+        }
+    }
+
+    private static void initOsmdroid(Context context) {
+        try {
+            Configuration.getInstance().load(context, context.getSharedPreferences("osmdroid", Context.MODE_PRIVATE));
+            Configuration.getInstance().setUserAgentValue(context.getPackageName());
+        } catch (Exception e) {
+            Log.w(TAG, "OSMDroid init skipped", e);
         }
     }
 

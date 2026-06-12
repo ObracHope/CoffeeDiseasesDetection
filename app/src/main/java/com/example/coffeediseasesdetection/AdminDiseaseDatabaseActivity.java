@@ -62,6 +62,26 @@ public class AdminDiseaseDatabaseActivity extends BaseActivity {
             });
         }
         updateEmptyState();
+        loadFirestoreDiseases();
+    }
+
+    private void loadFirestoreDiseases() {
+        com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("diseases").get()
+                .addOnSuccessListener(snap -> {
+                    if (isFinishing()) return;
+                    for (com.google.firebase.firestore.QueryDocumentSnapshot doc : snap) {
+                        String name = doc.getString("name");
+                        if (name != null && !name.trim().isEmpty()) {
+                            String key = DiseaseLabels.normalizeKey(name.trim());
+                            if (!allKeys.contains(key)) {
+                                allKeys.add(key);
+                                filteredKeys.add(key);
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                    updateEmptyState();
+                });
     }
 
     private void filter(String query) {
