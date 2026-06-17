@@ -183,31 +183,46 @@ public final class ScanHistoryLoader {
         public final int totalScans;
         public final int diseasesFound;
         public final String latestDiseaseKey;
+        public final List<Map<String, Object>> recentScans;
 
-        DashboardStats(int totalScans, int diseasesFound, String latestDiseaseKey) {
+        DashboardStats(int totalScans, int diseasesFound, String latestDiseaseKey,
+                       List<Map<String, Object>> recentScans) {
             this.totalScans = totalScans;
             this.diseasesFound = diseasesFound;
             this.latestDiseaseKey = latestDiseaseKey;
+            this.recentScans = recentScans != null ? recentScans : new ArrayList<>();
         }
     }
 
     public static DashboardStats computeStats(List<Map<String, Object>> scans) {
-        int total = 0;
+        if (scans == null || scans.isEmpty()) {
+            return new DashboardStats(0, 0, "Healthy", new ArrayList<>());
+        }
+
+        int total = scans.size();
         int diseases = 0;
         String latestKey = "Healthy";
 
-        for (Map<String, Object> doc : scans) {
+        for (int i = 0; i < scans.size(); i++) {
+            Map<String, Object> doc = scans.get(i);
             String raw = doc.get("disease") != null ? doc.get("disease").toString() : null;
             if (raw == null && doc.get("diseaseName") != null) {
                 raw = doc.get("diseaseName").toString();
             }
             String key = DiseaseLabels.normalizeKey(raw);
-            if (!DiseaseLabels.isValidScan(key)) continue;
-            total++;
-            if (DiseaseLabels.isDiseaseFound(key)) diseases++;
-            latestKey = key;
+            if (i == 0) {
+                latestKey = key;
+            }
+            if (DiseaseLabels.isDiseaseFound(key)) {
+                diseases++;
+            }
         }
-        return new DashboardStats(total, diseases, latestKey);
+
+        List<Map<String, Object>> recent = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, scans.size()); i++) {
+            recent.add(scans.get(i));
+        }
+        return new DashboardStats(total, diseases, latestKey, recent);
     }
 
     /** Mirror scan to users/{uid}/scans for reliable reads (no composite index). */

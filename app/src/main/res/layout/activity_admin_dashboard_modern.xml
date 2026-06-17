@@ -5,106 +5,327 @@
     android:id="@+id/drawer_layout_admin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_parchment"
+    android:background="@color/dashboard_body"
     tools:context=".AdminDashboardActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 1. Header Section with Curved Background -->
         <View
             android:id="@+id/header_view"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@drawable/bg_header_curved"
+            android:layout_width="0dp"
+            android:layout_height="138dp"
+            android:background="@drawable/bg_header_gradient_curved"
+            android:elevation="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivMenuAdmin"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_menu_custom"
-            app:tint="@color/white"
-            android:padding="12dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <!-- Profile / Header Circle -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivAdminProfile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/placeholder_user"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ivMenuAdmin"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-            app:strokeColor="@color/white"
-            app:strokeWidth="2dp"/>
-
-        <!-- Global Search -->
-        <ImageView
-            android:id="@+id/btnHeaderSearch"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="4dp"
-            android:contentDescription="@string/admin_global_search"
-            android:padding="12dp"
-            android:src="@android:drawable/ic_menu_search"
-            app:layout_constraintEnd_toStartOf="@id/btnHeaderNotification"
-            app:layout_constraintTop_toTopOf="@id/ivAdminProfile"
-            app:tint="@color/white" />
-
-        <!-- Notification Bell with Badge -->
-        <FrameLayout
-            android:id="@+id/btnHeaderNotification"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="12dp"
-            app:layout_constraintEnd_toStartOf="@id/ivAdminProfile"
-            app:layout_constraintTop_toTopOf="@id/ivAdminProfile">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_notification_custom"
-                app:tint="@color/white"
-                android:padding="12dp" />
-
-            <TextView
-                android:id="@+id/tvNotificationCount"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:background="@drawable/bg_circle"
-                android:backgroundTint="#FF3D00"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:gravity="center"
-                android:text="0"
-                android:visibility="gone"
-                android:layout_gravity="top|end"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp" />
-        </FrameLayout>
-
         <TextView
-            android:id="@+id/tvAppTitle"
+            android:id="@+id/tvDashboardTypeTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Admin Dashboard"
+            android:background="@drawable/bg_dashboard_type_tag"
+            android:elevation="18dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:text="@string/header_admin_dashboard_tag"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="7sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/ivMenuAdmin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Admin Name (hidden, used for data) -->
+        <LinearLayout
+            android:id="@+id/headerContent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="24dp"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/header_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/header_view">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/ivMenuAdmin"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_header_action_square">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/menu"
+                        android:src="@drawable/ic_menu_custom"
+                        app:tint="@color/white" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/ivHeaderLogo"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_logo_header_circle"
+                    android:padding="2dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/content_logo"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/app_logo" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/headerTitleBlock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvHeaderTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.03"
+                        android:lineSpacingMultiplier="0.9"
+                        android:maxLines="2"
+                        android:text="@string/header_app_title"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvHeaderSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="@string/header_admin_subtitle"
+                        android:textColor="#E8F5E9"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/tvHeaderAdminTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/bg_admin_panel_badge"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/header_admin_tag"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/weatherStrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/bg_weather_strip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="3dp">
+
+                        <TextView
+                            android:id="@+id/tvWeatherIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:text="☀️"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvHeaderWeather"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:ellipsize="marquee"
+                            android:includeFontPadding="false"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:singleLine="true"
+                            android:text="@string/weather_sample"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            tools:text="Moshi, Kilimanjaro • 28°C • Humidity 60%" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/btnHeaderSearch"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_header_action_square">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/admin_global_search"
+                        android:src="@android:drawable/ic_menu_search"
+                        app:tint="@color/white" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/btnHeaderNotification"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_header_action_square">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_notification_custom"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tvNotificationCount"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="top|end"
+                        android:background="@drawable/bg_circle"
+                        android:backgroundTint="@color/dangerRed"
+                        android:gravity="center"
+                        android:text="3"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/adminProfileAvatarWrap"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivAdminProfile"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder_user"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                        app:strokeColor="@color/white"
+                        app:strokeWidth="2dp" />
+
+                    <FrameLayout
+                        android:id="@+id/btnHeaderChangePhoto"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="bottom|end"
+                        android:background="@drawable/bg_profile_camera_badge"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/change_profile_photo">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_camera_custom"
+                            app:tint="@color/white" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/ivProfileArrow"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_down_white" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/adminOverviewRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_view">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/admin_overview_title"
+                    android:textColor="@color/headerDarkGreen"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/admin_overview_subtitle"
+                    android:textColor="@color/textLight"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutLiveSync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_pill_grey"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp">
+
+                <View
+                    android:id="@+id/viewLiveDot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/primaryGreen" />
+
+                <TextView
+                    android:id="@+id/tvLiveSync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/admin_systems_active"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvAdminName"
             android:layout_width="wrap_content"
@@ -112,56 +333,70 @@
             android:visibility="gone"
             tools:visibility="gone" />
 
-        <!-- 2. Fragment Container for Content -->
+        <include
+            android:id="@+id/greetingBanner"
+            layout="@layout/layout_greeting_banner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_view" />
+
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="80dp"
-            app:layout_constraintTop_toBottomOf="@id/header_view"
+            android:layout_marginBottom="72dp"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav_card"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/adminOverviewRow" />
 
-        <!-- 3. Modern Floating Bottom Navigation -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bottom_nav_card"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="10dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:strokeWidth="0dp">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                app:elevation="0dp"
+                android:background="@drawable/bg_bottom_nav_glass"
+                android:minHeight="64dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                app:elevation="6dp"
+                app:itemActiveIndicatorStyle="@style/BottomNavActiveIndicator"
+                app:itemIconSize="26dp"
+                app:itemIconTint="@color/nav_item_color"
+                app:itemTextAppearanceActive="@style/BottomNavTextActive"
+                app:itemTextAppearanceInactive="@style/BottomNavTextInactive"
+                app:itemTextColor="@color/nav_item_color"
                 app:labelVisibilityMode="labeled"
-                app:itemIconTint="@color/primaryBrown"
-                app:itemTextColor="@color/primaryGreen"
                 app:menu="@menu/bottom_nav_admin_menu" />
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 4. Side Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_drawer_admin"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/white"
+        android:background="@color/card_background"
         app:headerLayout="@layout/fragment_profile"
-        app:itemIconTint="@color/primaryBrown"
-        app:itemTextColor="#424242"
+        app:itemIconTint="@color/primaryGreen"
+        app:itemTextColor="@color/textPrimary"
         app:menu="@menu/drawer_menu_admin" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

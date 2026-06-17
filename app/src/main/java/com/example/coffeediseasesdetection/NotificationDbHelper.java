@@ -97,4 +97,10 @@ public class NotificationDbHelper extends SQLiteOpenHelper {
         db.close();
         return notifications;
     }
+
+    public void markAllRead() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
 }

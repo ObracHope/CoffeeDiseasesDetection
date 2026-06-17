@@ -30,6 +30,21 @@ public final class FcmTokenHelper {
                 .addOnFailureListener(e -> Log.w(TAG, "FCM token fetch failed", e));
     }
 
+    public static void clearToken(String uid) {
+        if (uid == null || uid.isEmpty()) return;
+
+        FirebaseDatabase.getInstance(AuthHelper.RTDB_URL)
+                .getReference("users")
+                .child(uid)
+                .child("fcmToken")
+                .removeValue();
+
+        Map<String, Object> fs = new HashMap<>();
+        fs.put("fcmToken", FieldValue.delete());
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .set(fs, com.google.firebase.firestore.SetOptions.merge());
+    }
+
     public static void saveToken(String uid, String token) {
         if (uid == null || token == null || token.isEmpty()) return;
 

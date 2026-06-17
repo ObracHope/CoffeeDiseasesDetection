@@ -219,15 +219,43 @@ public final class ReportExportHelper {
         lines.add("## " + context.getString(R.string.export_summary_section));
         lines.add(context.getString(R.string.admin_total_scans) + ": " + o.totalScans);
         lines.add(context.getString(R.string.diseases_detected) + ": " + o.diseasesDetected);
-        lines.add(context.getString(R.string.images_uploaded) + ": " + o.imagesUploaded);
+        lines.add(context.getString(R.string.admin_camera_scans) + ": " + o.cameraScans);
+        lines.add(context.getString(R.string.admin_upload_scans) + ": " + o.uploadScans);
+        lines.add(context.getString(R.string.admin_health_coffee) + ": " + o.healthCoffeeCount);
+        lines.add(context.getString(R.string.admin_not_coffee) + ": " + o.notCoffeeCount);
         lines.add(context.getString(R.string.total_farmers) + ": " + o.totalFarmers);
         lines.add(context.getString(R.string.export_pending_feedback) + ": " + o.pendingChallenges);
         lines.add(context.getString(R.string.export_today_scans) + ": " + o.todayScans);
+        if (!o.scansByRole.isEmpty()) {
+            lines.add("");
+            lines.add("## " + context.getString(R.string.admin_scan_by_role));
+            for (Map.Entry<String, Integer> e : o.scansByRole.entrySet()) {
+                int cam = o.cameraByRole.getOrDefault(e.getKey(), 0);
+                int up = o.uploadByRole.getOrDefault(e.getKey(), 0);
+                lines.add("  - " + e.getKey() + ": " + e.getValue()
+                        + " (" + cam + " cam · " + up + " up)");
+            }
+        }
         if (!o.topDiseasedAreas.isEmpty()) {
             lines.add("");
             lines.add("## " + context.getString(R.string.export_top_areas));
             for (String area : o.topDiseasedAreas) {
                 lines.add("  - " + area);
+            }
+        }
+        if (!o.monthLabels.isEmpty() && !o.monthCounts.isEmpty()) {
+            lines.add("");
+            lines.add("## " + context.getString(R.string.export_chart_section));
+            lines.add("## " + context.getString(R.string.export_monthly_trend));
+            for (int i = 0; i < o.monthLabels.size() && i < o.monthCounts.size(); i++) {
+                lines.add("  " + o.monthLabels.get(i) + ": " + o.monthCounts.get(i) + " scans");
+            }
+        }
+        if (!o.topDiseases.isEmpty()) {
+            lines.add("");
+            lines.add("## " + context.getString(R.string.export_disease_breakdown));
+            for (Map.Entry<String, Integer> e : o.topDiseases) {
+                lines.add("  - " + e.getKey() + ": " + e.getValue());
             }
         }
         lines.add("");
@@ -251,17 +279,52 @@ public final class ReportExportHelper {
         sb.append("<h3>").append(escape(context.getString(R.string.export_summary_section))).append("</h3><table>");
         appendHtmlRow(sb, context.getString(R.string.admin_total_scans), String.valueOf(o.totalScans));
         appendHtmlRow(sb, context.getString(R.string.diseases_detected), String.valueOf(o.diseasesDetected));
-        appendHtmlRow(sb, context.getString(R.string.images_uploaded), String.valueOf(o.imagesUploaded));
+        appendHtmlRow(sb, context.getString(R.string.admin_camera_scans), String.valueOf(o.cameraScans));
+        appendHtmlRow(sb, context.getString(R.string.admin_upload_scans), String.valueOf(o.uploadScans));
+        appendHtmlRow(sb, context.getString(R.string.admin_health_coffee), String.valueOf(o.healthCoffeeCount));
+        appendHtmlRow(sb, context.getString(R.string.admin_not_coffee), String.valueOf(o.notCoffeeCount));
         appendHtmlRow(sb, context.getString(R.string.total_farmers), String.valueOf(o.totalFarmers));
         appendHtmlRow(sb, context.getString(R.string.export_pending_feedback), String.valueOf(o.pendingChallenges));
         appendHtmlRow(sb, context.getString(R.string.export_today_scans), String.valueOf(o.todayScans));
         sb.append("</table>");
+        if (!o.scansByRole.isEmpty()) {
+            sb.append("<h3>").append(escape(context.getString(R.string.admin_scan_by_role))).append("</h3><table>");
+            sb.append("<tr><th>Role</th><th>Total</th><th>Camera</th><th>Upload</th></tr>");
+            for (Map.Entry<String, Integer> e : o.scansByRole.entrySet()) {
+                sb.append("<tr>")
+                        .append("<td>").append(escape(e.getKey())).append("</td>")
+                        .append("<td>").append(e.getValue()).append("</td>")
+                        .append("<td>").append(o.cameraByRole.getOrDefault(e.getKey(), 0)).append("</td>")
+                        .append("<td>").append(o.uploadByRole.getOrDefault(e.getKey(), 0)).append("</td>")
+                        .append("</tr>");
+            }
+            sb.append("</table>");
+        }
         if (!o.topDiseasedAreas.isEmpty()) {
             sb.append("<h3>").append(escape(context.getString(R.string.export_top_areas))).append("</h3><ul>");
             for (String area : o.topDiseasedAreas) {
                 sb.append("<li>").append(escape(area)).append("</li>");
             }
             sb.append("</ul>");
+        }
+        if (!o.monthLabels.isEmpty() && !o.monthCounts.isEmpty()) {
+            sb.append("<h3>").append(escape(context.getString(R.string.export_chart_section))).append("</h3>");
+            sb.append("<h4>").append(escape(context.getString(R.string.export_monthly_trend))).append("</h4><table>");
+            sb.append("<tr><th>Month</th><th>Scans</th></tr>");
+            for (int i = 0; i < o.monthLabels.size() && i < o.monthCounts.size(); i++) {
+                sb.append("<tr><td>").append(escape(o.monthLabels.get(i))).append("</td>")
+                        .append("<td>").append(o.monthCounts.get(i)).append("</td></tr>");
+            }
+            sb.append("</table>");
+        }
+        if (!o.topDiseases.isEmpty()) {
+            sb.append("<h4>").append(escape(context.getString(R.string.export_disease_breakdown))).append("</h4><table>");
+            sb.append("<tr><th>Disease</th><th>Count</th></tr>");
+            for (Map.Entry<String, Integer> e : o.topDiseases) {
+                sb.append("<tr><td>").append(escape(e.getKey())).append("</td>")
+                        .append("<td>").append(e.getValue()).append("</td></tr>");
+            }
+            sb.append("</table>");
         }
         sb.append("<h3>").append(escape(context.getString(R.string.export_scan_history))).append("</h3>");
         sb.append("<table><tr><th>Date</th><th>Farmer</th><th>Disease</th><th>Confidence</th><th>Location</th></tr>");

@@ -69,6 +69,18 @@
             android:name=".HelpTipsActivity"
             android:exported="false" />
         <activity
+            android:name=".HelpSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TermsConditionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminReportsActivity"
             android:exported="false" />
         <activity

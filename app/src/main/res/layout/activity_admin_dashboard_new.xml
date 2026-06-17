@@ -137,7 +137,7 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/white"
+        android:background="@color/card_background"
         app:headerLayout="@layout/fragment_profile"
         app:itemIconTint="@color/primaryBrown"
         app:itemTextColor="#424242"

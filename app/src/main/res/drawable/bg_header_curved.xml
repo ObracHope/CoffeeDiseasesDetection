@@ -5,11 +5,11 @@
     android:viewportWidth="360"
     android:viewportHeight="220">
     <path
-        android:fillColor="#2E7D32"
+        android:fillColor="@color/gradient_green_start"
         android:pathData="M0,0h360v168c0,0 -72,58 -180,58S0,168 0,168z" />
     <path
         android:fillAlpha="0.88"
-        android:fillColor="#33691E"
+        android:fillColor="@color/gradient_green_end"
         android:pathData="M0,0h360v158c0,0 -62,52 -180,52S0,158 0,158z" />
     <path
         android:fillAlpha="0.18"

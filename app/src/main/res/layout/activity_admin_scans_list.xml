@@ -24,6 +24,7 @@
             app:tint="@color/white" />
 
         <TextView
+            android:id="@+id/tvScanListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -103,6 +104,26 @@
             android:layout_height="wrap_content"
             android:text="@string/monthly" />
     </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/tvDiseaseSortLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/filter_by_disease"
+        android:textColor="@color/textMedium"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinnerDiseaseSort"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/bg_card_rounded"
+        android:paddingHorizontal="12dp" />
 
     <TextView
         android:id="@+id/tvScanCount"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/dashboard_body"
     android:clipToPadding="false"
     android:fillViewport="true"
     android:overScrollMode="never"
@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/dashboard_body"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingBottom="12dp">
@@ -33,30 +33,27 @@
             android:id="@+id/tvWelcomeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="12dp"
-            android:textColor="#1A1A1A"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Habari, Farmer!" />
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:id="@+id/tvHomeTagline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="12dp"
             android:letterSpacing="0.01"
             android:text="@string/dashboard_tagline_short"
-            android:textColor="#2E7D32"
+            android:textColor="@color/primaryGreen"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvWelcomeName" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardStats"
@@ -64,19 +61,20 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="18dp"
-            android:translationZ="10dp"
-            app:cardBackgroundColor="#E8F1E9"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="8dp"
+            android:translationZ="2dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvHomeTagline"
-            app:strokeColor="#B2DFDB"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#B3FFFFFF"
             app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_stats_glass_card"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingVertical="22dp">
@@ -93,8 +91,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="#2E7D32"
-                        android:textSize="26sp"
+                        android:textColor="@color/primaryGreen"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -102,14 +100,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/stat_scans"
-                        android:textColor="#757575"
+                        android:textColor="@color/textLight"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="44dp"
-                    android:background="#E0E0E0" />
+                    android:background="@color/dividerGrey" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -125,8 +123,8 @@
                         android:gravity="center"
                         android:maxLines="2"
                         android:text="@string/status_healthy"
-                        android:textColor="#2E7D32"
-                        android:textSize="16sp"
+                        android:textColor="@color/accentOrange"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -134,14 +132,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/stat_status"
-                        android:textColor="#757575"
+                        android:textColor="@color/textLight"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="44dp"
-                    android:background="#E0E0E0" />
+                    android:background="@color/dividerGrey" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -155,8 +153,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/risk_low"
-                        android:textColor="#1976D2"
-                        android:textSize="16sp"
+                        android:textColor="@color/risk_high"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -164,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/stat_risk"
-                        android:textColor="#757575"
+                        android:textColor="@color/textLight"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -191,9 +189,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:translationZ="6dp"
-                app:cardBackgroundColor="#2E7D32"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="8dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@id/btnHomeUpload"
@@ -205,6 +203,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/bg_action_scan_solid"
                     android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
@@ -251,9 +250,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:translationZ="6dp"
-                app:cardBackgroundColor="#5D4037"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="8dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -265,6 +264,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/bg_action_upload_gradient"
                     android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
@@ -304,19 +304,80 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/tvRecentScansTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/farmer_recent_scans"
+            android:textColor="@color/textPrimary"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tvViewAllScans"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/actionButtonsRow" />
+
+        <TextView
+            android:id="@+id/tvViewAllScans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:text="@string/see_all"
+            android:textColor="@color/primaryGreen"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvRecentScansTitle"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecentScans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecentScansTitle"
+            tools:itemCount="3"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_recent_scan_horizontal" />
+
+        <TextView
+            android:id="@+id/tvNoRecentScans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:text="@string/no_data_yet"
+            android:textColor="@color/textLight"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecentScansTitle" />
+
+        <TextView
             android:id="@+id/tvCareTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/coffee_care_title"
-            android:textColor="#1A1A1A"
+            android:text="@string/tips_recommendations"
+            android:textColor="@color/textPrimary"
             android:textSize="19sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tvSeeAll"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/actionButtonsRow" />
+            app:layout_constraintTop_toBottomOf="@id/rvRecentScans" />
 
         <TextView
             android:id="@+id/tvSeeAll"
@@ -328,7 +389,7 @@
             android:focusable="true"
             android:padding="8dp"
             android:text="@string/see_all"
-            android:textColor="#2E7D32"
+            android:textColor="@color/primaryGreen"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/tvCareTitle"

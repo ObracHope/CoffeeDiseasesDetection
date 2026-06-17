@@ -135,7 +135,7 @@ public class RegisterActivity extends BaseActivity {
             GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
                     .setFilterByAuthorizedAccounts(false)
                     .setServerClientId(getString(R.string.default_web_client_id))
-                    .setAutoSelectEnabled(true)
+                    .setAutoSelectEnabled(false)
                     .build();
 
             GetCredentialRequest request = new GetCredentialRequest.Builder()
@@ -164,39 +164,89 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void handleGoogleSignIn(Credential credential) {
-        if (credential instanceof CustomCredential && credential.getType().equals(GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)) {
-            try {
-                GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.getData());
-                AuthCredential authCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.getIdToken(), null);
-                auth.signInWithCredential(authCredential).addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful() && auth.getCurrentUser() != null) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        mDatabase.child(user.getUid()).get()
-                                .addOnSuccessListener(snapshot -> {
-                                    if (snapshot.exists()) {
-                                        progressBar.setVisibility(View.GONE);
-                                        AuthHelper.completeGoogleLoginAndRedirect(RegisterActivity.this, user,
-                                                () -> Toast.makeText(RegisterActivity.this,
-                                                        R.string.admin_google_login_blocked, Toast.LENGTH_LONG).show());
-                                    } else {
-                                        String fName = user.getDisplayName() != null ? user.getDisplayName() : "User";
-                                        saveUserData(user, fName, "", "", user.getEmail() != null ? user.getEmail() : "", true);
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
+        if (!(credential instanceof CustomCredential)
+                || !GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, R.string.google_sign_in_failed, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            GoogleIdTokenCredential googleCred = GoogleIdTokenCredential.createFrom(credential.getData());
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(googleCred.getIdToken(), null);
+
+            auth.signInWithCredential(authCredential).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful() && auth.getCurrentUser() != null) {
+                    FirebaseUser user = auth.getCurrentUser();
+                    mDatabase.child(user.getUid()).get()
+                            .addOnSuccessListener(snapshot -> {
+                                if (snapshot.exists()) {
+                                    progressBar.setVisibility(View.GONE);
+                                    AuthHelper.completeGoogleLoginAndRedirect(RegisterActivity.this, user,
+                                            () -> Toast.makeText(RegisterActivity.this,
+                                                    R.string.admin_google_login_blocked, Toast.LENGTH_LONG).show());
+                                } else {
                                     String fName = user.getDisplayName() != null ? user.getDisplayName() : "User";
                                     saveUserData(user, fName, "", "", user.getEmail() != null ? user.getEmail() : "", true);
-                                });
-                    } else {
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                String fName = user.getDisplayName() != null ? user.getDisplayName() : "User";
+                                saveUserData(user, fName, "", "", user.getEmail() != null ? user.getEmail() : "", true);
+                            });
+                } else if (AuthHelper.isGoogleAccountCollision(task.getException())) {
+                    handleGoogleRegisterCollision(googleCred, authCredential, task.getException());
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(this, AuthHelper.friendlyGoogleAuthError(task.getException()), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, R.string.google_sign_in_failed, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleGoogleRegisterCollision(GoogleIdTokenCredential googleCred,
+                                               AuthCredential authCredential,
+                                               Exception error) {
+        String email = AuthHelper.emailFromGoogleAuthError(error, googleCred);
+        String password = etPassword != null ? etPassword.getText().toString().trim() : "";
+
+        if (TextUtils.isEmpty(email)) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, R.string.google_sign_in_failed, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, getString(R.string.google_link_message, email), Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
+        AuthHelper.linkGoogleWithPassword(this, email, password, authCredential,
+                new AuthHelper.GoogleLoginCallback() {
+                    @Override
+                    public void onFarmerReady() {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAdminBlocked() {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(RegisterActivity.this,
+                                R.string.admin_google_login_blocked, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
                     }
                 });
-            } catch (Exception e) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, "Sign-in error", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private void saveUserData(FirebaseUser user, String fName, String lName, String phone, String email, boolean isGoogle) {

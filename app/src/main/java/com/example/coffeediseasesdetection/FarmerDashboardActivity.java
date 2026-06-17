@@ -24,8 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.example.coffeediseasesdetection.weather.WeatherBannerHelper;
+import com.google.firebase.firestore.ListenerRegistration;
 
-public class FarmerDashboardActivity extends BaseActivity {
+public class FarmerDashboardActivity extends BaseActivity implements FarmerScanStatsHost {
 
     public static final String PREFS_NOTIFICATION = "notification_prefs";
     public static final String KEY_COUNT = "unread_count";
@@ -34,7 +36,15 @@ public class FarmerDashboardActivity extends BaseActivity {
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
     private String userName = "Farmer", userEmail = "", userPhotoUrl = "";
+    private String userFirstName = "", userLastName = "", userRole = "farmer";
     private static final String PREFS_REPLY_STATE = "challenge_reply_state";
+
+    private final GreetingBannerHelper greetingHelper = new GreetingBannerHelper();
+    private final WeatherBannerHelper weatherHelper = new WeatherBannerHelper();
+    private ListenerRegistration scanStatsRegistration;
+    private FarmerScanStatsHost.StatsCallback scanStatsCallback;
+    private ScanHistoryLoader.DashboardStats lastStats;
+    private boolean locationGateShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,7 @@ public class FarmerDashboardActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_farmer_dashboard);
+        ScanImageUploadHelper.syncPendingUploads(this, auth.getCurrentUser().getUid());
         // Initialize RTDB reference
         mDatabase = AuthHelper.usersRtdb();
         
@@ -63,6 +74,14 @@ public class FarmerDashboardActivity extends BaseActivity {
         View profileBtn = findViewById(R.id.ivHeaderProfile);
         if (profileBtn != null) {
             profileBtn.setOnClickListener(this::showProfilePopup);
+        }
+        View changePhotoBtn = findViewById(R.id.btnHeaderChangePhoto);
+        if (changePhotoBtn != null) {
+            changePhotoBtn.setOnClickListener(v -> startActivity(new Intent(this, UpdateProfile.class)));
+        }
+        View profileArrow = findViewById(R.id.ivProfileArrow);
+        if (profileArrow != null) {
+            profileArrow.setOnClickListener(this::showProfilePopup);
         }
 
         View notifBtn = findViewById(R.id.btnHeaderNotification);
@@ -83,6 +102,7 @@ public class FarmerDashboardActivity extends BaseActivity {
 
         NavigationView navDrawer = findViewById(R.id.nav_drawer);
         if (navDrawer != null) {
+            setupDrawerHeader(navDrawer);
             navDrawer.setNavigationItemSelectedListener(item -> {
             if (drawerLayout != null) drawerLayout.closeDrawers();
             int id = item.getItemId();
@@ -94,6 +114,10 @@ public class FarmerDashboardActivity extends BaseActivity {
                 startActivity(new Intent(this, ReportChallengeActivity.class));
             } else if (id == R.id.nav_farming_tips) {
                 startActivity(new Intent(this, HelpTipsActivity.class));
+            } else if (id == R.id.nav_help_support) {
+                startActivity(new Intent(this, HelpSupportActivity.class));
+            } else if (id == R.id.nav_about_us) {
+                startActivity(new Intent(this, AboutUsActivity.class));
             } else if (id == R.id.nav_my_analytics) {
                 startActivity(new Intent(this, FarmerAnalyticsActivity.class));
             } else if (id == R.id.nav_notifications) {
@@ -116,9 +140,6 @@ public class FarmerDashboardActivity extends BaseActivity {
             } else if (itemId == R.id.nav_history) {
                 startActivity(new Intent(this, HistoryActivity.class));
                 return true;
-            } else if (itemId == R.id.nav_profile) {
-                startActivity(new Intent(this, UpdateProfile.class));
-                return true;
             }
 
             if (selectedFragment != null) {
@@ -136,6 +157,77 @@ public class FarmerDashboardActivity extends BaseActivity {
 
         loadUserInfo();
         observeAdminReplies();
+        showGreetingBanner();
+        startScanStatsListener();
+        weatherHelper.attach(this, findViewById(R.id.tvHeaderWeather), findViewById(R.id.tvWeatherIcon));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        weatherHelper.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
+    private void showGreetingBanner() {
+        TextView banner = findViewById(R.id.tvGreetingBanner);
+        if (banner != null) {
+            greetingHelper.show(this, banner);
+        }
+    }
+
+    @Override
+    public void setScanStatsCallback(StatsCallback callback) {
+        this.scanStatsCallback = callback;
+        if (callback != null && lastStats != null) {
+            callback.onStatsUpdated(lastStats);
+        }
+    }
+
+    @Override
+    public void startScanStatsListener() {
+        stopScanStatsListener();
+        FirebaseUser user = auth != null ? auth.getCurrentUser() : null;
+        if (user == null) return;
+
+        scanStatsRegistration = ScanHistoryLoader.listen(this, user, new ScanHistoryLoader.Callback() {
+            @Override
+            public void onLoaded(java.util.List<java.util.Map<String, Object>> scans) {
+                if (isFinishing()) return;
+                lastStats = ScanHistoryLoader.computeStats(scans);
+                if (scanStatsCallback != null) {
+                    scanStatsCallback.onStatsUpdated(lastStats);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if (isFinishing()) return;
+                ScanHistoryLoader.loadOnce(FarmerDashboardActivity.this, user, new ScanHistoryLoader.Callback() {
+                    @Override
+                    public void onLoaded(java.util.List<java.util.Map<String, Object>> scans) {
+                        if (isFinishing()) return;
+                        lastStats = ScanHistoryLoader.computeStats(scans);
+                        if (scanStatsCallback != null) {
+                            scanStatsCallback.onStatsUpdated(lastStats);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception ex) {
+                        // no-op
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void stopScanStatsListener() {
+        if (scanStatsRegistration != null) {
+            scanStatsRegistration.remove();
+            scanStatsRegistration = null;
+        }
     }
 
     private void loadUserInfo() {
@@ -147,7 +239,13 @@ public class FarmerDashboardActivity extends BaseActivity {
         // Load from Cache First for instant feel
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userName = prefs.getString(KEY_NAME, "Farmer");
+        userFirstName = prefs.getString(KEY_FIRST_NAME, "");
+        userLastName = prefs.getString(KEY_LAST_NAME, "");
+        userRole = prefs.getString(KEY_ROLE, "farmer");
         userPhotoUrl = prefs.getString(KEY_PHOTO, "");
+        if ((userPhotoUrl == null || userPhotoUrl.isEmpty()) && user.getPhotoUrl() != null) {
+            userPhotoUrl = user.getPhotoUrl().toString();
+        }
 
         updateUIWithUserInfo();
 
@@ -159,10 +257,15 @@ public class FarmerDashboardActivity extends BaseActivity {
                         String photo = doc.getString("photoUrl");
                         String fName = doc.getString("firstName");
                         String lName = doc.getString("lastName");
+                        String role = doc.getString("role");
                         if (name != null) userName = name;
                         if (photo != null) userPhotoUrl = photo;
-                        saveUserCache(null, name, photo, fName, lName);
+                        if (fName != null) userFirstName = fName;
+                        if (lName != null) userLastName = lName;
+                        if (role != null) userRole = role;
+                        saveUserCache(role, name, photo, fName, lName);
                         updateUIWithUserInfo();
+                        maybeRequireLocation(doc);
                     }
                 });
 
@@ -175,13 +278,16 @@ public class FarmerDashboardActivity extends BaseActivity {
                     String photo = snapshot.child("photoUrl").getValue(String.class);
                     String fName = snapshot.child("firstName").getValue(String.class);
                     String lName = snapshot.child("lastName").getValue(String.class);
+                    String role = snapshot.child("role").getValue(String.class);
 
-                    // Update cache if changed
-                    saveUserCache(null, name, photo, fName, lName);
-                    
+                    saveUserCache(role, name, photo, fName, lName);
+
                     userName = name != null ? name : userName;
                     userEmail = email != null ? email : userEmail;
                     userPhotoUrl = photo != null ? photo : userPhotoUrl;
+                    if (fName != null) userFirstName = fName;
+                    if (lName != null) userLastName = lName;
+                    if (role != null) userRole = role;
 
                     updateUIWithUserInfo();
                 }
@@ -201,21 +307,81 @@ public class FarmerDashboardActivity extends BaseActivity {
         NavigationView navView = findViewById(R.id.nav_drawer);
         View headerView = navView != null ? navView.getHeaderView(0) : null;
 
-        if (ivHeaderProfile != null && userPhotoUrl != null && !userPhotoUrl.isEmpty()) {
-            Glide.with(this).load(userPhotoUrl).circleCrop().into(ivHeaderProfile);
+        if (ivHeaderProfile != null) {
+            ProfileAvatarHelper.load(ivHeaderProfile, userPhotoUrl);
         }
 
         if (headerView != null) {
             TextView tvDName = headerView.findViewById(R.id.tvProfileName);
+            TextView tvDRole = headerView.findViewById(R.id.tvProfileRole);
             TextView tvDEmail = headerView.findViewById(R.id.tvProfileEmail);
             ImageView ivDPhoto = headerView.findViewById(R.id.ivProfilePhoto);
 
-            if (userName != null) tvDName.setText(userName);
-            if (userEmail != null) tvDEmail.setText(userEmail);
-            if (userPhotoUrl != null && !userPhotoUrl.isEmpty()) {
-                Glide.with(this).load(userPhotoUrl).circleCrop().into(ivDPhoto);
+            String displayName = ProfileHelper.fullName(userFirstName, userLastName, userName);
+            if (tvDName != null) {
+                tvDName.setText(!displayName.isEmpty() ? displayName : getString(R.string.profile_name_placeholder));
+            }
+            if (tvDRole != null) {
+                tvDRole.setText(ProfileHelper.roleLabel(this, userRole));
+                tvDRole.setVisibility(View.VISIBLE);
+            }
+            if (userEmail != null && tvDEmail != null) tvDEmail.setText(userEmail);
+            if (ivDPhoto != null) {
+                ProfileAvatarHelper.load(ivDPhoto, userPhotoUrl);
             }
         }
+
+        TextView tvWeather = findViewById(R.id.tvHeaderWeather);
+        if (tvWeather != null) tvWeather.setSelected(true);
+
+        TextView tvHeaderUserName = findViewById(R.id.tvHeaderUserName);
+        if (tvHeaderUserName != null) {
+            String displayName = ProfileHelper.fullName(userFirstName, userLastName, userName);
+            if (!displayName.isEmpty()) {
+                tvHeaderUserName.setText("👤 " + displayName);
+            }
+        }
+    }
+
+    private void setupDrawerHeader(NavigationView navView) {
+        if (navView == null) return;
+        View headerView = navView.getHeaderView(0);
+        if (headerView == null) return;
+
+        View btnLogout = headerView.findViewById(R.id.btnPopupSignOut);
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                if (drawerLayout != null) drawerLayout.closeDrawers();
+                performLogout();
+            });
+        }
+
+        View btnPhoto = headerView.findViewById(R.id.btnChangePhoto);
+        if (btnPhoto != null) {
+            btnPhoto.setOnClickListener(v -> {
+                if (drawerLayout != null) drawerLayout.closeDrawers();
+                startActivity(new Intent(this, UpdateProfile.class));
+            });
+        }
+    }
+
+    private void maybeRequireLocation(com.google.firebase.firestore.DocumentSnapshot doc) {
+        if (locationGateShown || doc == null || !doc.exists()) return;
+        if (hasCompleteLocation(doc)) return;
+        locationGateShown = true;
+        Intent intent = new Intent(this, UpdateProfile.class);
+        intent.putExtra(UpdateProfile.EXTRA_REQUIRE_LOCATION, true);
+        startActivity(intent);
+    }
+
+    private static boolean hasCompleteLocation(com.google.firebase.firestore.DocumentSnapshot doc) {
+        return !isBlank(doc.getString("region"))
+                && !isBlank(doc.getString("district"))
+                && !isBlank(doc.getString("ward"));
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
     private void showProfilePopup(View anchor) {
@@ -229,8 +395,9 @@ public class FarmerDashboardActivity extends BaseActivity {
         TextView tvEmail = popupView.findViewById(R.id.tvPopupEmail);
         ImageView ivPhoto = popupView.findViewById(R.id.ivPopupProfilePhoto);
 
-        tvName.setText(userName);
-        tvEmail.setText(userEmail);
+        String displayName = ProfileHelper.fullName(userFirstName, userLastName, userName);
+        tvName.setText(!displayName.isEmpty() ? displayName : getString(R.string.profile_name_placeholder));
+        tvEmail.setText(ProfileHelper.roleLabel(this, userRole));
         if (userPhotoUrl != null && !userPhotoUrl.isEmpty()) {
             Glide.with(this).load(userPhotoUrl).circleCrop().into(ivPhoto);
         }
@@ -254,6 +421,23 @@ public class FarmerDashboardActivity extends BaseActivity {
         super.onResume();
         updateNotificationBadge();
         loadUserInfo();
+        startScanStatsListener();
+        weatherHelper.refresh();
+        locationGateShown = false;
+    }
+
+    @Override
+    protected void onStop() {
+        stopScanStatsListener();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        weatherHelper.detach();
+        greetingHelper.cancel();
+        stopScanStatsListener();
+        super.onDestroy();
     }
 
     private void updateNotificationBadge() {

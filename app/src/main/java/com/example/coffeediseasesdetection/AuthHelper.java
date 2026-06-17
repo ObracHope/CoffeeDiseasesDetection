@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,9 +30,18 @@ public final class AuthHelper {
     private static final String TAG = "AuthHelper";
     public static final String RTDB_URL = "https://coffee-diseases-detection-default-rtdb.firebaseio.com";
     public static final String DEMO_ADMIN_EMAIL = "admin@coffeediseases.com";
+    public static final String DEMO_ADMIN_USERNAME = "admin";
+    public static final String OBEID_ADMIN_EMAIL = "obeid@coffee.com";
+    public static final String OBEID_ADMIN_USERNAME = "obeid";
 
     public interface LoginCallback {
         void onSuccess();
+        void onError(String message);
+    }
+
+    public interface GoogleLoginCallback {
+        void onFarmerReady();
+        void onAdminBlocked();
         void onError(String message);
     }
 
@@ -45,21 +55,54 @@ public final class AuthHelper {
         void onError(Exception e);
     }
 
+    public interface PasswordChangeCallback {
+        void onSuccess();
+        void onError(String message);
+    }
+
     private AuthHelper() {}
 
     public static DatabaseReference usersRtdb() {
         return FirebaseDatabase.getInstance(RTDB_URL).getReference("users");
     }
 
-    public static boolean isAdminRole(String role) {
-        if (role == null || role.trim().isEmpty()) return false;
+    public static String normalizeRole(String role) {
+        if (role == null || role.trim().isEmpty()) return "farmer";
         String r = role.trim().toLowerCase(Locale.US);
-        return r.equals("admin") || r.equals("main") || r.equals("superadmin")
-                || r.equals("super_admin");
+        if ("super_admin".equals(r)) return "superadmin";
+        if ("bwana_shamba".equals(r) || "bwana_mifugo".equals(r)) return "bwana_kilimo";
+        if ("waziri".equals(r)) return "waziri_wa_kilimo";
+        return r;
     }
 
-    public static String normalizeRole(String role) {
-        return isAdminRole(role) ? "admin" : "farmer";
+    public static boolean isStaffRole(String role) {
+        if (role == null || role.trim().isEmpty()) return false;
+        String r = normalizeRole(role);
+        return r.equals("admin") || r.equals("main") || r.equals("superadmin")
+                || r.equals("system_admin") || r.equals("it") || r.equals("technician")
+                || r.equals("bwana_kilimo") || r.equals("waziri_wa_kilimo");
+    }
+
+    /** Staff / admin panel roles (Web + Mobile admin dashboard). */
+    public static boolean isAdminRole(String role) {
+        return isStaffRole(role);
+    }
+
+    /** Human-readable role label for drawer / profile headers. */
+    public static String displayRoleLabel(android.content.Context ctx, String role) {
+        String r = normalizeRole(role);
+        if ("farmer".equals(r)) return ctx.getString(R.string.role_farmer);
+        if ("admin".equals(r)) return ctx.getString(R.string.role_admin);
+        if ("system_admin".equals(r)) return ctx.getString(R.string.role_system_admin);
+        if ("superadmin".equals(r)) return ctx.getString(R.string.role_super_admin);
+        if ("technician".equals(r)) return ctx.getString(R.string.role_technician);
+        if ("it".equals(r)) return ctx.getString(R.string.role_it);
+        if ("main".equals(r)) return ctx.getString(R.string.role_main);
+        if ("bwana_kilimo".equals(r)) return ctx.getString(R.string.role_bwana_kilimo);
+        if ("waziri_wa_kilimo".equals(r)) return ctx.getString(R.string.role_waziri_kilimo);
+        if (r.isEmpty()) return ctx.getString(R.string.role_farmer);
+        String spaced = r.replace('_', ' ');
+        return spaced.substring(0, 1).toUpperCase(Locale.US) + spaced.substring(1);
     }
 
     public static String normalizeUsername(String raw) {
@@ -94,6 +137,10 @@ public final class AuthHelper {
 
         if ("admin".equals(username)) {
             callback.onResolved(DEMO_ADMIN_EMAIL);
+            return;
+        }
+        if (OBEID_ADMIN_USERNAME.equals(username)) {
+            callback.onResolved(OBEID_ADMIN_EMAIL);
             return;
         }
 
@@ -191,6 +238,10 @@ public final class AuthHelper {
         return email != null && DEMO_ADMIN_EMAIL.equalsIgnoreCase(email.trim());
     }
 
+    private static boolean isObeidAdminEmail(String email) {
+        return email != null && OBEID_ADMIN_EMAIL.equalsIgnoreCase(email.trim());
+    }
+
     /** Create demo admin in Firebase Auth on first login if missing, then write admin profile. */
     private static void bootstrapDemoAdminAccount(@NonNull Activity activity,
                                                   @NonNull String email,
@@ -213,9 +264,10 @@ public final class AuthHelper {
                 });
     }
 
-    /** Ensure Firestore + RTDB profile exists with role admin for the demo admin account. */
+    /** Ensure Firestore + RTDB profile exists with correct role for known staff accounts. */
     private static void ensureDemoAdminProfile(@NonNull FirebaseUser user, @Nullable Runnable onDone) {
-        if (!isDemoAdminEmail(user.getEmail())) {
+        String email = user.getEmail();
+        if (!isDemoAdminEmail(email) && !isObeidAdminEmail(email)) {
             if (onDone != null) onDone.run();
             return;
         }
@@ -223,10 +275,21 @@ public final class AuthHelper {
         String uid = user.getUid();
         java.util.HashMap<String, Object> data = new java.util.HashMap<>();
         data.put("uid", uid);
-        data.put("email", DEMO_ADMIN_EMAIL);
-        data.put("name", "Admin");
-        data.put("username", "admin");
-        data.put("role", "admin");
+        if (isDemoAdminEmail(email)) {
+            data.put("email", DEMO_ADMIN_EMAIL);
+            data.put("name", "Admin");
+            data.put("username", DEMO_ADMIN_USERNAME);
+            data.put("role", "system_admin");
+            cacheUsernameEmail(DEMO_ADMIN_USERNAME, DEMO_ADMIN_EMAIL.toLowerCase(Locale.US));
+        } else {
+            data.put("email", OBEID_ADMIN_EMAIL);
+            data.put("name", "Obeid Tumaini");
+            data.put("firstName", "Obeid");
+            data.put("lastName", "Tumaini");
+            data.put("username", OBEID_ADMIN_USERNAME);
+            data.put("role", "admin");
+            cacheUsernameEmail(OBEID_ADMIN_USERNAME, OBEID_ADMIN_EMAIL.toLowerCase(Locale.US));
+        }
 
         usersRtdb().child(uid).setValue(data);
         FirebaseFirestore.getInstance().collection("users").document(uid)
@@ -237,14 +300,27 @@ public final class AuthHelper {
     }
 
     /** Email/password login — resolve role from profile, then redirect. */
+    private static volatile String pendingLoginMethod;
+
     public static void completeEmailLoginAndRedirect(@NonNull Activity activity, @NonNull FirebaseUser user) {
+        SessionManager.onLoginSuccess(activity, user);
+        pendingLoginMethod = "email";
         FcmTokenHelper.refreshAndSave();
         String uid = user.getUid();
 
         if (isDemoAdminEmail(user.getEmail())) {
-            cacheRole(activity, uid, "admin", "Admin", null, null);
+            cacheRole(activity, uid, "system_admin", "Admin", null, null);
             if (activity instanceof BaseActivity) {
-                ((BaseActivity) activity).saveUserCache("admin", "Admin", null, null, null);
+                ((BaseActivity) activity).saveUserCache("system_admin", "Admin", null, null, null);
+            }
+            ensureDemoAdminProfile(user, () -> redirectForRole(activity, "system_admin"));
+            return;
+        }
+
+        if (isObeidAdminEmail(user.getEmail())) {
+            cacheRole(activity, uid, "admin", "Obeid Tumaini", "Obeid", "Tumaini");
+            if (activity instanceof BaseActivity) {
+                ((BaseActivity) activity).saveUserCache("admin", "Obeid Tumaini", null, "Obeid", "Tumaini");
             }
             ensureDemoAdminProfile(user, () -> redirectForRole(activity, "admin"));
             return;
@@ -263,41 +339,179 @@ public final class AuthHelper {
 
     /**
      * Google login — farmers only. Admins are signed out with an error message.
+     * If the same email exists as a farmer (email/password account), farmer access is allowed.
      */
     public static void completeGoogleLoginAndRedirect(@NonNull Activity activity,
                                                       @NonNull FirebaseUser user,
                                                       @NonNull Runnable onAdminBlocked) {
+        completeGoogleLogin(activity, user, new GoogleLoginCallback() {
+            @Override
+            public void onFarmerReady() {
+                // already redirected
+            }
+
+            @Override
+            public void onAdminBlocked() {
+                onAdminBlocked.run();
+            }
+
+            @Override
+            public void onError(String message) {
+                FirebaseAuth.getInstance().signOut();
+                android.widget.Toast.makeText(activity, message, android.widget.Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public static void completeGoogleLogin(@NonNull Activity activity,
+                                           @NonNull FirebaseUser user,
+                                           @NonNull GoogleLoginCallback callback) {
         FcmTokenHelper.refreshAndSave();
         String uid = user.getUid();
 
         fetchUserRole(uid, new RoleCallback() {
             @Override
             public void onRole(String role) {
-                if (isAdminRole(role)) {
-                    FirebaseAuth.getInstance().signOut();
-                    activity.getSharedPreferences(BaseActivity.PREFS_NAME, Activity.MODE_PRIVATE).edit().clear().apply();
-                    onAdminBlocked.run();
+                if (isStaffRole(role)) {
+                    verifyGoogleNotFarmerAccount(user, isFarmer -> {
+                        if (isFarmer) {
+                            proceedGoogleFarmer(activity, user, callback);
+                        } else {
+                            FirebaseAuth.getInstance().signOut();
+                            activity.getSharedPreferences(BaseActivity.PREFS_NAME, Activity.MODE_PRIVATE)
+                                    .edit().clear().apply();
+                            callback.onAdminBlocked();
+                        }
+                    });
                     return;
                 }
-                ensureGoogleUserProfile(user, () -> {
-                    cacheRole(activity, uid, "farmer", user.getDisplayName(), null, null);
-                    if (activity instanceof BaseActivity) {
-                        ((BaseActivity) activity).saveUserCache("farmer",
-                                user.getDisplayName(), user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null,
-                                null, null);
-                    }
-                    redirectForRole(activity, "farmer");
-                });
+                proceedGoogleFarmer(activity, user, callback);
             }
 
             @Override
             public void onError(Exception e) {
-                ensureGoogleUserProfile(user, () -> {
-                    cacheRole(activity, uid, "farmer", user.getDisplayName(), null, null);
-                    redirectForRole(activity, "farmer");
-                });
+                proceedGoogleFarmer(activity, user, callback);
             }
         });
+    }
+
+    private static void proceedGoogleFarmer(@NonNull Activity activity,
+                                            @NonNull FirebaseUser user,
+                                            @NonNull GoogleLoginCallback callback) {
+        ensureGoogleUserProfile(user, () -> {
+            SessionManager.onLoginSuccess(activity, user);
+            pendingLoginMethod = "google";
+            String uid = user.getUid();
+            cacheRole(activity, uid, "farmer", user.getDisplayName(), null, null);
+            if (activity instanceof BaseActivity) {
+                ((BaseActivity) activity).saveUserCache("farmer",
+                        user.getDisplayName(),
+                        user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null,
+                        null, null);
+            }
+            redirectForRole(activity, "farmer");
+            callback.onFarmerReady();
+        });
+    }
+
+    /** Link Google to an existing email/password farmer account, then continue login. */
+    public static void linkGoogleWithPassword(@NonNull Activity activity,
+                                              @NonNull String email,
+                                              @NonNull String password,
+                                              @NonNull com.google.firebase.auth.AuthCredential googleCredential,
+                                              @NonNull GoogleLoginCallback callback) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email.trim(), password)
+                .addOnCompleteListener(activity, emailTask -> {
+                    if (!emailTask.isSuccessful() || FirebaseAuth.getInstance().getCurrentUser() == null) {
+                        callback.onError(friendlyAuthError(emailTask.getException()));
+                        return;
+                    }
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    user.linkWithCredential(googleCredential)
+                            .addOnCompleteListener(activity, linkTask -> {
+                                if (linkTask.isSuccessful() && FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                    completeGoogleLogin(activity,
+                                            FirebaseAuth.getInstance().getCurrentUser(), callback);
+                                } else {
+                                    // Already linked or link failed — continue if signed in
+                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                        completeGoogleLogin(activity,
+                                                FirebaseAuth.getInstance().getCurrentUser(), callback);
+                                    } else {
+                                        callback.onError(friendlyGoogleAuthError(linkTask.getException()));
+                                    }
+                                }
+                            });
+                });
+    }
+
+    public static String emailFromGoogleIdToken(@Nullable GoogleIdTokenCredential credential) {
+        if (credential == null || credential.getIdToken() == null) return null;
+        try {
+            String[] parts = credential.getIdToken().split("\\.");
+            if (parts.length < 2) return null;
+            byte[] decoded = android.util.Base64.decode(parts[1],
+                    android.util.Base64.URL_SAFE | android.util.Base64.NO_PADDING | android.util.Base64.NO_WRAP);
+            org.json.JSONObject payload = new org.json.JSONObject(new String(decoded, java.nio.charset.StandardCharsets.UTF_8));
+            if (payload.has("email")) {
+                return payload.getString("email");
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Could not parse Google ID token email", e);
+        }
+        return null;
+    }
+
+    public static String emailFromGoogleAuthError(@Nullable Exception e,
+                                                  @Nullable GoogleIdTokenCredential credential) {
+        if (e instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) {
+            String collisionEmail = ((com.google.firebase.auth.FirebaseAuthUserCollisionException) e).getEmail();
+            if (collisionEmail != null && !collisionEmail.trim().isEmpty()) {
+                return collisionEmail.trim();
+            }
+        }
+        return emailFromGoogleIdToken(credential);
+    }
+
+    public static boolean isGoogleAccountCollision(@Nullable Exception e) {
+        if (e == null) return false;
+        if (e instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) return true;
+        String msg = e.getMessage() != null ? e.getMessage().toLowerCase(Locale.US) : "";
+        return msg.contains("already in use")
+                || msg.contains("different sign-in")
+                || msg.contains("account exists");
+    }
+
+    public static String friendlyGoogleAuthError(@Nullable Exception e) {
+        if (isGoogleAccountCollision(e)) {
+            return "Barua pepe hii tayari imesajiliwa kwa nenosiri. Ingiza nenosiri lako kuunganisha Google, au tumia Login kwa barua pepe.";
+        }
+        return friendlyAuthError(e);
+    }
+
+    private static void verifyGoogleNotFarmerAccount(@NonNull FirebaseUser user,
+                                                     @NonNull java.util.function.Consumer<Boolean> callback) {
+        String email = user.getEmail();
+        if (email == null || email.trim().isEmpty()) {
+            callback.accept(false);
+            return;
+        }
+        FirebaseFirestore.getInstance().collection("users")
+                .whereEqualTo("email", email.trim())
+                .limit(5)
+                .get()
+                .addOnSuccessListener(snap -> {
+                    boolean farmer = false;
+                    for (com.google.firebase.firestore.QueryDocumentSnapshot doc : snap) {
+                        String role = doc.getString("role");
+                        if (!isStaffRole(role)) {
+                            farmer = true;
+                            break;
+                        }
+                    }
+                    callback.accept(farmer);
+                })
+                .addOnFailureListener(e -> callback.accept(false));
     }
 
     /** @deprecated Use {@link #completeEmailLoginAndRedirect} or {@link #completeGoogleLoginAndRedirect}. */
@@ -419,6 +633,11 @@ public final class AuthHelper {
         if (activity instanceof BaseActivity) {
             ((BaseActivity) activity).saveUserCache(role, name, photo, firstName, lastName);
         }
+        String email = doc.getString("email");
+        String username = doc.getString("username");
+        if (email != null && username != null && !username.isEmpty()) {
+            cacheUsernameEmail(normalizeUsername(username), email.trim().toLowerCase(Locale.US));
+        }
         redirectForRole(activity, role);
     }
 
@@ -438,7 +657,11 @@ public final class AuthHelper {
                 && activity.isDestroyed()) {
             return;
         }
-        Class<?> dest = isAdminRole(role)
+        if (pendingLoginMethod != null) {
+            ActivityLogHelper.logAuthLogin(activity, normalizeRole(role), pendingLoginMethod);
+            pendingLoginMethod = null;
+        }
+        Class<?> dest = isStaffRole(role)
                 ? AdminDashboardActivity.class
                 : FarmerDashboardActivity.class;
         Intent intent = new Intent(activity, dest);
@@ -462,9 +685,16 @@ public final class AuthHelper {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return false;
 
+        if (!SessionManager.isSessionValid(activity)) {
+            SessionManager.clearSession(activity);
+            FirebaseAuth.getInstance().signOut();
+            return false;
+        }
+
         SharedSessionCache cache = readCache(activity, user.getUid());
         if (!cache.hasRole) return false;
 
+        SessionManager.touchActivity(activity);
         redirectForRole(activity, cache.role);
         refreshProfileInBackground(activity, user.getUid());
         return true;
@@ -472,6 +702,7 @@ public final class AuthHelper {
 
     public static void ensureGoogleUserProfile(@NonNull FirebaseUser user, @NonNull Runnable onDone) {
         String uid = user.getUid();
+        String googlePhoto = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
 
         fs.collection("users").document(uid).get()
@@ -482,7 +713,7 @@ public final class AuthHelper {
                             onDone.run();
                             return;
                         }
-                        onDone.run();
+                        syncGooglePhotoIfNeeded(uid, googlePhoto, doc.getString("photoUrl"), onDone);
                         return;
                     }
                     String displayName = user.getDisplayName() != null ? user.getDisplayName() : "User";
@@ -495,12 +726,82 @@ public final class AuthHelper {
                     data.put("email", email);
                     data.put("username", username);
                     data.put("role", "farmer");
+                    if (googlePhoto != null && !googlePhoto.isEmpty()) {
+                        data.put("photoUrl", googlePhoto);
+                    }
 
                     usersRtdb().child(uid).setValue(data);
                     fs.collection("users").document(uid).set(data);
                     onDone.run();
                 })
                 .addOnFailureListener(e -> onDone.run());
+    }
+
+    private static void syncGooglePhotoIfNeeded(@NonNull String uid,
+                                                @Nullable String googlePhoto,
+                                                @Nullable String existingPhoto,
+                                                @NonNull Runnable onDone) {
+        if (googlePhoto == null || googlePhoto.isEmpty()) {
+            onDone.run();
+            return;
+        }
+        if (existingPhoto != null && !existingPhoto.isEmpty()) {
+            onDone.run();
+            return;
+        }
+        java.util.HashMap<String, Object> updates = new java.util.HashMap<>();
+        updates.put("photoUrl", googlePhoto);
+        usersRtdb().child(uid).updateChildren(updates);
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .set(updates, com.google.firebase.firestore.SetOptions.merge())
+                .addOnCompleteListener(t -> onDone.run());
+    }
+
+    /**
+     * Change password via Firebase Auth — same account used by web admin panel.
+     * Password is never written to Firestore/RTDB (metadata timestamp only).
+     */
+    public static void changeAdminPassword(@NonNull Activity activity,
+                                           @NonNull String currentPassword,
+                                           @NonNull String newPassword,
+                                           @NonNull PasswordChangeCallback callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null || user.getEmail() == null) {
+            callback.onError("Hakuna mtumiaji aliyeingia.");
+            return;
+        }
+        if (newPassword.length() < 6) {
+            callback.onError("Nenosiri jipya lazima liwe angalau herufi 6.");
+            return;
+        }
+
+        com.google.firebase.auth.AuthCredential credential =
+                com.google.firebase.auth.EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+        user.reauthenticate(credential).addOnCompleteListener(activity, reauthTask -> {
+            if (!reauthTask.isSuccessful()) {
+                callback.onError("Nenosiri la sasa si sahihi.");
+                return;
+            }
+            user.updatePassword(newPassword).addOnCompleteListener(activity, updateTask -> {
+                if (!updateTask.isSuccessful()) {
+                    callback.onError(friendlyAuthError(updateTask.getException()));
+                    return;
+                }
+                recordPasswordChangeMetadata(user.getUid(), "mobile", () -> callback.onSuccess());
+            });
+        });
+    }
+
+    private static void recordPasswordChangeMetadata(String uid, String changedVia, @Nullable Runnable onDone) {
+        java.util.HashMap<String, Object> meta = new java.util.HashMap<>();
+        meta.put("passwordChangedAt", System.currentTimeMillis());
+        meta.put("passwordChangedVia", changedVia);
+        usersRtdb().child(uid).updateChildren(meta);
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .set(meta, com.google.firebase.firestore.SetOptions.merge())
+                .addOnCompleteListener(t -> {
+                    if (onDone != null) onDone.run();
+                });
     }
 
     private static SharedSessionCache readCache(Activity activity, String uid) {

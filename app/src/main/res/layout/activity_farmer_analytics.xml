@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_parchment"
@@ -70,13 +71,6 @@
                     android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/total_scans"
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp" />
-
-                    <TextView
                         android:id="@+id/tvTotalScans"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -84,6 +78,14 @@
                         android:textColor="@android:color/white"
                         android:textSize="22sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/total_scans"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -109,13 +111,6 @@
                     android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/diseases_found"
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp" />
-
-                    <TextView
                         android:id="@+id/tvDiseasesFound"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -123,6 +118,14 @@
                         android:textColor="@android:color/white"
                         android:textSize="22sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/diseases_found"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -148,22 +151,23 @@
                     android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/top_disease"
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp" />
-
-                    <TextView
                         android:id="@+id/tvTopDisease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
                         android:text="-"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:maxLines="1"
-                        android:ellipsize="end" />
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/top_disease"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -186,16 +190,31 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
                     android:text="@string/most_common_diseases"
                     android:textColor="#33691E"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="8dp" />
+                    android:textStyle="bold" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChartDiseases"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDiseaseBreakdown"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp" />
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_analytics_disease_row" />
+
+                <TextView
+                    android:id="@+id/tvNoDiseaseData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="24dp"
+                    android:text="@string/no_data_yet"
+                    android:textColor="@color/textLight"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -228,7 +247,7 @@
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/lineChartTrend"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp" />
+                    android:layout_height="220dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

@@ -1,5 +1,7 @@
 package com.example.coffeediseasesdetection;
 
+import java.util.Locale;
+
 /** Canonical disease keys and display names for UI + analytics. */
 public final class DiseaseLabels {
 
@@ -46,13 +48,24 @@ public final class DiseaseLabels {
         if (s.equals("IsNotCoffee") || s.contains("Not Coffee") || s.contains("Si Picha")
                 || s.contains("Samahani")) return "IsNotCoffee";
         if (s.equals("Uncertain") || s.contains("Uncertain")) return "Uncertain";
+        if (isPredictionFailure(s)) return "Error";
         if (s.equals("Error")) return "Error";
         return s;
     }
 
+    private static boolean isPredictionFailure(String s) {
+        if (s == null) return false;
+        String lower = s.toLowerCase(Locale.US);
+        return lower.contains("prediction error")
+                || lower.contains("tensorflow")
+                || lower.contains("cannot copy")
+                || lower.startsWith("error:");
+    }
+
     public static boolean isValidScan(String key) {
         String k = normalizeKey(key);
-        return !"IsNotCoffee".equals(k) && !"Error".equals(k) && !"Uncertain".equals(k);
+        return !"IsNotCoffee".equals(k) && !"Error".equals(k) && !"Uncertain".equals(k)
+                && !"Unknown".equals(k);
     }
 
     public static boolean isDiseaseFound(String key) {

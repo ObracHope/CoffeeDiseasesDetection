@@ -102,6 +102,18 @@ public class SettingsActivity extends BaseActivity {
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> performLogout());
         }
+
+        bindLegalNavigation(R.id.btnHelpSupport, HelpSupportActivity.class);
+        bindLegalNavigation(R.id.btnAboutUs, AboutUsActivity.class);
+        bindLegalNavigation(R.id.btnTerms, TermsConditionsActivity.class);
+        bindLegalNavigation(R.id.btnPrivacy, PrivacyPolicyActivity.class);
+    }
+
+    private void bindLegalNavigation(int viewId, Class<?> activityClass) {
+        android.view.View view = findViewById(viewId);
+        if (view != null) {
+            view.setOnClickListener(v -> startActivity(new Intent(this, activityClass)));
+        }
     }
 
 }

@@ -29,6 +29,7 @@ import java.util.Map;
 
 public class UpdateProfile extends BaseActivity {
 
+    public static final String EXTRA_REQUIRE_LOCATION = "require_location";
     private static final String TAG = "UpdateProfile";
     private EditText etFirstName, etLastName, etRegion, etDistrict, etWard;
     private ImageView ivProfilePhoto;
@@ -39,6 +40,7 @@ public class UpdateProfile extends BaseActivity {
     private Uri selectedImageUri;
     private String lockedFirstName = "";
     private String lockedLastName = "";
+    private boolean requireLocation;
 
     private final ActivityResultLauncher<String> galleryLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -55,6 +57,7 @@ public class UpdateProfile extends BaseActivity {
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+        requireLocation = getIntent().getBooleanExtra(EXTRA_REQUIRE_LOCATION, false);
 
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
@@ -69,7 +72,19 @@ public class UpdateProfile extends BaseActivity {
         TextView tvProfileHint = findViewById(R.id.tvProfileHint);
 
         if (tvProfileHint != null) {
-            tvProfileHint.setText(R.string.profile_photo_only);
+            tvProfileHint.setText(requireLocation
+                    ? R.string.location_required_message
+                    : R.string.profile_photo_only);
+        }
+
+        if (requireLocation) {
+            Toast.makeText(this, R.string.location_required_message, Toast.LENGTH_LONG).show();
+            getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    Toast.makeText(UpdateProfile.this, R.string.location_required_message, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         lockNameFields(etFirstName, etLastName);
@@ -153,10 +168,15 @@ public class UpdateProfile extends BaseActivity {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return;
 
+        String region = etRegion != null ? etRegion.getText().toString().trim() : "";
+        String district = etDistrict != null ? etDistrict.getText().toString().trim() : "";
+        String ward = etWard != null ? etWard.getText().toString().trim() : "";
+        if (requireLocation && !isLocationComplete(region, district, ward)) {
+            Toast.makeText(this, R.string.location_all_fields_required, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (selectedImageUri == null) {
-            String region = etRegion != null ? etRegion.getText().toString().trim() : "";
-            String district = etDistrict != null ? etDistrict.getText().toString().trim() : "";
-            String ward = etWard != null ? etWard.getText().toString().trim() : "";
             saveProfile(user, null, region, district, ward);
             return;
         }
@@ -168,12 +188,7 @@ public class UpdateProfile extends BaseActivity {
                 .getReference("profile_pics/" + user.getUid() + ".jpg");
         storageRef.putFile(selectedImageUri)
                 .addOnSuccessListener(t -> storageRef.getDownloadUrl()
-                        .addOnSuccessListener(uri -> {
-                            String region = etRegion != null ? etRegion.getText().toString().trim() : "";
-                            String district = etDistrict != null ? etDistrict.getText().toString().trim() : "";
-                            String ward = etWard != null ? etWard.getText().toString().trim() : "";
-                            saveProfile(user, uri, region, district, ward);
-                        }))
+                        .addOnSuccessListener(uri -> saveProfile(user, uri, region, district, ward)))
                 .addOnFailureListener(e -> {
                     if (progressBar != null) progressBar.setVisibility(View.GONE);
                     if (btnSave != null) btnSave.setEnabled(true);
@@ -204,6 +219,12 @@ public class UpdateProfile extends BaseActivity {
                     if (btnSave != null) btnSave.setEnabled(true);
                     Toast.makeText(this, R.string.update_failed, Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private static boolean isLocationComplete(String region, String district, String ward) {
+        return region != null && !region.trim().isEmpty()
+                && district != null && !district.trim().isEmpty()
+                && ward != null && !ward.trim().isEmpty();
     }
 
     private void applyAuthAndFinish(FirebaseUser user, String fullName, Uri photoUri) {

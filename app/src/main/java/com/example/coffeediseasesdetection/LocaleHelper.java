@@ -18,6 +18,7 @@ public final class LocaleHelper {
     public static final String KEY_LANG = "app_language";
     public static final String LANG_EN = "en";
     public static final String LANG_SW = "sw";
+    public static final String LANG_RW = "rw";
 
     private LocaleHelper() {}
 
@@ -48,10 +49,35 @@ public final class LocaleHelper {
         persist(activity.getApplicationContext(), languageCode);
         applyAppLocale(activity.getApplicationContext());
 
-        Intent intent = new Intent(activity, FarmerDashboardActivity.class);
+        Class<?> target = resolveRestartTarget(activity);
+        Intent intent = new Intent(activity, target);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(intent);
         activity.finishAffinity();
+    }
+
+    private static Class<?> resolveRestartTarget(Activity activity) {
+        if (activity instanceof LandingActivity) return LandingActivity.class;
+        if (activity instanceof MainActivity) return MainActivity.class;
+        if (activity instanceof RegisterActivity) return RegisterActivity.class;
+        if (activity instanceof ForgotPasswordActivity) return ForgotPasswordActivity.class;
+        if (activity instanceof SettingsActivity) return SettingsActivity.class;
+        if (activity instanceof AdminInternationalSettingsActivity) {
+            return AdminInternationalSettingsActivity.class;
+        }
+
+        SharedPreferences userPrefs = activity.getSharedPreferences(
+                BaseActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        String role = userPrefs.getString(BaseActivity.KEY_ROLE, "farmer");
+        boolean admin = role != null && (
+                role.equalsIgnoreCase("admin")
+                        || role.equalsIgnoreCase("system_admin")
+                        || role.equalsIgnoreCase("it")
+                        || role.equalsIgnoreCase("technician")
+                        || role.contains("bwana")
+                        || role.contains("waziri")
+                        || role.contains("minister"));
+        return admin ? AdminDashboardActivity.class : FarmerDashboardActivity.class;
     }
 
     public static String getLanguage(Context context) {

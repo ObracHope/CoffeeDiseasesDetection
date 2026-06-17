@@ -18,6 +18,12 @@
     <item android:id="@+id/nav_farming_tips"
         android:icon="@drawable/ic_tips_custom"
         android:title="@string/farming_tips" />
+    <item android:id="@+id/nav_help_support"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/nav_help_support" />
+    <item android:id="@+id/nav_about_us"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/nav_about_us" />
     <item android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings_custom"
         android:title="@string/settings" />

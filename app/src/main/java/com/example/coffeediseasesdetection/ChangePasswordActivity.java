@@ -2,17 +2,10 @@ package com.example.coffeediseasesdetection;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -46,7 +39,7 @@ public class ChangePasswordActivity extends BaseActivity {
         String confirmPassword = etConfirmNewPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(currentPassword) || TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(confirmPassword)) {
-            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.password_all_fields_required, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -61,32 +54,30 @@ public class ChangePasswordActivity extends BaseActivity {
         }
 
         FirebaseUser user = auth.getCurrentUser();
-        if (user != null && user.getEmail() != null) {
-            btnChangePassword.setEnabled(false);
-            btnChangePassword.setText(getString(R.string.processing));
-
-            // Re-authenticate user
-            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
-            user.reauthenticate(credential).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // Update password
-                    user.updatePassword(newPassword).addOnCompleteListener(updateTask -> {
-                        btnChangePassword.setEnabled(true);
-                        btnChangePassword.setText(getString(R.string.btn_change_password));
-                        if (updateTask.isSuccessful()) {
-                            Toast.makeText(ChangePasswordActivity.this, getString(R.string.password_changed), Toast.LENGTH_LONG).show();
-                            finish();
-                        } else {
-                            String error = updateTask.getException() != null ? updateTask.getException().getMessage() : "Update failed";
-                            Toast.makeText(ChangePasswordActivity.this, "Failed: " + error, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
-                    btnChangePassword.setEnabled(true);
-                    btnChangePassword.setText(getString(R.string.btn_change_password));
-                    Toast.makeText(ChangePasswordActivity.this, "Authentication failed. Check current password.", Toast.LENGTH_LONG).show();
-                }
-            });
+        if (user == null || user.getEmail() == null) {
+            Toast.makeText(this, R.string.login_failed_generic, Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        btnChangePassword.setEnabled(false);
+        btnChangePassword.setText(getString(R.string.processing));
+
+        AuthHelper.changeAdminPassword(this, currentPassword, newPassword, new AuthHelper.PasswordChangeCallback() {
+            @Override
+            public void onSuccess() {
+                btnChangePassword.setEnabled(true);
+                btnChangePassword.setText(getString(R.string.btn_change_password));
+                Toast.makeText(ChangePasswordActivity.this,
+                        R.string.password_changed_synced, Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onError(String message) {
+                btnChangePassword.setEnabled(true);
+                btnChangePassword.setText(getString(R.string.btn_change_password));
+                Toast.makeText(ChangePasswordActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

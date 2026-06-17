@@ -33,6 +33,7 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private View ivProfilePhoto;
     private TextView tvName;
+    private TextView tvRole;
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage;
@@ -79,6 +80,7 @@ public class ProfileFragment extends Fragment {
 
         ivProfilePhoto = view.findViewById(R.id.ivProfilePhoto);
         tvName = view.findViewById(R.id.tvProfileName);
+        tvRole = view.findViewById(R.id.tvProfileRole);
         TextView tvEmail = view.findViewById(R.id.tvProfileEmail);
         View btnChangePhoto = view.findViewById(R.id.btnChangePhoto);
         View btnLogout = view.findViewById(R.id.btnPopupSignOut);
@@ -150,9 +152,17 @@ public class ProfileFragment extends Fragment {
                     if (snapshot.exists() && isAdded()) {
                         String name = snapshot.child("name").getValue(String.class);
                         String photoUrl = snapshot.child("photoUrl").getValue(String.class);
+                        String firstName = snapshot.child("firstName").getValue(String.class);
+                        String lastName = snapshot.child("lastName").getValue(String.class);
+                        String role = snapshot.child("role").getValue(String.class);
 
-                        if (name != null && !name.isEmpty() && tvName != null) {
-                            tvName.setText(name);
+                        String displayName = ProfileHelper.fullName(firstName, lastName, name);
+                        if (tvName != null) {
+                            tvName.setText(!displayName.isEmpty() ? displayName : getString(R.string.profile_name_placeholder));
+                        }
+                        if (tvRole != null) {
+                            tvRole.setText(ProfileHelper.roleLabel(requireContext(), role));
+                            tvRole.setVisibility(android.view.View.VISIBLE);
                         }
 
                         if (photoUrl != null && !photoUrl.isEmpty() && ivProfilePhoto != null) {

@@ -104,10 +104,12 @@ public class DiseaseResultActivity extends BaseActivity {
         final String diseaseKeyFinal = diseaseKey;
         final String descFinal = description != null ? description : "";
         final String pathFinal = imagePath;
+        final String scanSource = getIntent().getStringExtra("scanSource");
+        final String sourceFinal = scanSource != null ? scanSource : ScanRepository.SOURCE_CAMERA;
 
         // Save every scan to history — coffee, non-coffee, uncertain, healthy, diseased.
         ScanRepository.saveScan(this, diseaseKeyFinal, confidenceFinal, descFinal, pathFinal,
-                isCoffee, isHealthy, new ScanRepository.SaveCallback() {
+                isCoffee, isHealthy, sourceFinal, new ScanRepository.SaveCallback() {
                     @Override
                     public void onSuccess(String scanId) {
                         lastSavedScanId = scanId;

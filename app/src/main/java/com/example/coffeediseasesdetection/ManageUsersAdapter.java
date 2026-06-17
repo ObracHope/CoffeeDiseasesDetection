@@ -10,13 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ManageUsersAdapter extends RecyclerView.Adapter<ManageUsersAdapter.ViewHolder> {
 
     private final List<Map<String, Object>> users;
+    private final String actorRole;
     private final OnRemoveListener onRemoveListener;
     private final OnEditListener onEditListener;
+    private final OnResetListener onResetListener;
 
     public interface OnRemoveListener {
         void onRemove(String userId, String docId);
@@ -26,10 +29,20 @@ public class ManageUsersAdapter extends RecyclerView.Adapter<ManageUsersAdapter.
         void onEdit(String userId, Map<String, Object> userData);
     }
 
-    public ManageUsersAdapter(List<Map<String, Object>> users, OnRemoveListener listener, OnEditListener editListener) {
+    public interface OnResetListener {
+        void onReset(String userId, Map<String, Object> userData);
+    }
+
+    public ManageUsersAdapter(List<Map<String, Object>> users,
+                              String actorRole,
+                              OnRemoveListener removeListener,
+                              OnEditListener editListener,
+                              OnResetListener resetListener) {
         this.users = users;
-        this.onRemoveListener = listener;
+        this.actorRole = actorRole;
+        this.onRemoveListener = removeListener;
         this.onEditListener = editListener;
+        this.onResetListener = resetListener;
     }
 
     @NonNull
@@ -43,24 +56,43 @@ public class ManageUsersAdapter extends RecyclerView.Adapter<ManageUsersAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Map<String, Object> user = users.get(position);
-        String name = (String) user.get("name");
-        String email = (String) user.get("email");
-        String role = (String) user.get("role");
-        String uid = (String) user.get("uid");
+        String name = user.get("name") != null ? user.get("name").toString() : null;
+        String email = user.get("email") != null ? user.get("email").toString() : null;
+        String role = user.get("role") != null ? user.get("role").toString() : null;
+        String uid = user.get("uid") != null ? user.get("uid").toString() : null;
 
         holder.tvName.setText(name != null ? name : "—");
-        holder.tvEmail.setText(email != null ? email + (role != null ? " (" + role + ")" : "") : "—");
+        holder.tvEmail.setText(email != null ? email : "—");
+        if (holder.tvUserRole != null) {
+            holder.tvUserRole.setText(role != null
+                    ? AuthHelper.displayRoleLabel(holder.itemView.getContext(), role) : "");
+        }
+        if (holder.tvUserInitial != null) {
+            String initial = "U";
+            if (name != null && !name.isEmpty()) {
+                initial = name.substring(0, 1).toUpperCase(Locale.US);
+            } else if (email != null && !email.isEmpty()) {
+                initial = email.substring(0, 1).toUpperCase(Locale.US);
+            }
+            holder.tvUserInitial.setText(initial);
+        }
+
+        boolean canReset = AdminPasswordResetHelper.canResetTarget(actorRole, role);
+        if (holder.btnResetPassword != null) {
+            holder.btnResetPassword.setVisibility(canReset ? View.VISIBLE : View.GONE);
+        }
 
         holder.btnEdit.setOnClickListener(v -> {
-            if (uid != null && onEditListener != null) {
-                onEditListener.onEdit(uid, user);
-            }
+            if (uid != null && onEditListener != null) onEditListener.onEdit(uid, user);
         });
         holder.btnRemove.setOnClickListener(v -> {
-            if (uid != null && onRemoveListener != null) {
-                onRemoveListener.onRemove(uid, uid);
-            }
+            if (uid != null && onRemoveListener != null) onRemoveListener.onRemove(uid, uid);
         });
+        if (holder.btnResetPassword != null) {
+            holder.btnResetPassword.setOnClickListener(v -> {
+                if (uid != null && onResetListener != null) onResetListener.onReset(uid, user);
+            });
+        }
     }
 
     @Override
@@ -71,15 +103,21 @@ public class ManageUsersAdapter extends RecyclerView.Adapter<ManageUsersAdapter.
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         TextView tvEmail;
+        TextView tvUserInitial;
+        TextView tvUserRole;
         Button btnEdit;
         Button btnRemove;
+        Button btnResetPassword;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvUserName);
             tvEmail = itemView.findViewById(R.id.tvUserEmail);
+            tvUserInitial = itemView.findViewById(R.id.tvUserInitial);
+            tvUserRole = itemView.findViewById(R.id.tvUserRole);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnRemove = itemView.findViewById(R.id.btnRemove);
+            btnResetPassword = itemView.findViewById(R.id.btnResetPassword);
         }
     }
 }

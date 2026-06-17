@@ -7,6 +7,10 @@ android {
     namespace = "com.example.coffeediseasesdetection"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.coffeediseasesdetection"
         minSdk = 24
@@ -23,6 +27,7 @@ android {
             isMinifyEnabled = false
         }
         release {
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -63,6 +68,8 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-functions")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Credential Manager & Google ID
     implementation(libs.androidx.credentials)

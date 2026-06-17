@@ -22,13 +22,15 @@
         <item name="android:textColorSecondary">@color/textMedium</item>
         
         <!-- Status Bar -->
-        <item name="android:statusBarColor">@color/primaryGreenDark</item>
+        <item name="android:statusBarColor">@color/headerDarkGreen</item>
+        <item name="android:navigationBarColor">@color/navBarBackground</item>
+        <item name="android:windowLightStatusBar">false</item>
         
         <!-- Font Family -->
         <item name="android:fontFamily">sans-serif</item>
         
         <!-- Card Styles -->
-        <item name="cardCornerRadius">16dp</item>
+        <item name="cardCornerRadius">12dp</item>
         <item name="cardElevation">4dp</item>
     </style>
 
@@ -46,7 +48,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">12dp</item>
-        <item name="cardCornerRadius">16dp</item>
+        <item name="cardCornerRadius">12dp</item>
         <item name="cardElevation">4dp</item>
         <item name="cardBackgroundColor">@color/card_background</item>
         <item name="android:clickable">true</item>
@@ -83,12 +85,14 @@
 
     <!-- Rounded Material 3 Input -->
     <style name="RoundedInputStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-        <item name="boxCornerRadiusTopStart">16dp</item>
-        <item name="boxCornerRadiusTopEnd">16dp</item>
-        <item name="boxCornerRadiusBottomStart">16dp</item>
-        <item name="boxCornerRadiusBottomEnd">16dp</item>
-        <item name="boxStrokeColor">@color/gradient_green_center</item>
-        <item name="hintTextColor">@color/gradient_green_center</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxStrokeColor">@color/dividerGrey</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/textLight</item>
+        <item name="boxBackgroundColor">@color/card_background</item>
     </style>
 
     <!-- Dashboard Styles (Legacy override) -->
@@ -120,16 +124,19 @@
     <style name="BottomNavTextActive">
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/primaryGreen</item>
+        <item name="android:textColor">@color/nav_active</item>
+        <item name="android:paddingTop">4dp</item>
     </style>
 
     <style name="BottomNavTextInactive">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/nav_inactive</item>
+        <item name="android:paddingTop">4dp</item>
     </style>
 
     <style name="BottomNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primaryBrown</item>
+        <item name="android:color">@color/selectedItemBg</item>
         <item name="marginHorizontal">8dp</item>
     </style>
 </resources>

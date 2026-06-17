@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeediseasesdetection.admin.AdminRepository;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.Timestamp;
@@ -27,6 +29,12 @@ import java.util.Map;
 
 public class AdminScansListActivity extends BaseActivity {
 
+    public static final String EXTRA_FILTER = "filter";
+    public static final String EXTRA_DISEASE_KEY = "disease_key";
+    public static final String FILTER_ALL = "all";
+    public static final String FILTER_HEALTHY = "healthy";
+    public static final String FILTER_DISEASES = "diseases";
+
     private final List<Map<String, Object>> allScans = new ArrayList<>();
     private final List<Map<String, Object>> filteredScans = new ArrayList<>();
     private final AdminRepository repository = new AdminRepository();
@@ -34,8 +42,12 @@ public class AdminScansListActivity extends BaseActivity {
     private TextView tvEmpty;
     private TextView tvCount;
     private ListenerRegistration scanListener;
-    private int periodFilter = 0; // 0=all, 1=today, 2=week, 3=month
+    private int periodFilter = 0;
     private String searchQuery = "";
+    private String listFilter = FILTER_ALL;
+    private String diseaseSortKey = "all";
+    private final List<String> diseaseSortKeys = new ArrayList<>();
+    private final List<String> diseaseSortLabels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +65,12 @@ public class AdminScansListActivity extends BaseActivity {
         adapter = new HistoryAdapter(filteredScans, this::onScanClick);
         rv.setAdapter(adapter);
 
+        readIntentFilter();
+        setupDiseaseSortSpinner();
         setupSearch();
         setupPeriodChips();
         applyIntentFilter();
+        updateTitle();
 
         scanListener = repository.listenAllScans(500, new AdminRepository.ScansCallback() {
             @Override
@@ -74,6 +89,66 @@ public class AdminScansListActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void readIntentFilter() {
+        String f = getIntent().getStringExtra(EXTRA_FILTER);
+        if (f != null) listFilter = f;
+        String key = getIntent().getStringExtra(EXTRA_DISEASE_KEY);
+        if (key != null && !key.isEmpty()) diseaseSortKey = DiseaseLabels.normalizeKey(key);
+    }
+
+    private void updateTitle() {
+        TextView tvTitle = findViewById(R.id.tvScanListTitle);
+        if (tvTitle == null) return;
+        if (FILTER_HEALTHY.equals(listFilter)) {
+            tvTitle.setText(R.string.admin_health_coffee);
+        } else if (FILTER_DISEASES.equals(listFilter)) {
+            tvTitle.setText(R.string.diseases_detected);
+        } else {
+            tvTitle.setText(R.string.admin_scan_records);
+        }
+    }
+
+    private void setupDiseaseSortSpinner() {
+        Spinner spinner = findViewById(R.id.spinnerDiseaseSort);
+        if (spinner == null) return;
+
+        diseaseSortKeys.clear();
+        diseaseSortLabels.clear();
+        diseaseSortKeys.add("all");
+        diseaseSortLabels.add(getString(R.string.all));
+
+        for (String key : DiseaseCatalog.ALL_CONDITIONS) {
+            if ("Healthy".equals(key)) continue;
+            diseaseSortKeys.add(key);
+            diseaseSortLabels.add(DiseaseTextProvider.displayName(this, key));
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, diseaseSortLabels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        int selectIndex = diseaseSortKeys.indexOf(diseaseSortKey);
+        if (selectIndex >= 0) spinner.setSelection(selectIndex);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                diseaseSortKey = diseaseSortKeys.get(position);
+                applyFilters();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        View sortLabel = findViewById(R.id.tvDiseaseSortLabel);
+        boolean showSort = FILTER_DISEASES.equals(listFilter) || FILTER_ALL.equals(listFilter);
+        spinner.setVisibility(showSort ? View.VISIBLE : View.GONE);
+        if (sortLabel != null) sortLabel.setVisibility(showSort ? View.VISIBLE : View.GONE);
     }
 
     private void applyIntentFilter() {
@@ -117,6 +192,17 @@ public class AdminScansListActivity extends BaseActivity {
         long cutoff = periodCutoffMs();
 
         for (Map<String, Object> scan : allScans) {
+            String key = scanDiseaseKey(scan);
+            if (!DiseaseLabels.isValidScan(key)) continue;
+
+            if (FILTER_HEALTHY.equals(listFilter)) {
+                if (!"Healthy".equals(key)) continue;
+            } else if (FILTER_DISEASES.equals(listFilter)) {
+                if (!DiseaseLabels.isDiseaseFound(key)) continue;
+            }
+
+            if (!"all".equals(diseaseSortKey) && !diseaseSortKey.equals(key)) continue;
+
             if (cutoff > 0) {
                 long ts = parseTs(scan.get("timestamp"));
                 if (ts < cutoff) continue;
@@ -132,6 +218,14 @@ public class AdminScansListActivity extends BaseActivity {
         if (tvEmpty != null) {
             tvEmpty.setVisibility(filteredScans.isEmpty() ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private static String scanDiseaseKey(Map<String, Object> scan) {
+        String raw = scan.get("disease") != null ? scan.get("disease").toString() : null;
+        if (raw == null && scan.get("diseaseName") != null) {
+            raw = scan.get("diseaseName").toString();
+        }
+        return DiseaseLabels.normalizeKey(raw);
     }
 
     private boolean matchesSearch(Map<String, Object> scan, String q) {
@@ -195,8 +289,7 @@ public class AdminScansListActivity extends BaseActivity {
                         repository.deleteScan(scanId, new AdminRepository.SimpleCallback() {
                             @Override
                             public void onSuccess() {
-                                repository.logActivity(AdminScansListActivity.this,
-                                        "scan_delete", scanId);
+                                repository.logActivity(AdminScansListActivity.this, "scan_delete", scanId);
                                 Toast.makeText(AdminScansListActivity.this,
                                         R.string.scan_deleted, Toast.LENGTH_SHORT).show();
                             }

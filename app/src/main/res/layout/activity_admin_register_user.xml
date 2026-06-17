@@ -40,10 +40,11 @@
                 android:padding="24dp">
 
                 <TextView
+                    android:id="@+id/tvRegisterTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Register New User"
+                    android:text="@string/admin_register_user_title"
                     android:textColor="#2E1A0F"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -159,32 +160,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="4dp"
-                    android:text="Select Role"
+                    android:text="@string/register_select_role"
                     android:textColor="#5D4037"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <RadioGroup
-                    android:id="@+id/rgRole"
+                <Spinner
+                    android:id="@+id/spinnerUserRole"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginBottom="8dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbFarmer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Farmer"
-                        android:checked="true" />
-
-                    <RadioButton
-                        android:id="@+id/rbAdmin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="Admin" />
-                </RadioGroup>
+                    android:background="@android:drawable/btn_dropdown"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
                 <Space android:layout_width="match_parent" android:layout_height="12dp" />
 
@@ -193,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="4dp"
-                    android:text="Gender"
+                    android:text="@string/register_gender"
                     android:textColor="#5D4037"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -209,14 +197,14 @@
                         android:id="@+id/rbMale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Male" />
+                        android:text="@string/register_male" />
 
                     <RadioButton
                         android:id="@+id/rbFemale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:text="Female" />
+                        android:text="@string/register_female" />
                 </RadioGroup>
 
                 <Space android:layout_width="match_parent" android:layout_height="12dp" />
@@ -258,7 +246,69 @@
 
                 <Space android:layout_width="match_parent" android:layout_height="12dp" />
 
-                <!-- Password -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Region (e.g. Kilimanjaro)"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRegion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="District (e.g. Moshi)"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ward (e.g. Majengo)"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etWard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space android:layout_width="match_parent" android:layout_height="12dp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutPasswordSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -280,7 +330,6 @@
 
                 <Space android:layout_width="match_parent" android:layout_height="12dp" />
 
-                <!-- Repeat Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -299,12 +348,14 @@
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                </LinearLayout>
+
                 <CheckBox
                     android:id="@+id/cbAgree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="I agree to the terms and conditions"
+                    android:text="@string/register_agree_terms"
                     android:textColor="#3E2723"
                     android:textSize="13sp" />
 
@@ -314,7 +365,7 @@
                     android:layout_height="58dp"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/primaryGreen"
-                    android:text="Create Account"
+                    android:text="@string/register_create_account"
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -329,7 +380,7 @@
                     android:layout_marginTop="16dp"
                     android:background="?attr/selectableItemBackground"
                     android:padding="8dp"
-                    android:text="← Back to Dashboard"
+                    android:text="@string/back_to_dashboard"
                     android:textColor="@color/primaryBrown"
                     android:textSize="15sp"
                     android:textStyle="bold" />

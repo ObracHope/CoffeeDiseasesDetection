@@ -96,6 +96,8 @@ public class ReportChallengeActivity extends BaseActivity {
             mDatabase.child("farmer_challenges").push().setValue(challenge)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            ActivityLogHelper.log(ReportChallengeActivity.this, "farmer_message",
+                                    Map.of("title", title, "category", category, "status", "pending"));
                             Toast.makeText(this, getString(R.string.challenge_submitted), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {

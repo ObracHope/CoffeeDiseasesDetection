@@ -2,13 +2,14 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#E8EEE8" />
+            <solid android:color="@color/navBarBackground" />
+            <size android:height="56dp" />
         </shape>
     </item>
     <item android:gravity="top">
         <shape android:shape="rectangle">
             <size android:height="1dp" />
-            <solid android:color="#D0D8D0" />
+            <solid android:color="@color/navBarDivider" />
         </shape>
     </item>
 </layer-list>

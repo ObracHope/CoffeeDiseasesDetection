@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp">
+
+    <View
+        android:id="@+id/viewDiseaseColor"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:background="@drawable/bg_circle" />
+
+    <TextView
+        android:id="@+id/tvDiseaseName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:textColor="@color/textDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="Coffee Berry Disease" />
+
+    <TextView
+        android:id="@+id/tvDiseaseCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/textLight"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="(10)" />
+</LinearLayout>

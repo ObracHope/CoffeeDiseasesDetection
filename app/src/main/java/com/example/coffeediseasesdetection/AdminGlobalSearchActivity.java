@@ -92,7 +92,8 @@ public class AdminGlobalSearchActivity extends BaseActivity {
         String lower = q.toLowerCase(Locale.US);
 
         for (Map<String, Object> f : farmers) {
-            if (matches(f, lower, "name", "firstName", "lastName", "email", "phone", "username")) {
+            if (PhoneSearchHelper.mapMatchesSearch(f, q,
+                    "name", "firstName", "lastName", "email", "phone", "phoneNumber", "username")) {
                 String name = formatName(f);
                 results.add(new SearchResult("farmer", name,
                         String.valueOf(f.get("email")), f));

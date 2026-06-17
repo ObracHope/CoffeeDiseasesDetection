@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +49,11 @@ public class NotificationsActivity extends BaseActivity {
         setContentView(R.layout.activity_notifications);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        findViewById(R.id.btnMarkAllRead).setOnClickListener(v -> {
+            dbHelper.markAllRead();
+            refreshUi();
+            android.widget.Toast.makeText(this, R.string.all_notifications_read, Toast.LENGTH_SHORT).show();
+        });
 
         rvNotifications = findViewById(R.id.rvNotifications);
         tvNoNotifications = findViewById(R.id.tvNoNotifications);
@@ -205,11 +211,26 @@ public class NotificationsActivity extends BaseActivity {
     }
 
     private void refreshUi() {
+        View emptyLayout = findViewById(R.id.layoutNoNotifications);
+        TextView tvDate = findViewById(R.id.tvNotifPanelDate);
+        TextView tvGreeting = findViewById(R.id.tvNotifGreeting);
+        if (tvDate != null) {
+            tvDate.setText(new SimpleDateFormat("EEEE, MMMM d yyyy", Locale.US)
+                    .format(new Date()).toUpperCase(Locale.US));
+        }
+        if (tvGreeting != null) {
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            String name = prefs.getString(KEY_NAME, "System");
+            if (name == null || name.trim().isEmpty()) name = "System";
+            tvGreeting.setText("Hello, " + name.split(" ")[0]);
+        }
+
         if (displayList.isEmpty()) {
-            tvNoNotifications.setVisibility(View.VISIBLE);
+            if (emptyLayout != null) emptyLayout.setVisibility(View.VISIBLE);
+            if (tvNoNotifications != null) tvNoNotifications.setVisibility(View.VISIBLE);
             rvNotifications.setVisibility(View.GONE);
         } else {
-            tvNoNotifications.setVisibility(View.GONE);
+            if (emptyLayout != null) emptyLayout.setVisibility(View.GONE);
             rvNotifications.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
         }

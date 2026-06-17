@@ -39,8 +39,7 @@ public class LandingActivity extends BaseActivity {
 
     private void switchLanguage(String langCode) {
         if (!langCode.equals(LocaleHelper.getLanguage(this))) {
-            LocaleHelper.setLanguage(this, langCode);
-            recreate();
+            LocaleHelper.setLanguageAndRestart(this, langCode);
         }
     }
 }

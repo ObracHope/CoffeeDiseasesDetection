@@ -45,9 +45,10 @@ public class AdminReportsActivity extends BaseActivity {
             public void onSuccess(AdminOverview o) {
                 if (isFinishing()) return;
                 cachedOverview = o;
-                String summary = getString(R.string.admin_report_summary,
-                        o.totalScans, o.diseasesDetected, o.imagesUploaded,
-                        o.totalFarmers, o.pendingChallenges);
+                String summary = getString(R.string.admin_report_summary_extended,
+                        o.totalScans, o.diseasesDetected, o.cameraScans, o.uploadScans,
+                        o.healthCoffeeCount, o.notCoffeeCount, o.totalFarmers,
+                        o.staffScans, o.farmerScans, o.pendingChallenges);
                 tvSummary.setText(summary);
                 setupChart(chart, o);
                 new AdminRepository().logActivity(AdminReportsActivity.this,
@@ -151,14 +152,17 @@ public class AdminReportsActivity extends BaseActivity {
         labels.add(getString(R.string.admin_total_scans));
         entries.add(new BarEntry(1, o.diseasesDetected));
         labels.add(getString(R.string.diseases_detected));
-        entries.add(new BarEntry(2, o.imagesUploaded));
-        labels.add(getString(R.string.images_uploaded));
-        entries.add(new BarEntry(3, o.totalFarmers));
+        entries.add(new BarEntry(2, o.cameraScans));
+        labels.add(getString(R.string.admin_camera_scans));
+        entries.add(new BarEntry(3, o.uploadScans));
+        labels.add(getString(R.string.admin_upload_scans));
+        entries.add(new BarEntry(4, o.totalFarmers));
         labels.add(getString(R.string.total_farmers));
 
         BarDataSet set = new BarDataSet(entries, "");
         set.setColors(Color.parseColor("#2E7D32"), Color.parseColor("#E65100"),
-                Color.parseColor("#558B2F"), Color.parseColor("#4E342E"));
+                Color.parseColor("#1565C0"), Color.parseColor("#6A1B9A"),
+                Color.parseColor("#4E342E"));
         chart.setData(new BarData(set));
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));

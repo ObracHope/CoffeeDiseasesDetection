@@ -1,42 +1,46 @@
 package com.example.coffeediseasesdetection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AdminManageFarmersActivity extends BaseActivity {
 
-    private FirebaseAuth auth;
     private FirebaseFirestore firestore;
     private final List<Map<String, Object>> usersList = new ArrayList<>();
     private final List<Map<String, Object>> filteredList = new ArrayList<>();
     private ManageUsersAdapter adapter;
     private String searchQuery = "";
+    private String actorRole = "admin";
+
+    private final ActivityResultLauncher<Intent> registerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) loadUsers();
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +48,22 @@ public class AdminManageFarmersActivity extends BaseActivity {
         setContentView(R.layout.activity_manage_users);
         setTitle(R.string.manage_farmers);
 
-        auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+        actorRole = AuthHelper.normalizeRole(
+                getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getString(KEY_ROLE, "admin"));
 
-        CardView cardAddUser = findViewById(R.id.cardAddUser);
         FloatingActionButton btnAddUser = findViewById(R.id.btnAddUser);
-        EditText etName = findViewById(R.id.etNameAdmin);
-        EditText etEmail = findViewById(R.id.etEmailAdmin);
-        EditText etPassword = findViewById(R.id.etPasswordAdmin);
-        Spinner spinnerRole = findViewById(R.id.spinnerRole);
-        MaterialButton btnSave = findViewById(R.id.btnSaveUser);
         RecyclerView recyclerUsers = findViewById(R.id.recyclerUsers);
 
-        if (btnAddUser != null && cardAddUser != null) {
-            btnAddUser.setOnClickListener(v -> {
-                boolean show = cardAddUser.getVisibility() != View.VISIBLE;
-                cardAddUser.setVisibility(show ? View.VISIBLE : View.GONE);
-                if (show && etName != null) {
-                    etName.requestFocus();
-                }
-            });
+        if (btnAddUser != null) {
+            btnAddUser.setOnClickListener(v -> openRegisterUser(null));
         }
 
-        ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(
-                this, R.array.user_roles, android.R.layout.simple_spinner_item);
-        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRole.setAdapter(roleAdapter);
-
         recyclerUsers.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ManageUsersAdapter(filteredList, this::removeUser, this::showEditUserDialog);
+        adapter = new ManageUsersAdapter(filteredList, actorRole,
+                this::confirmRemoveUser,
+                this::openEditUser,
+                this::showResetPasswordDialog);
         recyclerUsers.setAdapter(adapter);
 
         TextInputEditText etSearch = findViewById(R.id.etSearchFarmers);
@@ -80,7 +71,7 @@ public class AdminManageFarmersActivity extends BaseActivity {
             etSearch.addTextChangedListener(new TextWatcher() {
                 @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
                 @Override public void onTextChanged(CharSequence s, int a, int b, int c) {
-                    searchQuery = s != null ? s.toString().trim().toLowerCase(java.util.Locale.US) : "";
+                    searchQuery = s != null ? s.toString().trim().toLowerCase(Locale.US) : "";
                     applyFilter();
                 }
                 @Override public void afterTextChanged(Editable s) {}
@@ -88,54 +79,19 @@ public class AdminManageFarmersActivity extends BaseActivity {
         }
 
         loadUsers();
-
-        if (btnSave == null) return;
-
-        btnSave.setOnClickListener(v -> {
-            String name = etName.getText().toString().trim();
-            String email = etEmail.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
-            String roleStr = spinnerRole.getSelectedItem().toString().toLowerCase();
-            String role = roleStr.contains("mkulima") || roleStr.contains("farmer") ? "farmer" : "admin";
-
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email)) {
-                Toast.makeText(this, getString(R.string.required), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (TextUtils.isEmpty(password) || password.length() < 6) {
-                Toast.makeText(this, getString(R.string.password_min), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            addUser(name, email, password, role, etName, etEmail, etPassword, cardAddUser);
-        });
     }
 
-    private void addUser(String name, String email, String password, String role,
-                        EditText etName, EditText etEmail, EditText etPassword, View cardAddUser) {
-        AdminAuthHelper.secondaryAuth().createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> {
-                    String uid = authResult.getUser().getUid();
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("uid", uid);
-                    data.put("name", name);
-                    data.put("email", email);
-                    data.put("role", role);
-                    AuthHelper.usersRtdb().child(uid).setValue(data);
-                    firestore.collection("users").document(uid).set(data)
-                            .addOnSuccessListener(v -> {
-                                AdminAuthHelper.secondaryAuth().signOut();
-                                Toast.makeText(this, R.string.user_added_success, Toast.LENGTH_SHORT).show();
-                                etName.setText("");
-                                etEmail.setText("");
-                                etPassword.setText("");
-                                if (cardAddUser != null) {
-                                    cardAddUser.setVisibility(View.GONE);
-                                }
-                                loadUsers();
-                            });
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed: " + (e.getMessage() != null ? e.getMessage() : ""), Toast.LENGTH_SHORT).show());
+    private void openRegisterUser(String userId) {
+        Intent intent = new Intent(this, AdminRegisterUserActivity.class);
+        if (!TextUtils.isEmpty(userId)) {
+            intent.putExtra(AdminRegisterUserActivity.EXTRA_USER_ID, userId);
+            intent.putExtra(AdminRegisterUserActivity.EXTRA_EDIT_MODE, true);
+        }
+        registerLauncher.launch(intent);
+    }
+
+    private void openEditUser(String userId, Map<String, Object> userData) {
+        openRegisterUser(userId);
     }
 
     private void loadUsers() {
@@ -145,6 +101,7 @@ public class AdminManageFarmersActivity extends BaseActivity {
                     for (QueryDocumentSnapshot doc : snapshots) {
                         Map<String, Object> m = new HashMap<>(doc.getData());
                         m.put("_id", doc.getId());
+                        if (m.get("uid") == null) m.put("uid", doc.getId());
                         usersList.add(m);
                     }
                     applyFilter();
@@ -162,67 +119,101 @@ public class AdminManageFarmersActivity extends BaseActivity {
     }
 
     private static boolean matchesUser(Map<String, Object> u, String q) {
-        String[] keys = {"name", "firstName", "lastName", "email", "phone", "username", "region"};
-        for (String k : keys) {
-            Object v = u.get(k);
-            if (v != null && String.valueOf(v).toLowerCase(java.util.Locale.US).contains(q)) return true;
-        }
-        return false;
+        return PhoneSearchHelper.mapMatchesSearch(u, q,
+                "name", "firstName", "middleName", "lastName", "gender",
+                "email", "phone", "phoneNumber", "username", "role",
+                "region", "location", "district");
     }
 
-    private void removeUser(String userId, String docId) {
+    private void confirmRemoveUser(String userId, String docId) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.remove)
+                .setMessage("Remove this user from the system? Their Firestore profile will be deleted.")
+                .setPositiveButton(android.R.string.ok, (d, w) -> removeUser(userId))
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void removeUser(String userId) {
         firestore.collection("users").document(userId).delete()
                 .addOnSuccessListener(v -> {
+                    AuthHelper.usersRtdb().child(userId).removeValue();
                     Toast.makeText(this, getString(R.string.user_removed), Toast.LENGTH_SHORT).show();
                     loadUsers();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed to remove", Toast.LENGTH_SHORT).show());
     }
 
-    private void showEditUserDialog(String userId, Map<String, Object> userData) {
-        android.view.View dialogView = LayoutInflater.from(this).inflate(android.R.layout.simple_list_item_2, null);
-        final EditText etName = new EditText(this);
-        etName.setHint(getString(R.string.register_firstname) + " / Name");
-        etName.setText(userData.get("name") != null ? userData.get("name").toString() : "");
-        etName.setPadding(80, 40, 80, 20);
-        final EditText etPhone = new EditText(this);
-        etPhone.setHint(getString(R.string.register_phone));
-        etPhone.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
-        etPhone.setText(userData.get("phone") != null ? userData.get("phone").toString() : "");
-        etPhone.setPadding(80, 20, 80, 20);
-        final EditText etEmail = new EditText(this);
-        etEmail.setHint(getString(R.string.hint_email));
-        etEmail.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        etEmail.setText(userData.get("email") != null ? userData.get("email").toString() : "");
-        etEmail.setPadding(80, 20, 80, 40);
-        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
-        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-        layout.addView(etName);
-        layout.addView(etPhone);
-        layout.addView(etEmail);
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.edit))
-                .setView(layout)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    String name = etName.getText().toString().trim();
-                    String phone = etPhone.getText().toString().trim();
-                    String email = etEmail.getText().toString().trim();
-                    if (TextUtils.isEmpty(name)) {
-                        Toast.makeText(this, getString(R.string.required), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Map<String, Object> updates = new HashMap<>();
-                    updates.put("name", name);
-                    updates.put("phone", phone);
-                    updates.put("email", email);
-                    firestore.collection("users").document(userId).update(updates)
-                            .addOnSuccessListener(v -> {
-                                Toast.makeText(this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
-                                loadUsers();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show());
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+    private void showResetPasswordDialog(String userId, Map<String, Object> userData) {
+        String targetRole = userData.get("role") != null ? userData.get("role").toString() : "farmer";
+        if (!AdminPasswordResetHelper.canResetTarget(actorRole, targetRole)) {
+            Toast.makeText(this, R.string.reset_password_not_allowed, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_admin_reset_password, null);
+        TextView tvName = dialogView.findViewById(R.id.tvResetUserName);
+        TextView tvEmail = dialogView.findViewById(R.id.tvResetUserEmail);
+        TextInputEditText etOld = dialogView.findViewById(R.id.etOldPassword);
+        TextInputEditText etNew = dialogView.findViewById(R.id.etNewPassword);
+        TextInputEditText etConfirm = dialogView.findViewById(R.id.etConfirmPassword);
+        TextView tvOldHint = dialogView.findViewById(R.id.tvOldPasswordHint);
+        MaterialButton btnCancel = dialogView.findViewById(R.id.btnCancelReset);
+        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirmReset);
+
+        String name = userData.get("name") != null ? userData.get("name").toString() : "User";
+        String email = userData.get("email") != null ? userData.get("email").toString() : "—";
+        tvName.setText(getString(R.string.reset_user_label, name));
+        tvEmail.setText(getString(R.string.reset_email_label, email));
+
+        String storedOld = AdminPasswordResetHelper.getStoredOldPassword(userData);
+        if (!TextUtils.isEmpty(storedOld)) {
+            etOld.setText(storedOld);
+        } else {
+            etOld.setText("********");
+        }
+        if (tvOldHint != null) tvOldHint.setVisibility(View.GONE);
+
+        String firstName = AdminPasswordResetHelper.extractFirstName(userData);
+        String defaultPwd = AdminPasswordResetHelper.generateDefaultPassword(firstName);
+        etNew.setText(defaultPwd);
+        etConfirm.setText(defaultPwd);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create();
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnConfirm.setOnClickListener(v -> {
+            String newPwd = etNew.getText() != null ? etNew.getText().toString() : "";
+            String confirmPwd = etConfirm.getText() != null ? etConfirm.getText().toString() : "";
+            if (TextUtils.isEmpty(newPwd) || newPwd.length() < 6) {
+                Toast.makeText(this, R.string.password_min, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!newPwd.equals(confirmPwd)) {
+                Toast.makeText(this, R.string.passwords_do_not_match, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            btnConfirm.setEnabled(false);
+            AdminPasswordResetHelper.resetPassword(this, userId, newPwd,
+                    new AdminPasswordResetHelper.ResetCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            btnConfirm.setEnabled(true);
+                            dialog.dismiss();
+                            Toast.makeText(AdminManageFarmersActivity.this, message, Toast.LENGTH_LONG).show();
+                            loadUsers();
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            btnConfirm.setEnabled(true);
+                            Toast.makeText(AdminManageFarmersActivity.this, message, Toast.LENGTH_LONG).show();
+                        }
+                    });
+        });
+
+        dialog.show();
     }
 }

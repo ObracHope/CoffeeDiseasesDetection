@@ -37,10 +37,19 @@ public class CoffeeApp extends Application {
             ThemeHelper.applySavedTheme(this);
             initOsmdroid(this);
             initFirebasePersistence(this);
+            initAuthStateListener();
             scheduleBackgroundWork();
         } catch (Exception e) {
             Log.e(TAG, "Application init failed", e);
         }
+    }
+
+    private void initAuthStateListener() {
+        com.google.firebase.auth.FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
+            if (firebaseAuth.getCurrentUser() == null) {
+                Log.d(TAG, "Auth state: signed out");
+            }
+        });
     }
 
     private static void initOsmdroid(Context context) {

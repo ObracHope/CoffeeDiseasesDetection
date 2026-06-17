@@ -1,6 +1,9 @@
-# Coffee Diseases Detection
+# Coffee Diseases Detection (Mobile)
 
 Android app for detecting coffee plant diseases using on-device TensorFlow Lite, with Firebase backend (Auth, Firestore, Cloud Functions).
+
+**Repository:** [github.com/ObracHope/CoffeeDiseasesDetection](https://github.com/ObracHope/CoffeeDiseasesDetection)  
+**Web Admin Panel:** [github.com/ObracHope/coffee-disease-detection-web](https://github.com/ObracHope/coffee-disease-detection-web)
 
 ## Project structure
 
@@ -21,7 +24,7 @@ Android app for detecting coffee plant diseases using on-device TensorFlow Lite,
 ## Android setup
 
 1. Clone the repository.
-2. Add `app/google-services.json` from your Firebase console (or use the included project config).
+2. Add `app/google-services.json` from your Firebase console.
 3. Open in Android Studio and sync Gradle.
 4. Run on device/emulator: `./gradlew assembleDebug`
 
@@ -35,7 +38,7 @@ firebase deploy --only functions
 
 ## Model training
 
-See [training/README.md](training/README.md). Place class folders under `dataset/` locally (not committed — too large for Git).
+See `training/README.md`. Place class folders under `dataset/` locally (not committed — too large for Git).
 
 ## Author
 

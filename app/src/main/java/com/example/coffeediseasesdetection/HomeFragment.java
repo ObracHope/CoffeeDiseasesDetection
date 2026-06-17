@@ -1,8 +1,6 @@
 package com.example.coffeediseasesdetection;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,62 +20,45 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeediseasesdetection.adapter.CoffeeTipsAdapter;
 import com.example.coffeediseasesdetection.model.CoffeeTip;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements FarmerScanStatsHost.StatsCallback {
 
-    private TextView tvWelcomeName;
     private TextView tvTotalScans, tvStatus, tvRiskLevel;
+    private RecyclerView rvRecentScans;
+    private TextView tvNoRecentScans;
     private RecyclerView rvCoffeeTips;
     private LinearLayoutManager tipsLayoutManager;
 
-    private final Handler greetingHandler = new Handler(Looper.getMainLooper());
     private final Handler marqueeHandler = new Handler(Looper.getMainLooper());
-    private Runnable greetingDismissRunnable;
     private Runnable marqueeScrollRunnable;
     private boolean marqueePaused;
-    private ListenerRegistration statsListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tvWelcomeName = view.findViewById(R.id.tvWelcomeName);
         tvTotalScans = view.findViewById(R.id.tvTotalScans);
         tvStatus = view.findViewById(R.id.tvStatus);
         tvRiskLevel = view.findViewById(R.id.tvRiskLevel);
+        rvRecentScans = view.findViewById(R.id.rvRecentScans);
+        tvNoRecentScans = view.findViewById(R.id.tvNoRecentScans);
         rvCoffeeTips = view.findViewById(R.id.rvCoffeeTips);
 
-        SharedPreferences prefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        String firstName = prefs.getString("user_first_name", "");
-        String lastName = prefs.getString("user_last_name", "");
-        if (!firstName.isEmpty() || !lastName.isEmpty()) {
-            setWelcomeText(firstName, lastName);
+        if (rvRecentScans != null) {
+            rvRecentScans.setLayoutManager(new LinearLayoutManager(requireContext(),
+                    LinearLayoutManager.HORIZONTAL, false));
         }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            FirebaseFirestore.getInstance().collection("users")
-                    .document(user.getUid())
-                    .get()
-                    .addOnSuccessListener(doc -> {
-                        if (doc != null && doc.exists() && isAdded()) {
-                            setWelcomeText(
-                                    doc.getString("firstName") != null ? doc.getString("firstName") : "",
-                                    doc.getString("lastName") != null ? doc.getString("lastName") : ""
-                            );
-                        }
-                    });
-            attachDashboardStatsListener(user);
+        View welcome = view.findViewById(R.id.tvWelcomeName);
+        if (welcome != null) {
+            welcome.setVisibility(View.GONE);
         }
 
         View btnCapture = view.findViewById(R.id.btnHomeCapture);
@@ -93,27 +76,29 @@ public class HomeFragment extends Fragment {
             tvSeeAll.setOnClickListener(v ->
                     startActivity(new Intent(requireContext(), CoffeeCareGuideActivity.class)));
         }
+        View tvViewAllScans = view.findViewById(R.id.tvViewAllScans);
+        if (tvViewAllScans != null) {
+            tvViewAllScans.setOnClickListener(v -> {
+                if (getActivity() == null) return;
+                BottomNavigationView nav = getActivity().findViewById(R.id.bottom_navigation);
+                if (nav != null) {
+                    nav.setSelectedItemId(R.id.nav_history);
+                }
+            });
+        }
 
         if (rvCoffeeTips != null) {
             setupCoffeeTipsMarquee();
         }
 
-        greetingDismissRunnable = () -> {
-            if (tvWelcomeName != null && isAdded()) {
-                tvWelcomeName.animate()
-                        .alpha(0f)
-                        .setDuration(500)
-                        .withEndAction(() -> {
-                            if (tvWelcomeName != null) {
-                                tvWelcomeName.setVisibility(View.GONE);
-                            }
-                        })
-                        .start();
-            }
-        };
-        greetingHandler.postDelayed(greetingDismissRunnable, 30000);
-
         return view;
+    }
+
+    @Override
+    public void onStatsUpdated(ScanHistoryLoader.DashboardStats stats) {
+        if (isAdded()) {
+            applyDashboardStats(stats);
+        }
     }
 
     private void setupCoffeeTipsMarquee() {
@@ -246,43 +231,20 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void attachDashboardStatsListener(FirebaseUser user) {
-        if (statsListener != null) {
-            statsListener.remove();
-            statsListener = null;
-        }
-        statsListener = ScanHistoryLoader.listen(requireContext(), user, new ScanHistoryLoader.Callback() {
-            @Override
-            public void onLoaded(List<Map<String, Object>> scans) {
-                if (!isAdded()) return;
-                applyDashboardStats(ScanHistoryLoader.computeStats(scans));
-            }
-
-            @Override
-            public void onError(Exception e) {
-                if (!isAdded()) return;
-                ScanHistoryLoader.loadOnce(requireContext(), user, new ScanHistoryLoader.Callback() {
-                    @Override
-                    public void onLoaded(List<Map<String, Object>> scans) {
-                        if (isAdded()) applyDashboardStats(ScanHistoryLoader.computeStats(scans));
-                    }
-
-                    @Override
-                    public void onError(Exception ex) {
-                        if (isAdded()) applyDashboardStats(new ScanHistoryLoader.DashboardStats(0, 0, "Healthy"));
-                    }
-                });
-            }
-        });
-    }
-
     private void applyDashboardStats(ScanHistoryLoader.DashboardStats stats) {
         if (tvTotalScans != null) tvTotalScans.setText(String.valueOf(stats.totalScans));
 
         if (tvStatus != null) {
             if (stats.totalScans == 0) {
                 tvStatus.setText("—");
-            } else if (stats.diseasesFound == 0) {
+                tvStatus.setTextColor(requireContext().getColor(R.color.textLight));
+            } else if ("IsNotCoffee".equals(stats.latestDiseaseKey)) {
+                tvStatus.setText(getString(R.string.not_coffee_title));
+                tvStatus.setTextColor(requireContext().getColor(R.color.status_warning));
+            } else if ("Uncertain".equals(stats.latestDiseaseKey)) {
+                tvStatus.setText(getString(R.string.uncertain_desc));
+                tvStatus.setTextColor(requireContext().getColor(R.color.status_warning));
+            } else if (stats.diseasesFound == 0 || "Healthy".equals(stats.latestDiseaseKey)) {
                 tvStatus.setText(getString(R.string.status_healthy_label));
                 tvStatus.setTextColor(requireContext().getColor(R.color.status_healthy));
             } else {
@@ -292,23 +254,44 @@ public class HomeFragment extends Fragment {
         }
 
         if (tvRiskLevel != null) {
-            if (stats.diseasesFound == 0) {
-                tvRiskLevel.setText(getString(R.string.risk_low));
-                tvRiskLevel.setTextColor(requireContext().getColor(R.color.status_info));
-            } else if (stats.diseasesFound <= 2) {
-                tvRiskLevel.setText(getString(R.string.risk_medium));
-                tvRiskLevel.setTextColor(requireContext().getColor(R.color.status_warning));
+            tvRiskLevel.clearAnimation();
+            if (stats.totalScans == 0) {
+                tvRiskLevel.setText("—");
+                tvRiskLevel.setTextColor(requireContext().getColor(R.color.textLight));
             } else {
-                tvRiskLevel.setText(getString(R.string.risk_high));
-                tvRiskLevel.setTextColor(requireContext().getColor(R.color.status_error));
+                String latestKey = stats.latestDiseaseKey != null ? stats.latestDiseaseKey : "Healthy";
+                tvRiskLevel.setText(DiseaseRiskHelper.riskLabel(requireContext(), latestKey));
+                tvRiskLevel.setTextColor(requireContext().getColor(
+                        DiseaseRiskHelper.riskColorRes(latestKey)));
+                if (DiseaseRiskHelper.shouldPulse(latestKey)) {
+                    Animation pulse = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_pulse_risk);
+                    tvRiskLevel.startAnimation(pulse);
+                }
             }
         }
+
+        bindRecentScans(stats.recentScans);
     }
 
-    private void setWelcomeText(String firstName, String lastName) {
-        String fullName = (firstName + " " + lastName).trim();
-        if (fullName.isEmpty()) return;
-        tvWelcomeName.setText(getString(R.string.habari_greeting) + fullName + getString(R.string.greeting_exclamation));
+    private void bindRecentScans(List<Map<String, Object>> scans) {
+        if (rvRecentScans == null) return;
+        List<Map<String, Object>> items = scans != null ? scans : new ArrayList<>();
+        if (items.isEmpty()) {
+            rvRecentScans.setVisibility(View.GONE);
+            if (tvNoRecentScans != null) tvNoRecentScans.setVisibility(View.VISIBLE);
+            return;
+        }
+        rvRecentScans.setVisibility(View.VISIBLE);
+        if (tvNoRecentScans != null) tvNoRecentScans.setVisibility(View.GONE);
+        HistoryAdapter adapter = new HistoryAdapter(items, item -> {
+            Object id = item.get("id");
+            if (id != null) {
+                Intent i = new Intent(requireContext(), ScanDetailActivity.class);
+                i.putExtra("scanId", id.toString());
+                startActivity(i);
+            }
+        }, true);
+        rvRecentScans.setAdapter(adapter);
     }
 
     private void openCoffeeTipDetail(CoffeeTip tip) {
@@ -320,35 +303,29 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         pauseMarquee();
-        if (greetingHandler != null && greetingDismissRunnable != null) {
-            greetingHandler.removeCallbacks(greetingDismissRunnable);
+        if (getActivity() instanceof FarmerScanStatsHost) {
+            ((FarmerScanStatsHost) getActivity()).setScanStatsCallback(null);
         }
     }
 
     @Override
     public void onDestroyView() {
         stopMarquee();
-        if (statsListener != null) {
-            statsListener.remove();
-            statsListener = null;
-        }
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (greetingHandler != null && greetingDismissRunnable != null) {
-            greetingHandler.removeCallbacks(greetingDismissRunnable);
-        }
         stopMarquee();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) attachDashboardStatsListener(user);
+        if (getActivity() instanceof FarmerScanStatsHost) {
+            ((FarmerScanStatsHost) getActivity()).setScanStatsCallback(this);
+        }
         if (marqueePaused) {
             resumeMarquee();
         }

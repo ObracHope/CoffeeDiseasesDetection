@@ -1,6 +1,7 @@
 package com.example.coffeediseasesdetection.admin;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 public class AdminOverview {
 
     // Primary overview cards (web dashboard top row)
+    public int totalUsers;
     public int totalFarmers;
     public int totalScans;
     public int diseasesDetected;
@@ -22,6 +24,19 @@ public class AdminOverview {
     // Secondary metrics
     public int imagesUploaded;
     public int healthyCount;
+    public int healthCoffeeCount;
+    public int notCoffeeCount;
+    public int cameraScans;
+    public int uploadScans;
+    public int farmerScans;
+    public int staffScans;
+    public int activeUsers;
+    public int inactiveUsers;
+    public int todayCameraScans;
+    public int todayUploadScans;
+    public int todayDiseases;
+    public int todayHealthy;
+    public int todayNotCoffee;
     public int infectedCount;
     public int pendingChallenges;
     public int reportsCount;
@@ -48,4 +63,9 @@ public class AdminOverview {
 
     /** @deprecated use topRegions */
     public final List<String> topDiseasedAreas = new ArrayList<>();
+
+    /** Role → total scans (farmer, admin, technician, …) */
+    public final Map<String, Integer> scansByRole = new LinkedHashMap<>();
+    public final Map<String, Integer> cameraByRole = new LinkedHashMap<>();
+    public final Map<String, Integer> uploadByRole = new LinkedHashMap<>();
 }

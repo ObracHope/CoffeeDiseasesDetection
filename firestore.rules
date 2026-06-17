@@ -10,9 +10,23 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    function userRole() {
+      return isSignedIn()
+          ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
+          : null;
+    }
+
+    function isStaff() {
+      let role = userRole();
+      return role in ['admin', 'system_admin', 'superadmin', 'main', 'it', 'technician',
+                      'bwana_kilimo', 'waziri_wa_kilimo'];
+    }
+
     match /users/{userId} {
-      allow read: if isSignedIn();
-      allow create, update: if isOwner(userId);
+      allow read: if isSignedIn() && (isOwner(userId) || isStaff());
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isStaff();
+      allow delete: if isStaff();
 
       match /scans/{scanId} {
         allow read, write: if isOwner(userId);
@@ -20,33 +34,46 @@ service cloud.firestore {
     }
 
     match /scan_history/{scanId} {
-      allow read: if isSignedIn();
+      allow read: if isSignedIn() && (isStaff() || resource.data.userId == request.auth.uid);
       allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
       allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isStaff();
     }
 
     match /user_notifications/{notifId} {
       allow read: if isSignedIn() && resource.data.targetUserId == request.auth.uid;
       allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource.data.targetUserId == request.auth.uid;
+      allow delete: if isStaff();
     }
 
     match /notifications/{id} {
       allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow write: if isStaff();
     }
 
     match /diseases/{id} {
       allow read: if true;
-      allow write: if isSignedIn();
+      allow write: if isStaff();
     }
 
     match /admin_activity_logs/{id} {
-      allow read, write: if isSignedIn();
+      allow read: if isStaff();
+      allow create: if isSignedIn()
+          && request.resource.data.action is string
+          && request.resource.data.keys().hasAny(['timestamp', 'createdAtMs']);
+      allow update, delete: if false;
+    }
+
+    match /scan_activity_logs/{id} {
+      allow read: if isStaff();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
     }
 
     match /app_settings/{id} {
       allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow write: if isStaff();
     }
   }
 }

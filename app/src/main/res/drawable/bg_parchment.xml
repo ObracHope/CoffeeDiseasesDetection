@@ -1,29 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#F5F5DC"/> <!-- Beige base -->
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:startColor="#10000000"
-                android:endColor="#00000000"
-                android:angle="45"
-                android:type="linear"/>
-        </shape>
-    </item>
-    <!-- Add some noise texture effect via repeating pattern if possible, or just subtle gradient -->
-    <item>
-         <shape>
-            <gradient
-                android:type="radial"
-                android:gradientRadius="400dp"
-                android:centerX="0.5"
-                android:centerY="0.5"
-                android:startColor="#FFFFF0"
-                android:endColor="#E8E4C9" />
-        </shape>
-    </item>
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/dashboard_body" />
+</shape>

@@ -132,7 +132,7 @@ public class UploadImageActivity extends BaseActivity {
         DiseaseDetector.detect(this, selectedBitmap, result -> runOnUiThread(() -> {
             progressBar.setVisibility(View.GONE);
             btnDetect.setEnabled(true);
-            DetectionResultLauncher.open(this, result, savedImagePath);
+            DetectionResultLauncher.open(this, result, savedImagePath, ScanRepository.SOURCE_UPLOAD);
         }));
     }
 }

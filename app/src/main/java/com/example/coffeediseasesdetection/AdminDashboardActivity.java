@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.example.coffeediseasesdetection.weather.WeatherBannerHelper;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -31,6 +32,14 @@ public class AdminDashboardActivity extends BaseActivity {
     private TextView tvAdminName;
     private TextView tvNotificationBadge;
     private AdminDashboardFragment homeFragment;
+    private String adminDrawerRole = "admin";
+    private String adminDrawerEmail = "";
+    private String adminDrawerPhoto = "";
+    private String adminDisplayName = "";
+    private String adminFirstName = "";
+    private String adminLastName = "";
+    private final GreetingBannerHelper greetingHelper = new GreetingBannerHelper();
+    private final WeatherBannerHelper weatherHelper = new WeatherBannerHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class AdminDashboardActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_admin_dashboard_modern);
+        ScanImageUploadHelper.syncPendingUploads(this, auth.getCurrentUser().getUid());
         verifyAdminRole();
         mDatabase = FirebaseDatabase.getInstance(AuthHelper.RTDB_URL).getReference();
 
@@ -73,6 +83,20 @@ public class AdminDashboardActivity extends BaseActivity {
             });
         }
 
+        View profileBtn = findViewById(R.id.ivAdminProfile);
+        if (profileBtn != null) {
+            profileBtn.setClickable(true);
+            profileBtn.setOnClickListener(this::showAdminProfilePopup);
+        }
+        View changePhotoBtn = findViewById(R.id.btnHeaderChangePhoto);
+        if (changePhotoBtn != null) {
+            changePhotoBtn.setOnClickListener(v -> startActivity(new Intent(this, UpdateProfile.class)));
+        }
+        View profileArrow = findViewById(R.id.ivProfileArrow);
+        if (profileArrow != null) {
+            profileArrow.setOnClickListener(this::showAdminProfilePopup);
+        }
+
         if (drawerLayout != null) {
             setupNavigationDrawer(drawerLayout);
         }
@@ -80,12 +104,112 @@ public class AdminDashboardActivity extends BaseActivity {
         loadAdminProfile();
         loadNotifications();
 
+        NavigationView navDrawer = findViewById(R.id.nav_drawer_admin);
+        if (navDrawer != null) {
+            setupDrawerHeader(navDrawer);
+        }
+
         if (savedInstanceState == null) {
             showHomeFragment();
         } else {
             homeFragment = (AdminDashboardFragment) getSupportFragmentManager()
                     .findFragmentByTag("admin_home");
         }
+
+        TextView greetingBanner = findViewById(R.id.tvGreetingBanner);
+        if (greetingBanner != null) {
+            greetingHelper.show(this, greetingBanner);
+        }
+
+        weatherHelper.attach(this, findViewById(R.id.tvHeaderWeather), findViewById(R.id.tvWeatherIcon));
+        TextView tvWeather = findViewById(R.id.tvHeaderWeather);
+        if (tvWeather != null) tvWeather.setSelected(true);
+    }
+
+    private void setupDrawerHeader(NavigationView navView) {
+        if (navView == null) return;
+        View headerView = navView.getHeaderView(0);
+        if (headerView == null) return;
+
+        View btnLogout = headerView.findViewById(R.id.btnPopupSignOut);
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                DrawerLayout drawer = findViewById(R.id.drawer_layout_admin);
+                if (drawer != null) drawer.closeDrawers();
+                showLogoutDialog();
+            });
+        }
+
+        View btnPhoto = headerView.findViewById(R.id.btnChangePhoto);
+        if (btnPhoto != null) {
+            btnPhoto.setOnClickListener(v -> {
+                DrawerLayout drawer = findViewById(R.id.drawer_layout_admin);
+                if (drawer != null) drawer.closeDrawers();
+                startActivity(new Intent(this, UpdateProfile.class));
+            });
+        }
+    }
+
+    private void updateDrawerHeader(String firstName, String lastName, String fallbackName,
+                                    String role, String email, String photoUrl) {
+        NavigationView navView = findViewById(R.id.nav_drawer_admin);
+        if (navView == null) return;
+        View headerView = navView.getHeaderView(0);
+        if (headerView == null) return;
+
+        TextView tvName = headerView.findViewById(R.id.tvProfileName);
+        TextView tvRole = headerView.findViewById(R.id.tvProfileRole);
+        TextView tvEmail = headerView.findViewById(R.id.tvProfileEmail);
+        ImageView ivPhoto = headerView.findViewById(R.id.ivProfilePhoto);
+
+        String displayName = ProfileHelper.fullName(firstName, lastName, fallbackName);
+        if (tvName != null) {
+            tvName.setText(!displayName.isEmpty() ? displayName : getString(R.string.profile_name_placeholder));
+        }
+        if (tvRole != null) {
+            tvRole.setText(ProfileHelper.roleLabel(this, role));
+            tvRole.setVisibility(View.VISIBLE);
+        }
+        if (tvEmail != null && email != null && !email.isEmpty()) {
+            tvEmail.setText(email);
+        }
+        if (ivPhoto != null) {
+            ProfileAvatarHelper.load(ivPhoto, photoUrl);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                         @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        weatherHelper.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        weatherHelper.refresh();
+        refreshAdminProfileFromCache();
+    }
+
+    private void refreshAdminProfileFromCache() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String name = prefs.getString(KEY_NAME, getString(R.string.admin_default_name));
+        adminFirstName = prefs.getString(KEY_FIRST_NAME, "");
+        adminLastName = prefs.getString(KEY_LAST_NAME, "");
+        adminDrawerPhoto = prefs.getString(KEY_PHOTO, "");
+        adminDrawerRole = prefs.getString(KEY_ROLE, "admin");
+        adminDisplayName = ProfileHelper.fullName(adminFirstName, adminLastName, name);
+        if (tvAdminName != null) tvAdminName.setText(adminDisplayName);
+        ProfileAvatarHelper.load(ivProfile, adminDrawerPhoto);
+        updateDrawerHeader(adminFirstName, adminLastName, name, adminDrawerRole, adminDrawerEmail, adminDrawerPhoto);
+    }
+
+    @Override
+    protected void onDestroy() {
+        weatherHelper.detach();
+        greetingHelper.cancel();
+        super.onDestroy();
     }
 
     private void showHomeFragment() {
@@ -104,14 +228,10 @@ public class AdminDashboardActivity extends BaseActivity {
             int id = item.getItemId();
             if (id == R.id.nav_admin_home) {
                 showHomeFragment();
-            } else if (id == R.id.nav_admin_scan) {
-                startActivity(new Intent(this, CameraActivity.class));
             } else if (id == R.id.nav_admin_users) {
                 startActivity(new Intent(this, AdminManageFarmersActivity.class));
             } else if (id == R.id.nav_admin_reports) {
                 startActivity(new Intent(this, AdminReportsActivity.class));
-            } else if (id == R.id.nav_admin_settings) {
-                startActivity(new Intent(this, AdminInternationalSettingsActivity.class));
             }
             return true;
         });
@@ -130,6 +250,9 @@ public class AdminDashboardActivity extends BaseActivity {
                 }
                 return true;
             });
+            android.content.SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            String role = AuthHelper.normalizeRole(prefs.getString(KEY_ROLE, "admin"));
+            RolePermissions.applyAdminDrawerVisibility(navDrawer, role);
         }
     }
 
@@ -162,12 +285,16 @@ public class AdminDashboardActivity extends BaseActivity {
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String name = prefs.getString(KEY_NAME, getString(R.string.admin_default_name));
-        String photo = prefs.getString(KEY_PHOTO, "");
+        adminFirstName = prefs.getString(KEY_FIRST_NAME, "");
+        adminLastName = prefs.getString(KEY_LAST_NAME, "");
+        adminDisplayName = ProfileHelper.fullName(adminFirstName, adminLastName, name);
+        adminDrawerPhoto = prefs.getString(KEY_PHOTO, "");
+        adminDrawerRole = prefs.getString(KEY_ROLE, "admin");
+        adminDrawerEmail = user.getEmail() != null ? user.getEmail() : "";
 
-        if (tvAdminName != null) tvAdminName.setText(name);
-        if (ivProfile != null && !photo.isEmpty()) {
-            Glide.with(this).load(photo).placeholder(R.drawable.placeholder_user).into(ivProfile);
-        }
+        if (tvAdminName != null) tvAdminName.setText(adminDisplayName);
+        ProfileAvatarHelper.load(ivProfile, adminDrawerPhoto);
+        updateDrawerHeader(adminFirstName, adminLastName, name, adminDrawerRole, adminDrawerEmail, adminDrawerPhoto);
 
         mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -175,11 +302,21 @@ public class AdminDashboardActivity extends BaseActivity {
                 if (snapshot.exists() && !isFinishing()) {
                     String n = snapshot.child("name").getValue(String.class);
                     String p = snapshot.child("photoUrl").getValue(String.class);
-                    if (tvAdminName != null && n != null) tvAdminName.setText(n);
-                    if (ivProfile != null && p != null && !p.isEmpty()) {
-                        Glide.with(AdminDashboardActivity.this).load(p)
-                                .placeholder(R.drawable.placeholder_user).into(ivProfile);
-                    }
+                    String r = snapshot.child("role").getValue(String.class);
+                    String e = snapshot.child("email").getValue(String.class);
+                    String f = snapshot.child("firstName").getValue(String.class);
+                    String l = snapshot.child("lastName").getValue(String.class);
+                    if (f != null) adminFirstName = f;
+                    if (l != null) adminLastName = l;
+                    adminDisplayName = ProfileHelper.fullName(adminFirstName, adminLastName, n);
+                    if (tvAdminName != null) tvAdminName.setText(adminDisplayName);
+                    if (p != null) adminDrawerPhoto = p;
+                    if (r != null) adminDrawerRole = r;
+                    if (e != null && !e.isEmpty()) adminDrawerEmail = e;
+                    else if (user.getEmail() != null) adminDrawerEmail = user.getEmail();
+                    ProfileAvatarHelper.load(ivProfile, adminDrawerPhoto);
+                    saveUserCache(adminDrawerRole, n, p, f, l);
+                    updateDrawerHeader(adminFirstName, adminLastName, n, adminDrawerRole, adminDrawerEmail, adminDrawerPhoto);
                 }
             }
 
@@ -226,7 +363,10 @@ public class AdminDashboardActivity extends BaseActivity {
 
             @Override
             public void onError(Exception e) {
-                // Allow access if profile fetch fails — data hub will use RTDB fallback
+                if (isFinishing()) return;
+                android.widget.Toast.makeText(AdminDashboardActivity.this,
+                        R.string.admin_access_denied, android.widget.Toast.LENGTH_LONG).show();
+                performLogout();
             }
         });
     }
@@ -238,5 +378,40 @@ public class AdminDashboardActivity extends BaseActivity {
                 .setPositiveButton(R.string.yes, (dialog, which) -> performLogout())
                 .setNegativeButton(R.string.no, null)
                 .show();
+    }
+
+    private void showAdminProfilePopup(View anchor) {
+        View popupView = getLayoutInflater().inflate(R.layout.layout_profile_popup, null);
+        android.widget.PopupWindow popupWindow = new android.widget.PopupWindow(popupView,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+        TextView tvName = popupView.findViewById(R.id.tvPopupName);
+        TextView tvEmail = popupView.findViewById(R.id.tvPopupEmail);
+        ImageView ivPhoto = popupView.findViewById(R.id.ivPopupProfilePhoto);
+
+        String name = ProfileHelper.fullName(adminFirstName, adminLastName, adminDisplayName);
+        if (name.isEmpty()) {
+            name = ProfileHelper.roleLabel(this, adminDrawerRole);
+        }
+        if (tvName != null) tvName.setText(name);
+        if (tvEmail != null) tvEmail.setText(ProfileHelper.roleLabel(this, adminDrawerRole));
+        if (ivPhoto != null && adminDrawerPhoto != null && !adminDrawerPhoto.isEmpty()) {
+            Glide.with(this).load(adminDrawerPhoto).circleCrop()
+                    .placeholder(R.drawable.placeholder_user).into(ivPhoto);
+        }
+
+        popupView.findViewById(R.id.btnPopupUploadPhoto).setOnClickListener(v -> {
+            popupWindow.dismiss();
+            startActivity(new Intent(this, UpdateProfile.class));
+        });
+
+        popupView.findViewById(R.id.btnPopupSignOut).setOnClickListener(v -> {
+            popupWindow.dismiss();
+            showLogoutDialog();
+        });
+
+        popupWindow.setElevation(20);
+        popupWindow.showAsDropDown(anchor, -250, 0);
     }
 }

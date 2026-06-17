@@ -355,7 +355,10 @@
     android:id="@+id/nav_drawer_admin"
     android:layout_width="280dp"
     android:layout_height="match_parent"
-    android:layout_gravity="start"
-    app:menu="@menu/drawer_menu_admin" />
+        android:layout_gravity="start"
+        android:background="@color/card_background"
+        app:itemIconTint="@color/primaryGreen"
+        app:itemTextColor="@color/textPrimary"
+        app:menu="@menu/drawer_menu_admin" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

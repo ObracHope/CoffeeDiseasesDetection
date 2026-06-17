@@ -3,63 +3,73 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Premium Coffee Theme Colors -->
-    <color name="primaryGreen">#2E7D32</color>
+    <!-- Official Design System — Light Mode -->
+    <color name="primaryGreen">#1B5E20</color>
     <color name="primaryGreenLight">#4CAF50</color>
     <color name="primaryGreenDark">#1B5E20</color>
-    <color name="primaryBrown">#4E342E</color>
-    <color name="headerDarkGreen">#1B3022</color>
-    <color name="navBarBackground">#EEF2EE</color>
-    <color name="tip_card_dark">#1B3022</color>
-    <color name="actionGreen">#4CAF50</color>
-    <color name="primaryBrownLight">#8D6E63</color>
+    <color name="secondaryGreen">#4CAF50</color>
+    <color name="gradientGreenEnd">#388E3C</color>
+
+    <color name="accentOrange">#FF9800</color>
     <color name="accentYellow">#FFB300</color>
-    <color name="accentOrange">#FF6F00</color>
-    
-    <!-- Background Colors -->
-    <color name="dashboard_body">#F7F8F6</color>
-    <color name="backgroundCream">#FAFAFA</color>
-    <color name="backgroundLight">#F5F5F5</color>
-    <color name="backgroundDark">#121212</color>
-    
-    <!-- Text Colors -->
-    <color name="textDark">#212121</color>
+    <color name="dangerRed">#D32F2F</color>
+
+    <color name="primaryBrown">#795548</color>
+    <color name="primaryBrownLight">#8D6E63</color>
+    <color name="headerDarkGreen">#1B5E20</color>
+    <color name="navBarBackground">#FFFFFF</color>
+    <color name="navBarDivider">#E0E0E0</color>
+    <color name="tip_card_dark">#263238</color>
+    <color name="actionGreen">#1B5E20</color>
+
+    <!-- Backgrounds -->
+    <color name="dashboard_body">#F7F9F4</color>
+    <color name="backgroundCream">#F7F9F4</color>
+    <color name="backgroundLight">#F5F8F0</color>
+    <color name="backgroundDark">#0D3013</color>
+
+    <!-- Text -->
+    <color name="textDark">#1A1A1A</color>
     <color name="textMedium">#424242</color>
     <color name="textLight">#757575</color>
     <color name="textWhite">#FFFFFF</color>
-    <color name="primary_text_color">#2E7D32</color>
+    <color name="primary_text_color">#1B5E20</color>
+    <color name="textSecondary">#757575</color>
+    <color name="textPrimary">#1A1A1A</color>
 
-    <!-- Gradient Colors -->
+    <!-- Gradients -->
     <color name="gradient_green_start">#1B5E20</color>
     <color name="gradient_green_center">#2E7D32</color>
-    <color name="gradient_green_end">#43A047</color>
-    
-    <!-- Card Colors - Premium Smooth Tones -->
-    <color name="card_capture">#388E3C</color>
-    <color name="card_upload">#689F38</color>
-    <color name="card_detect">#7CB342</color>
-    <color name="card_marquee">#8D6E63</color>
-    <color name="card_history">#5D4037</color>
-    <color name="card_treatment">#8BC34A</color>
-    <color name="card_tips">#AFB42B</color>
-    
-    <!-- Modern Card Backgrounds -->
+    <color name="gradient_green_end">#388E3C</color>
+
+    <!-- Cards -->
+    <color name="card_capture">#1B5E20</color>
+    <color name="card_upload">#795548</color>
+    <color name="card_detect">#4CAF50</color>
+    <color name="card_marquee">#795548</color>
+    <color name="card_history">#795548</color>
+    <color name="card_treatment">#4CAF50</color>
+    <color name="card_tips">#4CAF50</color>
     <color name="card_background">#FFFFFF</color>
-    <color name="card_background_dark">#1E1E1E</color>
-    <color name="card_surface">#F5F5F5</color>
-    
-    <!-- Status Colors -->
+    <color name="card_background_dark">#263238</color>
+    <color name="card_surface">#FFFFFF</color>
+    <color name="dividerGrey">#E0E0E0</color>
+    <color name="selectedItemBg">#E8F5E9</color>
+
+    <!-- Status / Badges -->
     <color name="status_healthy">#4CAF50</color>
     <color name="status_warning">#FF9800</color>
     <color name="status_error">#D32F2F</color>
-    <color name="status_danger">#F44336</color>
+    <color name="status_danger">#D32F2F</color>
     <color name="status_info">#2196F3</color>
-    
-    <!-- Overlay Colors -->
+    <color name="risk_low">#4CAF50</color>
+    <color name="risk_medium">#FF9800</color>
+    <color name="risk_high">#D32F2F</color>
+
+    <!-- Overlays -->
     <color name="overlay_dark">#80000000</color>
     <color name="overlay_light">#40FFFFFF</color>
     <color name="glass_background">#26FFFFFF</color>
-
+    <color name="nav_inactive">#757575</color>
+    <color name="nav_active">#1B5E20</color>
 </resources>
-
-

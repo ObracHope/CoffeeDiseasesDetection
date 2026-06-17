@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:padding="2dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_nav_profile"
+            android:src="@drawable/placeholder_user"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
             app:strokeColor="@color/white"
             app:strokeWidth="3dp"
@@ -35,7 +35,7 @@
             android:layout_height="36dp"
             android:layout_gravity="bottom|end"
             android:layout_margin="2dp"
-            app:cardBackgroundColor="@color/primaryGreen"
+            app:cardBackgroundColor="#3B82F6"
             app:cardCornerRadius="18dp"
             app:cardElevation="6dp"
             app:strokeWidth="0dp"
@@ -57,17 +57,28 @@
         android:id="@+id/tvProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Farmer Name"
+        android:text="@string/profile_name_placeholder"
         android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center" />
 
     <TextView
+        android:id="@+id/tvProfileRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#E8F5E9"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/tvProfileEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="farmer@email.com"
+        android:text="@string/profile_email_placeholder"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:alpha="0.8"

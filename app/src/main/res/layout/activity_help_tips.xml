@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_parchment"
+    android:background="@color/dashboard_body"
     tools:context=".HelpTipsActivity">
 
     <!-- Top Curved Banner -->
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Help &amp; Tips"
+        android:text="@string/help_tips_title"
         android:textColor="@color/white"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="6dp"
-                android:text="Here you can show help &amp; tips for coffee farmers. This section will contain valuable information about preventing diseases, proper harvesting techniques, and other best practices to ensure a healthy coffee crop."
+                android:text="@string/help_tips_body"
                 android:textColor="@color/primary_text_color"
                 android:textSize="16sp" />
 

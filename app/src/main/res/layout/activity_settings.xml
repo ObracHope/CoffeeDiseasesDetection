@@ -46,13 +46,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/english"
                     android:layout_marginEnd="12dp"
-                    android:textColor="#555555" />
+                    android:textColor="@color/textLight" />
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switchLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:trackDecorationTint="#AEC6E3"
-                    app:thumbTint="#003366" />
+                    app:thumbTint="@color/primaryGreen"
+                    app:trackDecorationTint="@color/dividerGrey" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -82,13 +82,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/settings_light"
                     android:layout_marginEnd="12dp"
-                    android:textColor="#555555" />
+                    android:textColor="@color/textLight" />
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switchTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:trackDecorationTint="#AEC6E3"
-                    app:thumbTint="#003366" />
+                    app:thumbTint="@color/primaryGreen"
+                    app:trackDecorationTint="@color/dividerGrey" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -182,6 +182,61 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Legal & Support -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_legal_support"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textPrimary"/>
+                <Button
+                    android:id="@+id/btnHelpSupport"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_support_title"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primaryGreen"/>
+                <Button
+                    android:id="@+id/btnAboutUs"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_us_title"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primaryGreen"/>
+                <Button
+                    android:id="@+id/btnTerms"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/terms_conditions_title"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primaryGreen"/>
+                <Button
+                    android:id="@+id/btnPrivacy"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_policy_title"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primaryGreen"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- Logout Section -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -206,7 +261,7 @@
                     android:layout_height="56dp"
                     android:text="@string/logout_account"
                     android:layout_marginTop="12dp"
-                    android:backgroundTint="#D32F2F"
+                    android:backgroundTint="@color/dangerRed"
                     android:textColor="@color/white"
                     android:textAllCaps="false"
                     android:textStyle="bold"/>

@@ -1,7 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.CoffeeDiseasesDetection" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/primaryGreen</item>
+        <item name="colorPrimaryDark">@color/primaryGreenDark</item>
+        <item name="colorPrimaryContainer">@color/primaryGreenDark</item>
+        <item name="colorSecondary">@color/secondaryGreen</item>
+        <item name="android:colorBackground">@color/backgroundCream</item>
+        <item name="colorSurface">@color/card_background</item>
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
+        <item name="android:statusBarColor">@color/headerDarkGreen</item>
+        <item name="android:navigationBarColor">@color/navBarBackground</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Theme.CoffeeDiseasesDetection" parent="Base.Theme.CoffeeDiseasesDetection" />
+
+    <style name="BottomNavTextActive">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/nav_active</item>
+    </style>
+
+    <style name="BottomNavTextInactive">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/nav_inactive</item>
+    </style>
+
+    <style name="BottomNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/selectedItemBg</item>
+        <item name="marginHorizontal">8dp</item>
     </style>
 </resources>

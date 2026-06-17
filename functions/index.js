@@ -5,8 +5,10 @@
  * Finds nearby farmers (50m / 100m / 200m) and sends push via FCM.
  */
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
+const { getAuth } = require("firebase-admin/auth");
 const { getMessaging } = require("firebase-admin/messaging");
 
 initializeApp();
@@ -31,6 +33,21 @@ function distanceMeters(lat1, lon1, lat2, lon2) {
       Math.cos((lat2 * Math.PI) / 180) *
       Math.sin(dLon / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function normalizeRole(role) {
+  const r = String(role || "farmer").trim().toLowerCase();
+  if (r === "super_admin") return "superadmin";
+  return r;
+}
+
+function canAdminResetTarget(actorRole, targetRole) {
+  const actor = normalizeRole(actorRole);
+  const target = normalizeRole(targetRole);
+  const privileged = new Set(["system_admin", "superadmin", "main", "it"]);
+  if (privileged.has(actor)) return true;
+  if (actor === "admin") return target === "farmer";
+  return false;
 }
 
 function isDiseasedScan(data) {
@@ -199,5 +216,133 @@ exports.onUserNotificationCreated = onDocumentCreated(
       console.warn("onUserNotificationCreated FCM error", e.message);
     }
     return null;
+  }
+);
+
+/**
+ * Admin-only password reset (Firebase Auth Admin SDK).
+ * Stores lastSetPassword in Firestore so admin can view previous password on next reset.
+ */
+exports.adminResetPassword = onCall(
+  { region: "us-central1" },
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Sign in required.");
+    }
+
+    const callerUid = request.auth.uid;
+    const targetUid = String(request.data?.targetUid || "").trim();
+    const newPassword = String(request.data?.newPassword || "");
+
+    if (!targetUid) {
+      throw new HttpsError("invalid-argument", "targetUid is required.");
+    }
+    if (!newPassword || newPassword.length < 6) {
+      throw new HttpsError("invalid-argument", "Password must be at least 6 characters.");
+    }
+
+    const callerDoc = await db.collection("users").doc(callerUid).get();
+    if (!callerDoc.exists) {
+      throw new HttpsError("permission-denied", "Caller profile not found.");
+    }
+    const callerRole = callerDoc.data().role;
+
+    const targetDoc = await db.collection("users").doc(targetUid).get();
+    if (!targetDoc.exists) {
+      throw new HttpsError("not-found", "User not found.");
+    }
+    const targetRole = targetDoc.data().role;
+
+    if (!canAdminResetTarget(callerRole, targetRole)) {
+      throw new HttpsError(
+        "permission-denied",
+        "You are not allowed to reset this user's password."
+      );
+    }
+
+    const oldPassword = targetDoc.data().lastSetPassword || null;
+
+    await getAuth().updateUser(targetUid, { password: newPassword });
+
+    await db.collection("users").doc(targetUid).update({
+      lastSetPassword: newPassword,
+      passwordResetBy: callerUid,
+      passwordResetAt: FieldValue.serverTimestamp(),
+    });
+
+    const targetName = targetDoc.data().name || targetUid;
+    await db.collection("admin_activity_logs").add({
+      action: "Password Reset",
+      detail: `Reset password for ${targetName}`,
+      timestamp: FieldValue.serverTimestamp(),
+      adminUid: callerUid,
+      targetUid,
+    });
+
+    return { success: true, oldPassword };
+  }
+);
+
+/**
+ * Admin-only password reset (Firebase Auth Admin SDK).
+ * Stores lastSetPassword in Firestore so admin can view previous password on next reset.
+ */
+exports.adminResetPassword = onCall(
+  { region: "us-central1" },
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Sign in required.");
+    }
+
+    const callerUid = request.auth.uid;
+    const targetUid = String(request.data?.targetUid || "").trim();
+    const newPassword = String(request.data?.newPassword || "");
+
+    if (!targetUid) {
+      throw new HttpsError("invalid-argument", "targetUid is required.");
+    }
+    if (!newPassword || newPassword.length < 6) {
+      throw new HttpsError("invalid-argument", "Password must be at least 6 characters.");
+    }
+
+    const callerDoc = await db.collection("users").doc(callerUid).get();
+    if (!callerDoc.exists) {
+      throw new HttpsError("permission-denied", "Caller profile not found.");
+    }
+    const callerRole = callerDoc.data().role;
+
+    const targetDoc = await db.collection("users").doc(targetUid).get();
+    if (!targetDoc.exists) {
+      throw new HttpsError("not-found", "User not found.");
+    }
+    const targetRole = targetDoc.data().role;
+
+    if (!canAdminResetTarget(callerRole, targetRole)) {
+      throw new HttpsError(
+        "permission-denied",
+        "You are not allowed to reset this user's password."
+      );
+    }
+
+    const oldPassword = targetDoc.data().lastSetPassword || null;
+
+    await getAuth().updateUser(targetUid, { password: newPassword });
+
+    await db.collection("users").doc(targetUid).update({
+      lastSetPassword: newPassword,
+      passwordResetBy: callerUid,
+      passwordResetAt: FieldValue.serverTimestamp(),
+    });
+
+    const targetName = targetDoc.data().name || targetUid;
+    await db.collection("admin_activity_logs").add({
+      action: "Password Reset",
+      detail: `Reset password for ${targetName}`,
+      timestamp: FieldValue.serverTimestamp(),
+      adminUid: callerUid,
+      targetUid,
+    });
+
+    return { success: true, oldPassword };
   }
 );
