@@ -364,6 +364,11 @@ public class AdminDashboardActivity extends BaseActivity {
             @Override
             public void onError(Exception e) {
                 if (isFinishing()) return;
+                SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                String cachedRole = prefs.getString(KEY_ROLE, "");
+                if (AuthHelper.isAdminRole(cachedRole)) {
+                    return;
+                }
                 android.widget.Toast.makeText(AdminDashboardActivity.this,
                         R.string.admin_access_denied, android.widget.Toast.LENGTH_LONG).show();
                 performLogout();

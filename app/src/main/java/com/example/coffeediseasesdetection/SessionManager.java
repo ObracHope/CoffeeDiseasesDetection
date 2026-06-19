@@ -30,16 +30,18 @@ public final class SessionManager {
     private SessionManager() {}
 
     public static void onLoginSuccess(@NonNull Context context, @NonNull FirebaseUser user) {
-        long now = System.currentTimeMillis();
-        SharedPreferences prefs = getPrefs(context);
-        prefs.edit()
-                .putString(KEY_UID, user.getUid())
-                .putLong(KEY_STARTED, now)
-                .putLong(KEY_LAST_ACTIVITY, now)
-                .apply();
-
+        writeSession(context, user.getUid(), System.currentTimeMillis());
         user.getIdToken(true).addOnFailureListener(e ->
                 Log.w(TAG, "ID token refresh on login failed", e));
+    }
+
+    /** Persist session immediately so dashboard does not log out on first onCreate. */
+    private static void writeSession(@NonNull Context context, @NonNull String uid, long now) {
+        getPrefs(context).edit()
+                .putString(KEY_UID, uid)
+                .putLong(KEY_STARTED, now)
+                .putLong(KEY_LAST_ACTIVITY, now)
+                .commit();
     }
 
     public static void touchActivity(@NonNull Context context) {
@@ -56,11 +58,17 @@ public final class SessionManager {
 
         SharedPreferences prefs = getPrefs(context);
         String storedUid = prefs.getString(KEY_UID, "");
-        if (storedUid.isEmpty() || !storedUid.equals(user.getUid())) {
+        long now = System.currentTimeMillis();
+
+        // Fresh login race: Firebase auth succeeded before session metadata finished writing.
+        if (storedUid.isEmpty()) {
+            writeSession(context, user.getUid(), now);
+            return true;
+        }
+        if (!storedUid.equals(user.getUid())) {
             return false;
         }
 
-        long now = System.currentTimeMillis();
         long started = prefs.getLong(KEY_STARTED, 0L);
         long lastActivity = prefs.getLong(KEY_LAST_ACTIVITY, 0L);
 

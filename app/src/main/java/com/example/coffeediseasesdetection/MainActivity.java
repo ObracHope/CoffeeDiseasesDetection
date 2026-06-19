@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity {
             public void onSuccess() {
                 FirebaseUser user = auth.getCurrentUser();
                 if (user != null) {
+                    resetLoading();
                     AuthHelper.completeEmailLoginAndRedirect(MainActivity.this, user);
                 } else {
                     finishLoginError(getString(R.string.login_failed_generic));

@@ -172,29 +172,28 @@ public final class AuthHelper {
 
     private static void resolveEmailFromRtdb(String username, String trimmed,
                                              @NonNull EmailResolverCallback callback) {
-        usersRtdb().get()
-                .addOnSuccessListener(snapshot -> {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot child : snapshot.getChildren()) {
-                            String stored = child.child("username").getValue(String.class);
-                            if (stored != null && normalizeUsername(stored).equals(username)) {
-                                String email = child.child("email").getValue(String.class);
-                                if (email != null && !email.isEmpty()) {
-                                    cacheUsernameEmail(username, email.trim().toLowerCase(Locale.US));
-                                    callback.onResolved(email.trim().toLowerCase(Locale.US));
-                                    return;
-                                }
-                            }
+        // Do not download the entire RTDB users tree — it is slow and can block login.
+        FirebaseFirestore.getInstance().collection("users")
+                .whereEqualTo("username", username)
+                .limit(1)
+                .get(Source.SERVER)
+                .addOnSuccessListener(snap -> {
+                    if (!snap.isEmpty()) {
+                        String email = snap.getDocuments().get(0).getString("email");
+                        if (email != null && !email.isEmpty()) {
+                            cacheUsernameEmail(username, email.trim().toLowerCase(Locale.US));
+                            callback.onResolved(email.trim().toLowerCase(Locale.US));
+                            return;
                         }
                     }
                     FirebaseFirestore.getInstance().collection("users")
                             .whereEqualTo("email", trimmed)
                             .limit(1)
-                            .get()
+                            .get(Source.SERVER)
                             .addOnSuccessListener(snap2 -> {
                                 if (!snap2.isEmpty()) {
                                     String email = snap2.getDocuments().get(0).getString("email");
-                                    if (email != null) {
+                                    if (email != null && !email.isEmpty()) {
                                         cacheUsernameEmail(username, email.trim().toLowerCase(Locale.US));
                                         callback.onResolved(email.trim().toLowerCase(Locale.US));
                                         return;
@@ -313,7 +312,8 @@ public final class AuthHelper {
             if (activity instanceof BaseActivity) {
                 ((BaseActivity) activity).saveUserCache("system_admin", "Admin", null, null, null);
             }
-            ensureDemoAdminProfile(user, () -> redirectForRole(activity, "system_admin"));
+            redirectForRole(activity, "system_admin");
+            ensureDemoAdminProfile(user, null);
             return;
         }
 
@@ -322,7 +322,8 @@ public final class AuthHelper {
             if (activity instanceof BaseActivity) {
                 ((BaseActivity) activity).saveUserCache("admin", "Obeid Tumaini", null, "Obeid", "Tumaini");
             }
-            ensureDemoAdminProfile(user, () -> redirectForRole(activity, "admin"));
+            redirectForRole(activity, "admin");
+            ensureDemoAdminProfile(user, null);
             return;
         }
 
@@ -521,16 +522,28 @@ public final class AuthHelper {
 
     private static void resolveRoleAndRedirect(@NonNull Activity activity, String uid, boolean unused) {
         AtomicBoolean redirected = new AtomicBoolean(false);
+        android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+        Runnable timeoutFallback = () -> {
+            if (!redirected.compareAndSet(false, true)) return;
+            SharedSessionCache cache = readCache(activity, uid);
+            String role = cache.hasRole ? cache.role : "farmer";
+            Log.w(TAG, "Profile fetch timeout — redirecting with role: " + role);
+            cacheRole(activity, uid, role, null, null, null);
+            redirectForRole(activity, role);
+            refreshProfileInBackground(activity, uid);
+        };
+        handler.postDelayed(timeoutFallback, 4500);
 
         java.util.function.Consumer<DocumentSnapshot> tryRedirect = doc -> {
             if (doc != null && doc.exists() && redirected.compareAndSet(false, true)) {
+                handler.removeCallbacks(timeoutFallback);
                 applyProfileAndRedirect(activity, uid, doc);
             }
         };
 
         Runnable tryRtdb = () -> {
             if (!redirected.get()) {
-                fetchRoleFromRtdbAndRedirect(activity, uid, redirected);
+                fetchRoleFromRtdbAndRedirect(activity, uid, redirected, handler, timeoutFallback);
             }
         };
 
@@ -555,6 +568,49 @@ public final class AuthHelper {
     }
 
     public static void fetchUserRole(String uid, @NonNull RoleCallback callback) {
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .get(Source.CACHE)
+                .addOnSuccessListener(cacheDoc -> {
+                    if (cacheDoc.exists()) {
+                        callback.onRole(normalizeRole(cacheDoc.getString("role")));
+                        return;
+                    }
+                    FirebaseFirestore.getInstance().collection("users").document(uid)
+                            .get(Source.SERVER)
+                            .addOnSuccessListener(doc -> {
+                                if (doc.exists()) {
+                                    callback.onRole(normalizeRole(doc.getString("role")));
+                                    return;
+                                }
+                                fetchRoleFromRtdb(uid, callback);
+                            })
+                            .addOnFailureListener(e -> fetchRoleFromRtdb(uid, callback));
+                })
+                .addOnFailureListener(e ->
+                        FirebaseFirestore.getInstance().collection("users").document(uid)
+                                .get(Source.SERVER)
+                                .addOnSuccessListener(doc -> {
+                                    if (doc.exists()) {
+                                        callback.onRole(normalizeRole(doc.getString("role")));
+                                        return;
+                                    }
+                                    fetchRoleFromRtdb(uid, callback);
+                                })
+                                .addOnFailureListener(e2 -> fetchRoleFromRtdb(uid, callback)));
+    }
+
+    private static void fetchRoleFromRtdb(String uid, @NonNull RoleCallback callback) {
+        usersRtdb().child(uid).get()
+                .addOnSuccessListener(snap -> {
+                    String role = snap.exists() && snap.child("role").getValue() != null
+                            ? String.valueOf(snap.child("role").getValue()) : "farmer";
+                    callback.onRole(normalizeRole(role));
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /** Legacy server-first role fetch kept for callers that need fresh data. */
+    public static void fetchUserRoleFromServer(String uid, @NonNull RoleCallback callback) {
         FirebaseFirestore.getInstance().collection("users").document(uid)
                 .get(Source.SERVER)
                 .addOnSuccessListener(doc -> {
@@ -589,13 +645,18 @@ public final class AuthHelper {
     }
 
     private static void fetchRoleFromRtdbAndRedirect(Activity activity, String uid) {
-        fetchRoleFromRtdbAndRedirect(activity, uid, new AtomicBoolean(false));
+        fetchRoleFromRtdbAndRedirect(activity, uid, new AtomicBoolean(false), null, null);
     }
 
-    private static void fetchRoleFromRtdbAndRedirect(Activity activity, String uid, AtomicBoolean redirected) {
+    private static void fetchRoleFromRtdbAndRedirect(Activity activity, String uid, AtomicBoolean redirected,
+                                                     @Nullable android.os.Handler handler,
+                                                     @Nullable Runnable timeoutFallback) {
         usersRtdb().child(uid).get()
                 .addOnSuccessListener(snapshot -> {
                     if (!redirected.compareAndSet(false, true)) return;
+                    if (handler != null && timeoutFallback != null) {
+                        handler.removeCallbacks(timeoutFallback);
+                    }
                     String role = "farmer";
                     if (snapshot.exists() && snapshot.child("role").getValue() != null) {
                         role = normalizeRole(String.valueOf(snapshot.child("role").getValue()));
@@ -605,10 +666,12 @@ public final class AuthHelper {
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Profile fetch failed", e);
-                    if (redirected.compareAndSet(false, true)) {
-                        cacheRole(activity, uid, "farmer", null, null, null);
-                        redirectForRole(activity, "farmer");
+                    if (!redirected.compareAndSet(false, true)) return;
+                    if (handler != null && timeoutFallback != null) {
+                        handler.removeCallbacks(timeoutFallback);
                     }
+                    cacheRole(activity, uid, "farmer", null, null, null);
+                    redirectForRole(activity, "farmer");
                 });
     }
 
@@ -678,7 +741,7 @@ public final class AuthHelper {
                 .putString(BaseActivity.KEY_NAME, name != null ? name : "")
                 .putString(BaseActivity.KEY_FIRST_NAME, firstName != null ? firstName : "")
                 .putString(BaseActivity.KEY_LAST_NAME, lastName != null ? lastName : "")
-                .apply();
+                .commit();
     }
 
     public static boolean tryFastSessionRestore(@NonNull Activity activity) {
